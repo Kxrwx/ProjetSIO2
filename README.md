@@ -127,7 +127,7 @@ Base de données : MySQL / PostgreSQL
 
 Architecture : MVC, API REST
 
-Outils : Trello, GitHub, Draw.io
+Outils : Notion, GitHub, Draw.io
 
 
 
