@@ -4,12 +4,6 @@
 
 Projet de deuxième année – BTS SIO
 
-## 📄 Lien vers le Cahier des Charges
-
-Document de suivi et rédaction :
-https://docs.google.com/document/d/1ItkNQ4UgzSq1IFgXUQlaHwl8hFcv5dGpgfvpD7eqG48/edit?usp=sharing
-*(À remplacer par le lien final de votre CdC)*
-
 ---
 
 ## 📝 Descriptif de la Solution (Architecture Modulaire)
@@ -24,6 +18,7 @@ La solution est structurée autour de **trois modules** communiquant via une API
 | **Salariés (Utilisateurs finaux)** | **Module 2 : Webapp de Dépôt et de Suivi (React)** | Dépôt de signalement (anonyme ou identifié) et suivi via un code unique. |
 | **Cœur du Système (Sécurité)** | **Module 3 : API REST Sécurisée (Python/Flask)** | Chiffrement AES-256, stockage sécurisé, gestion des flux, et classification "Pseudo-IA". |
 
+---
 ## 📚 Contenu du Projet (Basé sur le Cahier des Charges Final)
 
 Le Cahier des Charges de ce projet suit la structure professionnelle imposée :
