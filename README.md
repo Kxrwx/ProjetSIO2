@@ -5,6 +5,8 @@
 Projet de deuxième année – BTS SIO
 
 ---
+## 🗄️ Bibliotheque de ressource 
+Lien vers la db en ligne **Aiven** : https://console.aiven.io/account/a57aeda6410d/project/sioproject/services/mysql-19a1f367/overview
 
 ## 📝 Descriptif de la Solution (Architecture Modulaire)
 
