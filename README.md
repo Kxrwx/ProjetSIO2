@@ -51,7 +51,7 @@ Le projet répond à l'obligation légale des entreprises de fournir un canal s�
 
 * **Module 1 (Windev - RH/Juristes) :** Authentification forte, Tableau de bord, Gestion des rôles, Traitement et affectation des cas, Messagerie confidentielle, Journalisation (Audit Log).
 * **Module 2 (Webapp - Salariés) :** Formulaire de dépôt simple, Génération de code de suivi anonyme, Interface de suivi et de messagerie sécurisée.
-* **Module 3 (API) :** Service de classification automatique ("Pseudo-IA"), Chiffrement fort des données stockées.
+* **Module 3 (API) :** Service de classification automatique ("IA"), Chiffrement fort des données stockées.
 
 ### 5. Besoins Non Fonctionnels
 
@@ -62,9 +62,9 @@ Le projet répond à l'obligation légale des entreprises de fournir un canal s�
 ### 6. Spécifications Techniques
 
 * **Backend (API) :** **Python/Flask** (choix de l'ORM : SQLAlchemy ou SQLModel), utilisation de bibliothèques de chiffrement avancées.
-* **Frontend (Salariés) :** PHP / JavaScript (possibilité d'utiliser un framework comme Next.js pour le développement Front-End).
+* **Frontend (Salariés) :** React.
 * **Client Lourd (RH/Juristes) :** **Windev**.
-* **Base de Données :** **PostgreSQL** (recommandé pour la robustesse et l'intégrité des données critiques).
+* **Base de Données :** **MySQL** (recommandé pour la robustesse et l'intégrité des données critiques).
 
 ### 7. Contraintes
 
