@@ -1,182 +1,81 @@
-# ProjetSIO2
+# Projet Gestion des Signalements Internes (LegalTech)
+
+## 🎓 Contexte du Projet
 
 Projet de deuxième année – BTS SIO
 
-## 📄 Lien vers le Google Docs
+## 📄 Lien vers le Cahier des Charges
 
 Document de suivi et rédaction :
 https://docs.google.com/document/d/1ItkNQ4UgzSq1IFgXUQlaHwl8hFcv5dGpgfvpD7eqG48/edit?usp=sharing
+*(À remplacer par le lien final de votre CdC)*
 
-## 📌 TO DO LIST
+---
 
-Configuration des outils
+## 📝 Descriptif de la Solution (Architecture Modulaire)
 
-Rédaction du cahier des charges
+Notre projet vise à concevoir une **solution numérique modulaire, sécurisée et conforme** pour la gestion des signalements de conflits internes en entreprise. Il s'inscrit dans une démarche de LegalTech, avec une exigence critique sur la confidentialité et la traçabilité.
 
-Analyse du besoin
+La solution est structurée autour de **trois modules** communiquant via une API centralisée :
 
-Conception (UML, maquettes, architecture)
+| Rôle | Module / Technologie | Fonction Principale |
+| :--- | :--- | :--- |
+| **RH / Juristes (Gestionnaires)** | **Module 1 : Application Client Lourd (Windev)** | Traitement sécurisé des cas, authentification forte, historique, et administration de l'IA. |
+| **Salariés (Utilisateurs finaux)** | **Module 2 : Webapp de Dépôt et de Suivi (Next.js/PHP/JS)** | Dépôt de signalement (anonyme ou identifié) et suivi via un code unique. |
+| **Cœur du Système (Sécurité)** | **Module 3 : API REST Sécurisée (Python/Flask)** | Chiffrement AES-256, stockage sécurisé, gestion des flux, et classification "Pseudo-IA". |
 
-Développement de la solution
+## 📚 Contenu du Projet (Basé sur le Cahier des Charges Final)
 
-Tests et validation
+Le Cahier des Charges de ce projet suit la structure professionnelle imposée :
 
-Rédaction des livrables
+### 1. Présentation du Projet
 
-## 📝 Descriptif du projet
+* **Intitulé :** Solution Modulaire de Conformité et de Gestion des Signalements Internes
+* **Client fictif :** HRComplianceTech Solutions
+* **Prestataires :** Équipe BTS SIO
+* **Nature du livrable :** Application complète (Web + Client Lourd), API, et Documentation de Conformité.
 
-Notre projet consiste à concevoir et formaliser une solution informatique dans le cadre du sujet :
+### 2. Contexte et Parties Prenantes
 
-Gestion des conflits internes en entreprise (LegalTech)
+Le projet répond à l'obligation légale des entreprises de fournir un canal sécurisé de signalement (Loi Sapin 2) tout en garantissant la protection des données (RGPD).
 
-Le but est de proposer un outil permettant aux salariés et aux responsables RH de gérer les signalements internes, en conformité avec les obligations légales comme :
+* **Parties prenantes :** Client (HRComplianceTech), Salariés (Utilisateurs Finaux), Service RH, Juristes, Équipe projet.
 
-le RGPD,
+### 3. Objectifs Critiques du Projet
 
-la loi Sapin 2,
+1.  **Conformité Légal :** Répondre strictement aux exigences du **RGPD** et de la **Loi Sapin 2**.
+2.  **Sécurité & Anonymat :** Garantir le chiffrement des données sensibles et l'anonymat du lanceur d'alerte.
+3.  **Efficacité :** Fournir aux RH/Juristes un outil puissant de suivi et de traitement.
 
-les règles de confidentialité,
+### 4. Besoins Fonctionnels
 
-les bonnes pratiques de sécurité liées aux données sensibles.
+* **Module 1 (Windev - RH/Juristes) :** Authentification forte, Tableau de bord, Gestion des rôles, Traitement et affectation des cas, Messagerie confidentielle, Journalisation (Audit Log).
+* **Module 2 (Webapp - Salariés) :** Formulaire de dépôt simple, Génération de code de suivi anonyme, Interface de suivi et de messagerie sécurisée.
+* **Module 3 (API) :** Service de classification automatique ("Pseudo-IA"), Chiffrement fort des données stockées.
 
-Ce projet s’inscrit dans une démarche de LegalTech, axée sur la gestion des risques, la transparence et l'amélioration des processus internes d’une entreprise.
+### 5. Besoins Non Fonctionnels
 
-## 📚 Contenu du projet (basé sur le cahier des charges attendus)
+* **Sécurité (Critique) :** Chiffrement AES-256, Implémentation de Cloudflare pour la protection anti-bot/DDoS, Alignement sur la norme **ISO 27001**.
+* **Confidentialité :** Anonymisation technique des données brutes, accès restreint par rôles.
+* **Ergonomie :** Interface **Responsive** (Webapp Salariés), Ergonomie bureautique optimisée (Windev RH/Juristes).
 
-Le cahier des charges doit suivre les étapes et la structure imposées 
+### 6. Spécifications Techniques
 
-### 1. Présentation du projet
-
-Intitulé : Application de gestion des signalements internes
-
-Client fictif : HRComplianceTech Solutions
-
-Prestataires : Équipe BTS SIO
-
-Nature du livrable : Solution numérique + documentation
-
-### 2. Contexte et parties prenantes
-
-Le projet s’intègre dans un contexte de conformité légale. Les entreprises doivent fournir un canal sécurisé pour que leurs employés puissent :
-
-signaler des conflits internes,
-
-suivre l’avancement de leur dossier,
-
-recevoir un traitement confidentiel.
-
-#### Parties prenantes :
-
-- Client (HRComplianceTech Solutions)
-
-- Employés / utilisateurs finaux
-
-- Service RH
-
-- Équipe projet (développeurs / analystes)
-
-- Encadrants pédagogiques
-
-### 3. Objectifs du projet
-
-Concevoir un outil simple, sécurisé et anonyme pour signaler des conflits.
-
-Faciliter la gestion, le suivi et la résolution des cas.
-
-Répondre aux normes légales et réglementaires.
-
-Améliorer l’efficacité des processus RH internes.
-
-### 4. Besoins fonctionnels
-
-L’application devra notamment permettre :
-
-- Dépôt d’un signalement (avec option anonymat).
-
-- Consultation et suivi du dossier par les RH.
-
-- Tableau de bord pour visualiser les cas en cours.
-
-- Système de rôles : employé, RH, administrateur.
-
-- Messagerie interne sécurisée.
-
-- Historique et journalisation des actions.
-
-### 5. Besoins non fonctionnels
-
-Sécurité renforcée : chiffrement, rôles, journalisation.
-
-Confidentialité : conformité RGPD, accès restreint.
-
-Ergonomie : interface claire et intuitive.
-
-Performance : temps de réponse satisfaisant.
-
-Disponibilité : outil web accessible en permanence.
-
-### 6. Spécifications techniques
-
-Technologies envisagées :
-
-Frontend : HTML / CSS / JS ou framework (React, Vue, etc.)
-
-Backend : PHP / Node.js / Python (selon choix de l'équipe)
-
-Base de données : MySQL / PostgreSQL
-
-Architecture : MVC, API REST
-
-Outils : Notion, GitHub, Draw.io
-
-
-
-Sécurisation :
-
-- Chiffrement des données sensibles
-
-- Sécurisation des routes API
-
-- Journalisation et audit
-
-- Gestion stricte des permissions
+* **Backend (API) :** **Python/Flask** (choix de l'ORM : SQLAlchemy ou SQLModel), utilisation de bibliothèques de chiffrement avancées.
+* **Frontend (Salariés) :** PHP / JavaScript (possibilité d'utiliser un framework comme Next.js pour le développement Front-End).
+* **Client Lourd (RH/Juristes) :** **Windev**.
+* **Base de Données :** **PostgreSQL** (recommandé pour la robustesse et l'intégrité des données critiques).
 
 ### 7. Contraintes
 
-Respect des délais de livrables
+* **Légales :** Respect strict du RGPD et de la Loi Sapin 2 (C.8.3.4).
+* **Techniques :** Compatibilité exclusive de l'Application Windev avec **Windows 10 Pro+** (C.8.3.2).
+* **Sécurité :** Obligation d'utiliser l'algorithme de chiffrement **AES-256** (C.8.3.1).
 
-Conformité légale (RGPD, loi Sapin 2) 
+### 8. Livrables Attendus
 
-Ressources matérielles limitées
-
-Travail en équipe coordonné
-
-### 8. Critères de validation
-
-Le projet sera validé si :
-
-- Les fonctionnalités principales sont opérationnelles.
-
-- L’application respecte les exigences de sécurité.
-
-- Le cahier des charges est complet et professionnel.
-
-- Les livrables (documentation, maquettes, code) sont cohérents.
-
-- La solution répond aux besoins exprimés.
-
-### 9. Livrables attendus
-
-Cahier des charges complet (PDF)
-
-Diagrammes (UML, use cases…)
-
-Maquettes / prototypes
-
-Application fonctionnelle (webapp ou logiciel)
-
-Base de données
-
-Documentation technique et utilisateur
-
-Dossier RGPD / conformité
+* Cahier des charges final (PDF).
+* Application complète fonctionnelle (Code source sur GitHub).
+* Documentation technique (API, installation, sécurité).
+* Manuel utilisateur (pour les Salariés et pour les Gestionnaires RH/Juristes).
+* Dossier de conformité RGPD / Loi Sapin 2.
