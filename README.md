@@ -21,7 +21,7 @@ La solution est structurée autour de **trois modules** communiquant via une API
 | Rôle | Module / Technologie | Fonction Principale |
 | :--- | :--- | :--- |
 | **RH / Juristes (Gestionnaires)** | **Module 1 : Application Client Lourd (Windev)** | Traitement sécurisé des cas, authentification forte, historique, et administration de l'IA. |
-| **Salariés (Utilisateurs finaux)** | **Module 2 : Webapp de Dépôt et de Suivi (Next.js/PHP/JS)** | Dépôt de signalement (anonyme ou identifié) et suivi via un code unique. |
+| **Salariés (Utilisateurs finaux)** | **Module 2 : Webapp de Dépôt et de Suivi (React)** | Dépôt de signalement (anonyme ou identifié) et suivi via un code unique. |
 | **Cœur du Système (Sécurité)** | **Module 3 : API REST Sécurisée (Python/Flask)** | Chiffrement AES-256, stockage sécurisé, gestion des flux, et classification "Pseudo-IA". |
 
 ## 📚 Contenu du Projet (Basé sur le Cahier des Charges Final)
