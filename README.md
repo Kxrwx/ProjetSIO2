@@ -7,7 +7,7 @@ Projet de deuxième année – BTS SIO
 ---
 ## 🗄️ Bibliotheque de ressource 
 Lien vers la db en ligne **Aiven** : https://console.aiven.io/account/a57aeda6410d/project/sioproject/services/mysql-19a1f367/overview
-
+Lien vers la palette de couleur **Coolors** : https://coolors.co/000000-333337-66666e-9999a1-e6e6e9-ededf0-f4f4f6-f5f5f7
 ## 📝 Descriptif de la Solution (Architecture Modulaire)
 
 Notre projet vise à concevoir une **solution numérique modulaire, sécurisée et conforme** pour la gestion des signalements de conflits internes en entreprise. Il s'inscrit dans une démarche de LegalTech, avec une exigence critique sur la confidentialité et la traçabilité.
