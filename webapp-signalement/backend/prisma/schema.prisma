@@ -4,17 +4,99 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
+model users {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(70)
+  surname       String    @db.VarChar(70)
+  email         String    @unique @db.VarChar(255)
+  password_hash String    @db.VarChar(255)
+  role_id       Int
+  is_active     Boolean   @default(true)
+  last_login    DateTime? @db.DateTime
+  created_at    DateTime  @default(now()) @db.DateTime
+
+  @@map("users")   // garde le nom de table exact en BDD
 }
 
+model signalements {
+  id_signalement           Int       @id @default(autoincrement())
+  title                    String    @db.VarChar(255)
+  tracking_code            String    @unique @db.VarChar(255)
+  tracking_password_hash   String    @unique @db.VarChar(255)
+  victim_name_encrypted    String    @db.VarChar(50)
+  victim_contact_encrypted String    @db.VarChar(100)
+  description_encrypted    String 
+  lieu_encrypted           String    @db.VarChar(60)
+  date_encrypted           DateTime? @db.DateTime
+  id_statut                Int 
+  id_categorie             Int
+  created_at               DateTime  @default(now()) @db.DateTime
+  updated_at               DateTime  @default(now()) 
+}
+
+model statut {
+  id_statut   Int    @id @default(autoincrement())
+  name_statut String @db.VarChar(30)
+}
+
+model priorite {
+  id_priorite   Int    @id @default(autoincrement())
+  name_priorite String @db.VarChar(30)
+}
+
+model categorie {
+  id_categorie   Int    @id @default(autoincrement())
+  name_categorie String @db.VarChar(30)
+}
+
+model role {
+  id_role       Int    @id @default(autoincrement())
+  name_role     String @db.VarChar(50)
+  id_permission Int 
+}
+
+model permission {
+  id_permission Int    @id @default(autoincrement())
+  name_role     String @db.VarChar(70)
+}
+
+model pieces_jointes {
+    id                          Int      @id @default(autoincrement())
+    id_signalements             Int 
+    encrypted_path              String   @db.VarChar(255)
+    original_filename_encrypted Bytes    @db.LongBlob
+    file_size                   Int
+    created_at                  DateTime @default(now()) @db.DateTime
+}
+
+model messages {
+  id                Int      @id @default(autoincrement())
+  id_signalement    Int 
+  user_id           Int 
+  contenu_encrypted String   @db.VarChar(255)
+  is_read           Boolean  @default(false)
+  created_at        DateTime @default(now()) @db.DateTime
+}
+
+model audit_logs {
+  id                Int      @id @default(autoincrement())
+  id_signalement    Int
+  user_id           Int
+  action            String   @db.VarChar(255)
+  details_encrypted String   @db.VarChar(255)
+  ip_adress         String   @db.VarChar(255)
+  previous_hash     String   @db.VarChar(255)
+  current_hash      String   @db.VarChar(255)
+  created_at        DateTime @default(now()) @db.DateTime
+}
+
+model ia_classifications {
+  id                    Int      @default(autoincrement())
+  id_signalement        Int 
+  categorie_proposee_id Int 
+  created_at            DateTime @default(now()) @db.DateTime 
+}
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-}
-
