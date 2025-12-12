@@ -55,7 +55,7 @@ CREATE TABLE `permission` (
 
 CREATE TABLE `pieces_jointes` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `signalement_id` int NOT NULL,
+  `id_signalement` int NOT NULL,
   `encrypted_path` varchar(255) NOT NULL COMMENT 'Chemin S3/Local vers le fichier chiffré',
   `original_filename_encrypted` blob COMMENT 'Nom du fichier chiffré',
   `file_size` int,
@@ -64,7 +64,7 @@ CREATE TABLE `pieces_jointes` (
 
 CREATE TABLE `messages` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `signalement_id` int NOT NULL,
+  `id_signalement` int NOT NULL,
   `user_id` int COMMENT 'Null si c''''est le déposant anonyme',
   `contenu_encrypted` varchar(255) NOT NULL COMMENT 'Chiffré AES-256',
   `is_read` boolean DEFAULT false,
@@ -73,7 +73,7 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `audit_logs` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `signalement_id` int,
+  `id_signalement` int,
   `user_id` int,
   `action` varchar(255) NOT NULL,
   `details_encrypted` varchar(255),
@@ -85,7 +85,7 @@ CREATE TABLE `audit_logs` (
 
 CREATE TABLE `ia_classifications` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `signalement_id` int NOT NULL,
+  `id_signalement` int NOT NULL,
   `categorie_proposee_id` INT NOT NULL,
   `created_at` datetime DEFAULT (CURRENT_TIMESTAMP)
 );
