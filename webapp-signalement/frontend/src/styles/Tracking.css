@@ -1,0 +1,131 @@
+.container-tracking {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.container-title {
+    display: flex;
+    width: auto;
+    padding: 20px 0 30px 0;
+    justify-self: flex-start;
+    position: relative;
+
+}
+
+.container-title h1 {
+    font-size: 45px;
+}
+
+.container-desc {
+    max-width: 750px;
+    min-width: 300px;
+    border-top:2px solid #000000;
+    border-bottom:  2px solid #000000;
+}
+
+.container-desc h3 {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+
+
+.container-footer {
+    margin-top: auto;
+    border-top: 2px solid #000000;
+    padding: 0 30px 30px 30px;
+    max-width: 750px;
+    min-width: 300px;
+}
+
+.container-footer p {
+    font-size: 13px;
+    font-weight: 200;
+}
+
+.container-btn-main {
+    display: flex;
+    width: 100%;
+    align-items: center ;
+    justify-content: flex-start;
+}
+
+.container-btn-main button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 15px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+    transition: 0.3s ease;
+    border: 2px solid #000000;
+}
+
+.container-btn-main button:hover {
+    transform: scale(1.02);
+    transition: 0.3s ease;
+    background: linear-gradient(135deg, #333337, #66666E);
+    color: #FFFFFF;
+    border: 2px solid #000000;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    align-items: center;
+
+}
+
+.container-input-code {
+    width: clamp(100px, 50vw, 800px);
+    display: flex;
+    padding: 20px 0;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container-input-code label {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.container-input-code label input {
+    width: clamp(100px, 50vw, 200px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+.container-submit {
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.container-submit button {
+    padding: 15px;
+    width: 150px;
+    border-radius: 50px;
+    font-size: 17px;
+    color: #FFF;
+    background-color: #98BE85;
+    font-weight: 500;
+    transition: 0.4s ease;
+}
+
+.container-submit button:hover {
+    transform: scale(1.05);
+    transition: 0.4s ease;
+}

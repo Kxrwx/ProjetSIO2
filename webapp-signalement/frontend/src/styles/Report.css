@@ -85,6 +85,7 @@ form {
 .container-nmr-suivi {
     display: flex;
     flex-direction: column;
+    width: clamp(200px, 50vw, 600px);
 }
 
 .label-suivi {
@@ -116,7 +117,7 @@ form {
 
 .container-title-input label input{
     width: clamp(100px, 50vw, 500px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -222,7 +223,7 @@ form {
 .name-enter-input {
     height: 30px;
     width: clamp(100px, 50vw, 200px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 0 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -231,7 +232,7 @@ form {
 .contact-enter-input {
     height: 30px;
     width: clamp(100px, 50vw, 200px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 0 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -258,7 +259,7 @@ form {
 .container-date-loc label input {
     height: 30px;
     width: clamp(100px, 50vw, 200px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 0 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -277,7 +278,7 @@ form {
 .container-cm label select{
     width: clamp(100px, 50vw, 200px);
     padding: 5px 0;
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 13px;
     border: 2px solid #000;
 }
@@ -312,7 +313,7 @@ form {
     font-size: 13px;
     resize: none;
     width: clamp(100px, 50vw, 700px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 0 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -341,7 +342,7 @@ font-family: inherit;
 
 .container-password label input {
     width: clamp(100px, 50vw, 450px);
-    border-radius: 10px;
+    border-radius: 30px;
     border: 2px solid #000;
     padding: 10px;
     background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -372,6 +373,7 @@ font-family: inherit;
 }
 .container-submit button {
     padding: 15px;
+    width: 200px;
     border-radius: 50px;
     font-size: 17px;
     color: #FFF;
