@@ -90,7 +90,7 @@ export default function Report() {
         </form>
         <div className="container-footer">
         <p>
-          Tous les signalements que vous nous adressez, quel que soit leur nature ou leur gravité apparente, sont traités avec le plus grand sérieux par notre équipe dédiée. Rien n'est considéré comme "pas grave" ou insignifiant à nos yeux ; chaque témoignage mérite une attention immédiate et une réponse adaptée pour vous protéger efficacement.
+          Votre signalement est pris très au sérieux; vous n'êtes pas responsable de ce que vous subissez et nous ferons tout notre possible pour vous accompagner en toute confidentialité.
         </p>
       </div>
     </div>
