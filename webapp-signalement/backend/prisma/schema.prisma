@@ -1,102 +1,172 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-model users {
-  id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(70)
-  surname       String    @db.VarChar(70)
-  email         String    @unique @db.VarChar(255)
-  password_hash String    @db.VarChar(255)
-  role_id       Int
-  is_active     Boolean   @default(true)
-  last_login    DateTime? @db.DateTime
-  created_at    DateTime  @default(now()) @db.DateTime
-
-  @@map("users")   // garde le nom de table exact en BDD
-}
-
-model signalements {
-  id_signalement           Int       @id @default(autoincrement())
-  title                    String    @db.VarChar(255)
-  tracking_code            String    @unique @db.VarChar(255)
-  tracking_password_hash   String    @unique @db.VarChar(255)
-  victim_name_encrypted    String    @db.VarChar(50)
-  victim_contact_encrypted String    @db.VarChar(100)
-  description_encrypted    String 
-  lieu_encrypted           String    @db.VarChar(60)
-  date_encrypted           DateTime? @db.DateTime
-  id_statut                Int 
-  id_categorie             Int
-  created_at               DateTime  @default(now()) @db.DateTime
-  updated_at               DateTime  @default(now()) 
-}
-
-model statut {
-  id_statut   Int    @id @default(autoincrement())
-  name_statut String @db.VarChar(30)
-}
-
-model priorite {
-  id_priorite   Int    @id @default(autoincrement())
-  name_priorite String @db.VarChar(30)
-}
-
-model categorie {
-  id_categorie   Int    @id @default(autoincrement())
-  name_categorie String @db.VarChar(30)
-}
-
-model role {
-  id_role       Int    @id @default(autoincrement())
-  name_role     String @db.VarChar(50)
-  id_permission Int 
-}
-
-model permission {
-  id_permission Int    @id @default(autoincrement())
-  name_role     String @db.VarChar(70)
-}
-
-model pieces_jointes {
-    id                          Int      @id @default(autoincrement())
-    id_signalements             Int 
-    encrypted_path              String   @db.VarChar(255)
-    original_filename_encrypted Bytes    @db.LongBlob
-    file_size                   Int
-    created_at                  DateTime @default(now()) @db.DateTime
-}
-
-model messages {
-  id                Int      @id @default(autoincrement())
-  id_signalement    Int 
-  user_id           Int 
-  contenu_encrypted String   @db.VarChar(255)
-  is_read           Boolean  @default(false)
-  created_at        DateTime @default(now()) @db.DateTime
-}
-
-model audit_logs {
-  id                Int      @id @default(autoincrement())
-  id_signalement    Int
-  user_id           Int
-  action            String   @db.VarChar(255)
-  details_encrypted String   @db.VarChar(255)
-  ip_adress         String   @db.VarChar(255)
-  previous_hash     String   @db.VarChar(255)
-  current_hash      String   @db.VarChar(255)
-  created_at        DateTime @default(now()) @db.DateTime
-}
-
-model ia_classifications {
-  id                    Int      @default(autoincrement())
-  id_signalement        Int 
-  categorie_proposee_id Int 
-  created_at            DateTime @default(now()) @db.DateTime 
-}
+// Datasource configuration
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+// Generator configuration
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --- Modèles de Données ---
+
+model User {
+  id              Int       @id @default(autoincrement())
+  name            String    @db.VarChar(70)
+  surname         String    @db.VarChar(70)
+  email           String    @unique @db.VarChar(255)
+  passwordHash    String    @map("password_hash") @db.VarChar(255)
+  roleId          Int       @map("role_id")
+  isActive        Boolean   @default(true) @map("is_active") @db.TinyInt
+  lastLogin       DateTime? @map("last_login") @db.DateTime(0)
+  createdAt       DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+
+  // Relations
+  role            Role?     @relation(fields: [roleId], references: [idRole])
+  messages        Message[]
+  auditLogs       AuditLog[]
+
+  @@map("users")
+}
+
+model Signalement {
+  idSignalement             Int        @id @default(autoincrement()) @map("id_signalement")
+  title                     String     @db.VarChar(255)
+  trackingCode              String     @unique @map("tracking_code") @db.VarChar(255)
+  trackingPasswordHash      String     @map("tracking_password_hash") @db.VarChar(255)
+  victimNameEncrypted       String?    @map("victim_name_encrypted") @db.VarChar(255)
+  victimContactEncrypted    String?    @map("victim_contact_encrypted") @db.VarChar(255)
+  descriptionEncrypted      String     @map("description_encrypted") @db.Text
+  lieuEncrypted             String?    @map("lieu_encrypted") @db.VarChar(255)
+  dateEncrypted             DateTime?  @map("date_encrypted") @db.DateTime(0)
+  idStatut                  Int        @map("id_statut")
+  idPriorite                Int        @map("id_priorite")
+  idCategorie               Int        @map("id_categorie")
+  createdAt                 DateTime   @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+  updatedAt                 DateTime?  @map("updated_at") @db.DateTime(0)
+
+  // Relations
+  statut                    Statut?    @relation(fields: [idStatut], references: [idStatut])
+  priorite                  Priorite?  @relation(fields: [idPriorite], references: [idPriorite])
+  categorie                 Categorie? @relation(fields: [idCategorie], references: [idCategorie])
+  piecesJointes             PieceJointe[] @map("pieces_jointes")
+  messages                  Message[]
+  auditLogs                 AuditLog[]
+  iaClassifications         IaClassification[]
+
+  @@map("signalements")
+}
+
+model Statut {
+  idStatut    Int           @id @default(autoincrement()) @map("id_statut")
+  nameStatut  String        @map("name_statut") @db.VarChar(30)
+
+  // Relation inverse
+  signalements Signalement[]
+
+  @@map("statut")
+}
+
+model Priorite {
+  idPriorite    Int           @id @default(autoincrement()) @map("id_priorite")
+  namePriorite  String        @map("name_priorite") @db.VarChar(30)
+
+  // Relation inverse
+  signalements Signalement[]
+
+  @@map("priorite")
+}
+
+model Categorie {
+  idCategorie         Int                @id @default(autoincrement()) @map("id_categorie")
+  nameCategorie       String             @map("name_categorie") @db.VarChar(30)
+
+  // Relations inverses
+  signalements         Signalement[]
+  iaClassifications    IaClassification[]
+
+  @@map("categorie")
+}
+
+model Role {
+  idRole        Int       @id @default(autoincrement()) @map("id_role")
+  nameRole      String    @map("name_role") @db.VarChar(50)
+  idPermission  Int       @map("id_permission")
+
+  // Relations
+  permission    Permission? @relation(fields: [idPermission], references: [idPermission])
+  users         User[]
+
+  @@map("role")
+}
+
+model Permission {
+  idPermission  Int    @id @default(autoincrement()) @map("id_permission")
+  nameRole      String @map("name_role") @db.VarChar(70) // Attention : Le nom de colonne dans la BDD est "name_role"
+
+  // Relation inverse
+  roles         Role[]
+
+  @@map("permission")
+}
+
+model PieceJointe {
+  id                        Int       @id @default(autoincrement())
+  idSignalement             Int       @map("id_signalement")
+  encryptedPath             String    @map("encrypted_path") @db.VarChar(255)
+  originalFilenameEncrypted Bytes?    @map("original_filename_encrypted") @db.Blob // BLOB est mappé à Bytes dans Prisma
+  fileSize                  Int?      @map("file_size")
+  createdAt                 DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+
+  // Relations
+  signalement               Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+
+  @@map("pieces_jointes")
+}
+
+model Message {
+  id                Int       @id @default(autoincrement())
+  idSignalement     Int       @map("id_signalement")
+  userId            Int?      @map("user_id") // Peut être null si déposant anonyme
+  contenuEncrypted  String    @map("contenu_encrypted") @db.VarChar(255)
+  isRead            Boolean   @default(false) @map("is_read") @db.TinyInt
+  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+
+  // Relations
+  signalement       Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  user              User?     @relation(fields: [userId], references: [id])
+
+  @@map("messages")
+}
+
+model AuditLog {
+  id                Int       @id @default(autoincrement())
+  idSignalement     Int?      @map("id_signalement")
+  userId            Int?      @map("user_id")
+  action            String    @db.VarChar(255)
+  detailsEncrypted  String?   @map("details_encrypted") @db.VarChar(255)
+  ipAddress         String?   @map("ip_address") @db.VarChar(255)
+  previousHash      String    @map("previous_hash") @db.VarChar(255)
+  currentHash       String    @map("current_hash") @db.VarChar(255)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+
+  // Relations
+  signalement       Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  user              User?     @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+model IaClassification {
+  id                      Int       @id @default(autoincrement())
+  idSignalement           Int       @map("id_signalement")
+  categorieProposeeId     Int       @map("categorie_proposee_id")
+  createdAt               DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
+
+  // Relations
+  signalement             Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  categorieProposee       Categorie? @relation(fields: [categorieProposeeId], references: [idCategorie])
+
+  @@map("ia_classifications")
 }
