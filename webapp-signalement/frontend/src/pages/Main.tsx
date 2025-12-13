@@ -9,6 +9,7 @@ import "../styles/Main.css"
 export default function Main() {
   return (
     <div className="container-main">
+      <div className="space"></div>
         <div className="container-title">
             <h1>Signalement harcèlement professionnel</h1>
         </div>

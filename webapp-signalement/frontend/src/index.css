@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   letter-spacing: 0.05px;
-  line-height: 1.2;
+  line-height: 1.2; 
   color-scheme: light dark;
   color: #000000;
   background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
@@ -20,8 +20,6 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 350px;
-  min-height: 100vh;
 }
 
 
