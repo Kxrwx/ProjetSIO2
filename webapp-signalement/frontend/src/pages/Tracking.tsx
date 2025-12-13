@@ -20,8 +20,8 @@ export default function Tracking() {
 
       <form>
         <div className="container-input-code">
-          <label>Numéro de suivi<input type="text" required placeholder="Entrez votre numéro de suivi"></input></label>
-          <label>Mot de passe<input type="password" required></input></label>
+          <label>Numéro de suivi<input id="id" type="text" required placeholder="Entrez votre numéro de suivi"></input></label>
+          <label>Mot de passe<input id="password" type="password" required></input></label>
         </div>
         <div className="container-submit">
           <button type="submit">
