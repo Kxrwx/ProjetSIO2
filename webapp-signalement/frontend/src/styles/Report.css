@@ -362,3 +362,25 @@ font-family: inherit;
     align-self: center;
     margin: 30px;
 }
+
+.container-submit {
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.container-submit button {
+    padding: 15px;
+    border-radius: 50px;
+    font-size: 17px;
+    color: #FFF;
+    background-color: #98BE85;
+    font-weight: 500;
+    transition: 0.4s ease;
+}
+
+.container-submit button:hover {
+    transform: scale(1.05);
+    transition: 0.4s ease;
+}

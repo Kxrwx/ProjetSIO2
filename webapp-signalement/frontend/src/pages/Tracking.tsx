@@ -1,3 +1,4 @@
 export default function Tracking() {
-  return <h1>Suivre un signalement</h1>;
+  return (
+  <h1>Suivre un signalement</h1>)
 }

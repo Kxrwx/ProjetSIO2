@@ -29,7 +29,7 @@ export default function Report() {
           </div>
           <span className="barre"></span>
           <div className="container-title-input"> 
-            <label><input type="text" placeholder="Entrez le titre du signalement"></input>*</label>
+            <label><input type="text" placeholder="Entrez le titre du signalement" required></input>*</label>
           </div>
           <div className="container-name">
             <label className="label-name-set-input">
@@ -44,7 +44,7 @@ export default function Report() {
             {showInput && (
               <div className="container-enter-name-contact">               
                 <label><input  className="name-enter-input" type="text" placeholder="Entrez votre nom" required/>*</label>
-                <input  className="contact-enter-input" type="mail" placeholder="Entrez votre contact" />
+                <input  className="contact-enter-input" type="email" placeholder="Entrez votre contact" />
               </div>
             )}
           </div>
@@ -75,16 +75,18 @@ export default function Report() {
     </label>
           </div>
           <div className="container-input-desc">
-            <label><textarea rows={5} placeholder="Description de l'incident"></textarea>*</label>
+            <label><textarea rows={5} placeholder="Description de l'incident" required></textarea>*</label>
           </div>
           <div className="container-password">
             <label>
               Mot de passe *
-              <input type="password"></input>
+              <input type="password" required></input>
               <p>Ce mot de passe permet de suivre votre suivi</p>
               </label>
           </div>
-          
+          <div className="container-submit">
+            <button type="submit">Valider et envoyer</button>
+          </div>
         </form>
         <div className="container-footer">
         <p>
