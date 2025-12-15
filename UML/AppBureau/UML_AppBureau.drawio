@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0" version="29.2.3">
+  <diagram name="Page-1" id="7p2l_Z90c2xCZD4NpHha">
+    <mxGraphModel dx="1773" dy="993" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-8" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="240" width="280" x="274" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-1" parent="CuWpBgM0oG9MauM4zLeT-8" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" value="Page principale" vertex="1">
+          <mxGeometry height="240" width="280" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-3" parent="CuWpBgM0oG9MauM4zLeT-8" style="rounded=1;whiteSpace=wrap;html=1;" value="Dashboard des suivis" vertex="1">
+          <mxGeometry height="60" width="120" x="80" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-4" parent="CuWpBgM0oG9MauM4zLeT-8" style="rounded=1;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="120" x="80" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-6" parent="CuWpBgM0oG9MauM4zLeT-8" style="rounded=0;whiteSpace=wrap;html=1;" value="Option de modification d&#39;un ticket" vertex="1">
+          <mxGeometry height="60" width="80" x="100" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-7" parent="CuWpBgM0oG9MauM4zLeT-8" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Tableau des tickets" vertex="1">
+          <mxGeometry height="30" width="60" x="110" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-11" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="225.5" width="220" x="309" y="364.5" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-20" connectable="0" parent="CuWpBgM0oG9MauM4zLeT-11" style="group" value="" vertex="1">
+          <mxGeometry height="194.75" width="220" x="-5" y="-4.5" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-12" parent="CuWpBgM0oG9MauM4zLeT-20" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" value="Page de modification d&#39;un ticket" vertex="1">
+          <mxGeometry height="194.75000000000003" width="220.00000000000003" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-17" parent="CuWpBgM0oG9MauM4zLeT-20" style="rounded=1;whiteSpace=wrap;html=1;" value="Champs modifiable du ticket" vertex="1">
+          <mxGeometry height="84.5625" width="146.66666666666669" x="37.714285714285715" y="28.187500000000004" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-18" parent="CuWpBgM0oG9MauM4zLeT-20" style="rounded=0;whiteSpace=wrap;html=1;" value="Bouton de validation" vertex="1">
+          <mxGeometry height="41.00000000000001" width="119.42857142857144" x="51.33333333333334" y="133.25000000000003" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-22" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="210" width="222" x="380" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-19" parent="CuWpBgM0oG9MauM4zLeT-22" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" value="Page de validation" vertex="1">
+          <mxGeometry height="210" width="222" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-21" parent="CuWpBgM0oG9MauM4zLeT-22" style="rounded=1;whiteSpace=wrap;html=1;" value="Message pour informer l&#39;utilisateur que les donnés ont bien été enregistré" vertex="1">
+          <mxGeometry height="80" width="164" x="34" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-23" parent="1" style="shape=datastore;whiteSpace=wrap;html=1;" value="DB&amp;nbsp;&lt;div&gt;Table des tickets&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="140" x="60" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-24" edge="1" parent="1" source="CuWpBgM0oG9MauM4zLeT-1" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="350" y="390" as="sourcePoint" />
+            <mxPoint x="414" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-25" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" value="Condition" vertex="1">
+          <mxGeometry height="78" width="160" x="333" y="676" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-26" parent="CuWpBgM0oG9MauM4zLeT-25" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="Si les modif sont effectué" vertex="1">
+          <mxGeometry height="26" width="160" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-27" parent="CuWpBgM0oG9MauM4zLeT-25" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="Sinon" vertex="1">
+          <mxGeometry height="26" width="160" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-29" edge="1" parent="1" source="CuWpBgM0oG9MauM4zLeT-12" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="CuWpBgM0oG9MauM4zLeT-23" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="414" y="580" />
+              <mxPoint x="130" y="580" />
+            </Array>
+            <mxPoint x="350" y="620" as="sourcePoint" />
+            <mxPoint x="400" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-30" edge="1" parent="1" source="CuWpBgM0oG9MauM4zLeT-23" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="CuWpBgM0oG9MauM4zLeT-26" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="350" y="700" as="sourcePoint" />
+            <mxPoint x="400" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-31" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="210" width="222" x="717" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-32" parent="CuWpBgM0oG9MauM4zLeT-31" style="rounded=0;whiteSpace=wrap;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" value="Page d&#39;erreur" vertex="1">
+          <mxGeometry height="210" width="222" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-33" parent="CuWpBgM0oG9MauM4zLeT-31" style="rounded=1;whiteSpace=wrap;html=1;" value="Message pour informer l&#39;utilisateur que les donnés n&#39;ont pas été enregistré" vertex="1">
+          <mxGeometry height="80" width="164" x="34" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-34" edge="1" parent="1" source="CuWpBgM0oG9MauM4zLeT-26" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="CuWpBgM0oG9MauM4zLeT-19" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="715" />
+              <mxPoint x="630" y="1005" />
+            </Array>
+            <mxPoint x="610" y="930" as="sourcePoint" />
+            <mxPoint x="660" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CuWpBgM0oG9MauM4zLeT-35" edge="1" parent="1" source="CuWpBgM0oG9MauM4zLeT-27" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="CuWpBgM0oG9MauM4zLeT-32" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="980" y="741" />
+              <mxPoint x="980" y="1005" />
+            </Array>
+            <mxPoint x="330" y="1070" as="sourcePoint" />
+            <mxPoint x="380" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
