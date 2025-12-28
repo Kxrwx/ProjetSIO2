@@ -4,20 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.22.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "prisma": "^5.22.0",
     "zod": "^4.1.13"
   },
   "devDependencies": {
     "@types/mysql": "^2.15.27",
-    "@types/node": "^25.0.1",
-    "prisma": "^5.8.1"
+    "@types/node": "^25.0.1"
   }
 }
