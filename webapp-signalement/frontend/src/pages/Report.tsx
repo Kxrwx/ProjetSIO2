@@ -77,7 +77,7 @@ export default function Report() {
     <div className="container-report">
       <div className="container-btn-main">
         <Link to="/">
-          <button><FontAwesomeIcon icon={faArrowLeft} /></button>  
+          <button className="text-black"><FontAwesomeIcon icon={faArrowLeft} /></button>  
         </Link>
       </div>    
 
