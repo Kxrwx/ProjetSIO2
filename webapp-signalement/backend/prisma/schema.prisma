@@ -50,7 +50,7 @@ model Signalement {
   statut                    Statut?    @relation(fields: [idStatut], references: [idStatut])
   priorite                  Priorite?  @relation(fields: [idPriorite], references: [idPriorite])
   categorie                 Categorie? @relation(fields: [idCategorie], references: [idCategorie])
-  piecesJointes             PieceJointe[] @map("pieces_jointes")
+  piecesJointes             PieceJointe[]
   messages                  Message[]
   auditLogs                 AuditLog[]
   iaClassifications         IaClassification[]
@@ -115,12 +115,12 @@ model PieceJointe {
   id                        Int       @id @default(autoincrement())
   idSignalement             Int       @map("id_signalement")
   encryptedPath             String    @map("encrypted_path") @db.VarChar(255)
-  originalFilenameEncrypted Bytes?    @map("original_filename_encrypted") @db.Blob // BLOB est mappé à Bytes dans Prisma
+  originalFilenameEncrypted String?   @map("original_filename_encrypted") @db.Blob // BLOB est mappé à Bytes dans Prisma
   fileSize                  Int?      @map("file_size")
   createdAt                 DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
 
   // Relations
-  signalement               Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  signalement               Signalement @relation(fields: [idSignalement], references: [idSignalement])
 
   @@map("pieces_jointes")
 }
@@ -134,7 +134,7 @@ model Message {
   createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
 
   // Relations
-  signalement       Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  signalement       Signalement @relation(fields: [idSignalement], references: [idSignalement])
   user              User?     @relation(fields: [userId], references: [id])
 
   @@map("messages")
@@ -152,7 +152,7 @@ model AuditLog {
   createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
 
   // Relations
-  signalement       Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  signalement       Signalement @relation(fields: [idSignalement], references: [idSignalement])
   user              User?     @relation(fields: [userId], references: [id])
 
   @@map("audit_logs")
@@ -165,7 +165,7 @@ model IaClassification {
   createdAt               DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
 
   // Relations
-  signalement             Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+  signalement             Signalement @relation(fields: [idSignalement], references: [idSignalement])
   categorieProposee       Categorie? @relation(fields: [categorieProposeeId], references: [idCategorie])
 
   @@map("ia_classifications")
