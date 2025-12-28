@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+
+.container-report {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    overflow-x: hidden;
+}
+
+
+
+.container-title {
+    display: flex;
+    width: auto;
+    padding: 0 0 30px 0;
+    justify-self: flex-start;
+    position: relative;
+
+}
+
+.container-title h1 {
+    font-size: 45px;
+}
+.container-desc {
+    max-width: 750px;
+    border-top:2px solid #000000;
+    border-bottom:  2px solid #000000;
+}
+
+.container-desc h3 {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.container-footer {
+    display: flex;
+    border-top: 2px solid #000000;
+    padding: 0 30px 30px 30px;
+     width: clamp(100px, 50vw, 750px);
+}
+
+.container-footer p {
+    font-size: 13px;
+    font-weight: 200;
+}
+
+.container-btn-main {
+    display: flex;
+    width: 100%;
+    align-items: center ;
+    justify-content: flex-start;
+}
+
+.container-btn-main button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 15px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+    transition: 0.3s ease;
+    border: 2px solid #000000;
+}
+
+.container-btn-main button:hover {
+    transform: scale(1.02);
+    transition: 0.3s ease;
+    background: linear-gradient(135deg, #333337, #66666E);
+    color: #FFFFFF;
+    border: 2px solid #000000;
+}
+
+
+form {
+    display: flex;
+    padding: 20px 0;
+    width: 100%;
+    max-width: 800px;
+    flex-direction: column;     
+}
+
+.container-nmr-suivi {
+    display: flex;
+    flex-direction: column;
+    width: clamp(200px, 50vw, 600px);
+}
+
+.label-suivi {
+    text-align: start;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+.label-nmr-suivi {
+    text-align: center;
+    padding: 20px;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.container-title-input {
+    width: 100%;
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-title-input label {
+    height: auto;
+    display: flex;
+    gap: 5px;
+    font-size: 17px;
+}
+
+.container-title-input label input{
+    width: clamp(100px, 50vw, 500px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+.container-name {
+    padding: 40px;
+    height: 30px;
+    display: flex;
+    align-self: center;
+    width: clamp(100px, 50vw, 600px);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label-name-set-input {
+    display: flex;
+    justify-content: center;
+}
+
+
+.name-set-input {
+      margin: 0 0 0 10px;
+  appearance: none; 
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 50%; 
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background-color: #fff;
+}
+
+.name-set-input::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: none; 
+}
+
+
+.name-set-input:checked::after {
+  animation: fillCircle 0.5s forwards;
+}
+
+
+.name-set-input:not(:checked)::after {
+  animation: emptyCircle 0.5s forwards;
+}
+
+@keyframes fillCircle {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  50% {
+    width: 20px; 
+    height: 20px;
+  }
+  100% {
+    width: 10px; 
+    height: 10px;
+  }
+}
+
+
+@keyframes emptyCircle {
+  0% {
+    width: 10px;  
+    height: 10px;
+  }
+  50% {
+    width: 20px;  
+    height: 20px;
+  }
+  100% {
+    width: 0;    
+    height: 0;
+  }
+}
+.container-enter-name-contact {
+    width: clamp(100px, 50vw, 240px);
+    display: flex;
+    flex-direction: column;
+    gap : 15px
+}
+
+.container-enter-name-contact label {
+    display: flex;
+    gap: 5px;
+    font-size: 14px;
+}
+
+
+.name-enter-input {
+    height: 30px;
+    width: clamp(100px, 50vw, 200px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 0 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+.contact-enter-input {
+    height: 30px;
+    width: clamp(100px, 50vw, 200px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 0 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+.container-date-loc {
+    width: clamp(100px, 50vw, 650px);
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start  ;
+    align-self: center;
+    gap: 15px;
+}
+
+.container-date-loc label {
+    font-size: 15px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    text-align: start;
+}
+
+.container-date-loc label input {
+    height: 30px;
+    width: clamp(100px, 50vw, 200px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 0 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+
+.container-cm {
+    align-self: center;
+    padding: 20px 0;
+    width: clamp(100px, 50vw, 700px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container-cm label select{
+    width: clamp(100px, 50vw, 200px);
+    padding: 5px 0;
+    border-radius: 30px;
+    font-size: 13px;
+    border: 2px solid #000;
+}
+
+.container-cm label {
+    display: flex; 
+    flex-direction: column;
+    font-size: 15px;
+    gap : 5px;
+    text-align: start;
+}
+
+.container-input-desc {
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-input-desc label {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+
+.container-input-desc label textarea {
+    padding: 10px;
+    height: 90px;
+    font-size: 13px;
+    resize: none;
+    width: clamp(100px, 50vw, 700px);
+    border-radius: 15px;
+    border: 2px solid #000;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+.container-input-desc label textarea::placeholder {
+font-family: inherit;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+.container-password {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.container-password label{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+}
+
+.container-password label input {
+    width: clamp(100px, 50vw, 450px);
+    border-radius: 30px;
+    border: 2px solid #000;
+    padding: 10px;
+    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+}
+
+
+.container-password label p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.barre {
+    height: 2px;
+    background-color: #000;
+    border: none;
+    width: clamp(100px, 50vw,550px);
+    justify-self: center;
+    align-self: center;
+    margin: 30px;
+}
+
+.container-submit {
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.container-submit button {
+    padding: 15px;
+    width: 200px;
+    border-radius: 50px;
+    font-size: 17px;
+    color: #FFF;
+    background-color: #98BE85;
+    font-weight: 500;
+    transition: 0.4s ease;
+}
+
+.container-submit button:hover {
+    transform: scale(1.05);
+    transition: 0.4s ease;
+}
+
+.text-black {
+  color: #000;
+}
