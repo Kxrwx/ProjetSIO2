@@ -1,43 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Report.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import CryptoJS from 'crypto-js';
 
 export default function Report() {
-  const [showInput, setShowInput] = useState(true);
+  const [trackingCode, setTrackingCode] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [formData, setFormData] = useState({
     titre: "",
     nom: "",
     contact: "",
     lieu: "",
     date: "",
-    categorie: "harcelement",
-    priorite: "Modéré",
+    categorie: "Harcèlement",  // DOIT correspondre exactement à nameCategorie en BDD
+    priorite: "Modéré",        // DOIT correspondre exactement à namePriorite en BDD
     description: "",
     password: ""
   });
 
-  const handleAnonymeChange = () => {
-    setShowInput(prev => !prev);
-    if (showInput) {
+  // Génération du tracking code au chargement
+  useEffect(() => {
+    const generateTrackingCode = () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = 'SIG-';
+      for (let i = 0; i < 8; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return code;
+    };
+    setTrackingCode(generateTrackingCode());
+  }, []);
+
+  const handleAnonymousToggle = () => {
+    setIsAnonymous(prev => !prev);
+    // Si on passe en anonyme, vide nom et contact
+    if (!isAnonymous) {
       setFormData(prev => ({ ...prev, nom: "", contact: "" }));
     }
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Hash du mot de passe (SHA256 comme dans ton schéma)
+    const passwordHash = CryptoJS.SHA256(formData.password).toString();
+    console.log("🔐 Mot de passe hashé:", passwordHash);
+
+    // Prépare les données pour le backend
     const dataToSend = {
-      ...formData,
-      // Si anonyme est coché, on envoie nom/contact vides
-      nom: showInput ? formData.nom : "",
-      contact: showInput ? formData.contact : "",
+      titre: formData.titre,
+      nom: isAnonymous ? null : formData.nom || null,
+      contact: isAnonymous ? null : formData.contact || null,
+      lieu: formData.lieu || null,
+      date: formData.date || null,
+      categorie: formData.categorie,      // "Harcèlement", "Discrimination", "Violence"
+      priorite: formData.priorite,        // "Modéré", "Haute", "Critique"
+      description: formData.description,
+      password: passwordHash,
+      trackingCode: trackingCode
     };
+
+    console.log("📤 DONNÉES ENVOYÉES AU BACKEND:", JSON.stringify(dataToSend, null, 2));
 
     try {
       const response = await fetch('http://localhost:5000/api/signalements', {
@@ -48,28 +78,19 @@ export default function Report() {
         body: JSON.stringify(dataToSend),
       });
 
+      const result = await response.json();
+      console.log("RÉPONSE DU BACKEND:", result);
+
       if (response.ok) {
-        const result = await response.json();
-        console.log('Signalement créé :', result);
-        alert('Signalement envoyé avec succès !');
-        // Réinitialiser le formulaire
-        setFormData({
-          titre: "",
-          nom: "",
-          contact: "",
-          lieu: "",
-          date: "",
-          categorie: "harcelement",
-          priorite: "Modéré",
-          description: "",
-          password: ""
-        });
+        alert(`Signalement créé avec succès !\n\nCode de suivi : ${result.trackingCode}\n\nGardez ce code pour consulter votre signalement.`);
+        // Optionnel : rediriger vers une page de confirmation
+        // window.location.href = `/suivi/${result.trackingCode}`;
       } else {
-        alert('Erreur lors de l\'envoi du signalement');
+        alert(`Erreur : ${result.error}\n\nDétails : ${result.details || 'Aucun détail'}`);
       }
     } catch (error) {
-      console.error('Erreur:', error);
-      alert('Erreur de connexion au serveur');
+      console.error("ERREUR RÉSEAU:", error);
+      alert("Erreur de connexion au serveur. Vérifiez que le backend est démarré sur le port 5000.");
     }
   };
 
@@ -77,7 +98,7 @@ export default function Report() {
     <div className="container-report">
       <div className="container-btn-main">
         <Link to="/">
-          <button className="text-black"><FontAwesomeIcon icon={faArrowLeft} /></button>  
+          <button className="text-black"><FontAwesomeIcon icon={faArrowLeft} /></button>
         </Link>
       </div>    
 
@@ -87,27 +108,29 @@ export default function Report() {
 
       <div className="container-desc">
         <h3>
-          Avant d'envoyer votre signalement, sachez que vous etes en sécurité ici, que votre voix compte et que nous vous protégeons avec la plus strict confidentialité
+          Avant d'envoyer votre signalement, sachez que vous êtes en sécurité ici, 
+          que votre voix compte et que nous vous protégeons avec la plus stricte confidentialité.
         </h3>
       </div>
 
       <form onSubmit={handleSubmit}>
+        {/* TRACKING CODE GÉNÉRÉ ET AFFICHÉ */}
         <div className="container-nmr-suivi">
-          <label className="label-suivi">Numero de suivi : </label>
-          <label className="label-nmr-suivi">#Numero de suivi</label>
+          <label className="label-suivi">Numéro de suivi : </label>
+          <label className="label-nmr-suivi">#{trackingCode}</label>
         </div>
 
         <div className="container-title-input"> 
-          <label >
+          <label>
             <input 
               id="titre"
               type="text" 
-              placeholder="Entrez le titre du signalement" 
+              placeholder="Entrez le titre du signalement *" 
               value={formData.titre}
               onChange={handleChange}
               required 
               className="text-black"
-            />*
+            />
           </label>
         </div>
 
@@ -117,31 +140,29 @@ export default function Report() {
             <input
               className="name-set-input"
               type="checkbox"
-              checked={!showInput}
-              onChange={handleAnonymeChange}
-              
+              checked={isAnonymous}
+              onChange={handleAnonymousToggle}
             />
           </label>
 
-          {showInput && (
+          {!isAnonymous && (
             <div className="container-enter-name-contact">               
               <label>
                 <input
                   id="nom"
                   className="name-enter-input text-black"
                   type="text"
-                  placeholder="Entrez votre nom"
+                  placeholder="Entrez votre nom *"
                   value={formData.nom}
                   onChange={handleChange}
-                  required
-                  
-                />*
+                  required={!isAnonymous}
+                />
               </label>
               <input
                 id="contact"
                 className="contact-enter-input text-black"
                 type="email"
-                placeholder="Entrez votre contact"
+                placeholder="Entrez votre contact (email)"
                 value={formData.contact}
                 onChange={handleChange}
               />
@@ -150,7 +171,8 @@ export default function Report() {
         </div>
 
         <div className="container-date-loc">
-          <label>Lieu de l'incident 
+          <label>
+            Lieu de l'incident
             <input 
               id="lieu" 
               type="text" 
@@ -159,7 +181,8 @@ export default function Report() {
               className="text-black"
             />
           </label>
-          <label>Date de l'incident 
+          <label>
+            Date de l'incident
             <input 
               id="date" 
               type="date" 
@@ -177,10 +200,11 @@ export default function Report() {
               id="categorie"
               value={formData.categorie}
               onChange={handleChange}
+              required
             >
-              <option value="harcelement">Harcèlement</option>
-              <option value="discrimination">Discrimination</option>
-              <option value="violence">Violence</option>
+              <option value="Harcèlement">Harcèlement</option>
+              <option value="Discrimination">Discrimination</option>
+              <option value="Violence">Violence</option>
             </select>
           </label>
           <label>
@@ -189,6 +213,7 @@ export default function Report() {
               id="priorite"
               value={formData.priorite}
               onChange={handleChange}
+              required
             >
               <option value="Modéré">Modéré</option>
               <option value="Haute">Haute</option>
@@ -202,18 +227,18 @@ export default function Report() {
             <textarea 
               id="description" 
               rows={5} 
-              placeholder="Description de l'incident" 
+              placeholder="Description détaillée de l'incident *" 
               value={formData.description}
               onChange={handleChange}
               required 
               className="text-black"
-            />*
+            />
           </label>
         </div>
 
         <div className="container-password">
           <label>
-            Mot de passe *
+            Mot de passe de suivi *
             <input 
               id="password" 
               type="password" 
@@ -222,7 +247,7 @@ export default function Report() {
               required 
               className="text-black"
             />
-            <p>Ce mot de passe permet de suivre votre suivi</p>
+            <p>Ce mot de passe vous permettra de consulter votre signalement</p>
           </label>
         </div>
 
@@ -233,7 +258,8 @@ export default function Report() {
 
       <div className="container-footer">
         <p>
-          Votre signalement est pris très au sérieux; vous n'êtes pas responsable de ce que vous subissez et nous ferons tout notre possible pour vous accompagner en toute confidentialité.
+          Votre signalement est pris très au sérieux. Vous n'êtes pas responsable 
+          de ce que vous subissez et nous vous accompagnerons en toute confidentialité.
         </p>
       </div>
     </div>
