@@ -10,8 +10,7 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "resolveJsonModule": true,
-    "types": ["node"]
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

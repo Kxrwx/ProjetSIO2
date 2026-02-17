@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
@@ -71,6 +72,41 @@ app.post('/api/signalements', async (req, res) => {
   } catch (error) {
     console.error("❌ ERREUR PRISMA:", error.message);
     console.error("❌ ERREUR COMPLÈTE:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Réception : retrouver un signalement par numéro de suivi + mot de passe
+app.post('/api/signalements/consult', async (req, res) => {
+  try {
+    const { trackingCode, password } = req.body;
+    if (!trackingCode || !password) {
+      return res.status(400).json({ error: 'Numéro de suivi et mot de passe requis' });
+    }
+
+    const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+
+    const signalement = await prisma.signalement.findFirst({
+      where: {
+        trackingCode: trackingCode.trim(),
+        trackingPasswordHash: passwordHash,
+      },
+      include: {
+        statut: true,
+        priorite: true,
+        categorie: true,
+        messages: { orderBy: { createdAt: 'asc' } },
+      },
+    });
+
+    if (!signalement) {
+      return res.status(404).json({ error: 'Aucun signalement trouvé pour ce numéro et ce mot de passe' });
+    }
+
+    const { trackingPasswordHash, ...safe } = signalement;
+    res.json(safe);
+  } catch (error) {
+    console.error('Erreur consult:', error);
     res.status(500).json({ error: error.message });
   }
 });
