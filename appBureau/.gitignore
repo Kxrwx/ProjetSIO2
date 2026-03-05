@@ -1,0 +1,22 @@
+# Sécurité : On cache les secrets et les accès DB
+.env
+*.pem
+assets/*.pem
+
+# Python : On ignore les fichiers compilés (inutiles sur Git)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnement virtuel : On ignore la machine locale
+Lib/
+Scripts/
+include/
+pyvenv.cfg
+.venv/
+env/
+
+# IDE : Pour ne pas partager tes réglages perso VS Code
+.vscode/
+.idea/
