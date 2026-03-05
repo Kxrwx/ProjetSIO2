@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from controler.authControler import AuthController
-from views.home import open_home_view
+from navigation import switch_view
 
 class AuthView:
     def __init__(self, root):
@@ -44,7 +44,7 @@ class AuthView:
             self.root.current_session_token = token
             self.root.current_user_id = userid
             self.root.current_username = username
-            open_home_view(self.root)
+            switch_view(self.root, "home")
         else:
             messagebox.showerror("Erreur", res[1])
 
