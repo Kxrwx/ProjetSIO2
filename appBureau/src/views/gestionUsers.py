@@ -39,6 +39,14 @@ class UserManagementView:
         )
         self.btn_back.pack(pady=10, padx=20, anchor="w")
 
+        self.btn_createUser = ctk.CTkButton(
+            self.root, 
+            text="Créer un utilisateur", 
+            width=150,
+            command=lambda: switch_view(self.root, "createUser")
+        )
+        self.btn_createUser.pack(pady=10, padx=20, anchor="w")
+
         self.title_label = ctk.CTkLabel(
             self.root, 
             text="Liste des Utilisateurs", 

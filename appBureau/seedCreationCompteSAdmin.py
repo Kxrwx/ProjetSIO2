@@ -2,6 +2,7 @@ import bcrypt
 import os 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
+import uuid
 
 def create_admin():
     load_dotenv()
@@ -25,13 +26,14 @@ def create_admin():
     password_hash = bcrypt.hashpw("password".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     sql = text("""
-        INSERT INTO users (name, surname, email, password_hash, role_id, is_active, last_login) 
-        VALUES (:name, :surname, :email, :password_hash, :role_id, :is_active, :last_login)
+        INSERT INTO users (id, name, surname, email, password_hash, role_id, is_active, last_login) 
+        VALUES (:id, :name, :surname, :email, :password_hash, :role_id, :is_active, :last_login)
     """)
 
     try:
         with engine.connect() as conn:
             conn.execute(sql, {
+                "id": str(uuid.uuid4()),
                 "name": "Admin", 
                 "surname": "SAdmin", 
                 "email": "admin@sadmin.com", 

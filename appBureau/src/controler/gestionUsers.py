@@ -1,6 +1,7 @@
 from models.db import engine
 from sqlalchemy import text
-
+import bcrypt
+import uuid
 class GestionUsers : 
     
     @staticmethod
@@ -14,3 +15,45 @@ class GestionUsers :
         except Exception as e:
             print(f"Erreur SQL : {e}")
             return []
+        
+    @staticmethod
+    def create_user(data):
+        try:
+            
+            role_map = GestionUsers.get_role()
+            role_id = role_map.get(data["role"], 1)
+
+            password = data["password"]
+            password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode('utf-8')
+
+            with engine.connect() as conn:
+                query = text("""
+                    INSERT INTO users (id, name, surname, email, password_hash, role_id, is_active)
+                    VALUES (:id, :name, :surname, :email, :password, :role_id, 1)
+                """)
+                conn.execute(query, {
+                    "id": str(uuid.uuid4()),
+                    "name": data["name"],
+                    "surname": data["surname"],
+                    "email": data["email"],
+                    "password": password_hash,
+                    "role_id": role_id
+                })
+                conn.commit()
+            return True
+        except Exception as e:
+            print(f"Erreur insertion : {e}")
+            return False
+        
+
+    @staticmethod
+    def get_role(): 
+        try:
+            with engine.connect() as conn:
+                query = text("SELECT name_role, id_role FROM role")
+                result = conn.execute(query)
+                return {row[0]: row[1] for row in result}
+            
+        except Exception as e:
+            print(f"Erreur lors de la récupération des rôles : {e}")
+            return {}
