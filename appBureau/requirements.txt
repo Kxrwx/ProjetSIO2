@@ -5,3 +5,4 @@ bcrypt
 sqlalchemy # DBlayer
 pymysql # Driver MySQL pour SQLAlchemy
 python-dotenv # Lecture .env
+uuid

@@ -1,2 +1,1 @@
-from .auth import auth
-from .home import home
+from .auth import AuthView
