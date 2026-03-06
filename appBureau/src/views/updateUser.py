@@ -24,6 +24,11 @@ class UpdateUserView:
 
         # 3. Récupération des données actuelles
         self.user_data = GestionUsers.get_user(self.user_id)
+
+        #Récuperation de l'user actuellement connécté
+        self.current_logged_in_id = getattr(self.root, "current_user_id", None)
+
+
         if not self.user_data:
             messagebox.showerror("Erreur", "Impossible de charger les données.")
             switch_view(self.root, "gestionUsers")
@@ -47,26 +52,31 @@ class UpdateUserView:
         self.entry_surname = self.create_input("Prénom :", self.user_data['surname'])
         self.entry_email = self.create_input("Email :", self.user_data['email'])
         
-        # Menu déroulant pour le rôle
-        ctk.CTkLabel(self.form_frame, text="Rôle :").pack(pady=(10, 0))
-        roles = list(GestionUsers.get_role().keys())
-        self.role_var = ctk.StringVar(value=self.user_data['role_name'])
-        self.role_menu = ctk.CTkOptionMenu(self.form_frame, values=roles, variable=self.role_var)
-        self.role_menu.pack(pady=5)
+
+        if str(self.user_id) != str(self.current_logged_in_id): 
+
+            # Menu déroulant pour le rôle
+            ctk.CTkLabel(self.form_frame, text="Rôle :").pack(pady=(10, 0))
+            roles = list(GestionUsers.get_role().keys())
+            self.role_var = ctk.StringVar(value=self.user_data['role_name'])
+            self.role_menu = ctk.CTkOptionMenu(self.form_frame, values=roles, variable=self.role_var)
+            self.role_menu.pack(pady=5)
 
         self.entry_pw = self.create_input("Nouveau mot de passe (laisser vide pour ne pas changer) :", "", show="*")
 
+        if str(self.user_id) != str(self.current_logged_in_id): 
+
         # Checkbox pour le statut du compte
-        ctk.CTkLabel(self.form_frame, text="Statut du compte :").pack(pady=(10, 0))
-        self.active_var = ctk.IntVar(value=self.user_data['is_active'])
-        self.check_active = ctk.CTkCheckBox(
-            self.form_frame, 
-            text="Compte activé", 
-            variable=self.active_var,
-            onvalue=1, 
-            offvalue=0
-        )
-        self.check_active.pack(pady=5)
+            ctk.CTkLabel(self.form_frame, text="Statut du compte :").pack(pady=(10, 0))
+            self.active_var = ctk.IntVar(value=self.user_data['is_active'])
+            self.check_active = ctk.CTkCheckBox(
+                self.form_frame, 
+                text="Compte activé", 
+                variable=self.active_var,
+                onvalue=1, 
+                offvalue=0
+            )
+            self.check_active.pack(pady=5)
 
         # Boutons
         btn_frame = ctk.CTkFrame(self.root, fg_color="transparent")
