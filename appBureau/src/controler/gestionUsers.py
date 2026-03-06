@@ -17,6 +17,23 @@ class GestionUsers :
             return []
         
     @staticmethod
+    def get_user(userid): 
+        try:
+            with engine.connect() as conn:
+                query = text("""
+                    SELECT users.*, role.name_role AS role_name, permission.name_role AS perm_name
+                    FROM users 
+                    INNER JOIN role ON users.role_id = role.id_role 
+                    INNER JOIN permission ON role.id_permission = permission.id_permission
+                    WHERE users.id = :id
+                """)
+            
+                result = conn.execute(query, {"id": userid}).mappings().first()
+                return result 
+        except Exception as e:
+            print(f"Erreur SQL : {e}")
+            return None
+    @staticmethod
     def create_user(data):
         try:
             
@@ -57,3 +74,16 @@ class GestionUsers :
         except Exception as e:
             print(f"Erreur lors de la récupération des rôles : {e}")
             return {}
+        
+    @staticmethod
+    def deleteUser(userid):
+        try:
+            with engine.connect() as conn:
+                query = text("DELETE FROM users WHERE id = :id")
+                conn.execute(query, {"id" : userid})
+                conn.commit()
+            return True
+            
+        except Exception as e:
+            print(f"Erreur lors de la récupération des rôles : {e}")
+            return False

@@ -19,17 +19,10 @@ class UserManagementView:
 
 
     def setup_ui(self):
-
         self.root.title("Gestion des Utilisateurs")
         
         for widget in self.root.winfo_children():
             widget.destroy()
-
-        self.title_label = ctk.CTkLabel(
-            self.root, 
-            text="Liste des Utilisateurs", 
-            font=ctk.CTkFont(size=22, weight="bold")
-        )
 
         self.btn_back = ctk.CTkButton(
             self.root, 
@@ -64,7 +57,21 @@ class UserManagementView:
         
         self.tree.pack(fill="both", expand=True)
 
+        self.tree.bind("<Double-1>", self.on_user_select)
+
         self.display_users()
+
+    def on_user_select(self, event):
+        selected_item = self.tree.selection()
+        if not selected_item:
+            return
+
+        user_values = self.tree.item(selected_item, "values")
+        user_id = user_values[0] 
+        self.root.selected_user_id = user_id
+
+        switch_view(self.root, "userDetails")
+        
 
     def display_users(self):
         users_list = GestionUsers().load_all_users()

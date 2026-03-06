@@ -24,6 +24,11 @@ def switch_view(root, view_name):
         from views.createUser import CreateUserView
         root.title("Création Utilisateur - Système SIO")
         CreateUserView(root)
+
+    elif view_name == "userDetails":
+        from views.selectedUser import SelectedUser
+        root.title("Création Utilisateur - Système SIO")
+        SelectedUser(root)
         
     else:
         print(f"Erreur : La vue '{view_name}' n'existe pas.")
