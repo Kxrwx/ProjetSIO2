@@ -28,7 +28,6 @@ class SelectedUser:
         for widget in self.root.winfo_children():
             widget.destroy()
 
-        # 2. Récupération des données via ton contrôleur corrigé
         user_info = GestionUsers.get_user(self.user_id)
 
         if not user_info:
@@ -73,8 +72,9 @@ class SelectedUser:
 
         self.btn_edit = ctk.CTkButton(
             self.actions_frame, 
-            text="Modifier (Bientôt)", 
-            state="disabled" 
+            text="Modifier", 
+            fg_color="gray",
+            command=lambda: switch_view(self.root, "userUpdate")
         )
         self.btn_edit.grid(row=0, column=1, padx=10)
 

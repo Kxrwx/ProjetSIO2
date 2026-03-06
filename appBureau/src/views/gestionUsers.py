@@ -72,7 +72,6 @@ class UserManagementView:
 
         switch_view(self.root, "userDetails")
         
-
     def display_users(self):
         users_list = GestionUsers().load_all_users()
     

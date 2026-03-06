@@ -35,15 +35,10 @@ class HomeView:
         self.btn_users = ctk.CTkButton(self.menu_frame, text="Gérer les Utilisateurs", command=lambda:switch_view(self.root, "gestionUsers"))
         self.btn_users.pack(pady=10)
 
-        self.btn_roles = ctk.CTkButton(self.menu_frame, text="Gérer les Rôles", command=self.manage_roles)
-        self.btn_roles.pack(pady=10)
-
         self.btn_logout = ctk.CTkButton(self.menu_frame, text="Déconnexion", fg_color="red", hover_color="#8B0000", command=self.handle_logout)
         self.btn_logout.pack(pady=20)
     
 
-    def manage_roles(self):
-        print("Ouverture de la gestion des rôles...")
 
     def handle_logout(self):
         from controler.logout import LogoutController

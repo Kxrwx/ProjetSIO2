@@ -87,3 +87,45 @@ class GestionUsers :
         except Exception as e:
             print(f"Erreur lors de la récupération des rôles : {e}")
             return False
+    
+
+    @staticmethod
+    def updateUser(data): 
+        try:
+            role_map = GestionUsers.get_role()
+            role_id = role_map.get(data["role"], 1)
+
+            with engine.connect() as conn:
+                query = text("""
+                    UPDATE users 
+                    SET name = :name, 
+                        surname = :surname, 
+                        email = :email, 
+                        role_id = :role_id,
+                        is_active = :is_active
+                    WHERE id = :id
+                """)
+            
+                conn.execute(query, {
+                    "id": data["id"], 
+                    "name": data["name"],
+                    "surname": data["surname"],
+                    "email": data["email"],
+                    "role_id": role_id,
+                    "is_active": data["is_active"],
+                })
+
+
+                new_password = data.get("password")
+                if new_password and str(new_password).strip() != "":
+                    password_hash = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt()).decode('utf-8')
+                
+                    pw_query = text("UPDATE users SET password_hash = :pw WHERE id = :id")
+                    conn.execute(pw_query, {"pw": password_hash, "id": data["id"]})
+
+                conn.commit()
+            
+            return True
+        except Exception as e:
+            print(f"Erreur mise à jour : {e}")
+            return False

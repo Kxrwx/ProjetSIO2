@@ -16,24 +16,26 @@ class AuthController:
 
         try:
             with engine.connect() as conn:
-                sql = text("SELECT id, email, password_hash FROM users WHERE email = :user_name LIMIT 1")
+                sql = text("SELECT users.id, users.email, users.password_hash, role.id_permission, users.is_active FROM users INNER JOIN role ON users.role_id = role.id_role WHERE users.email = :user_name LIMIT 1")
                 result = conn.execute(sql, {"user_name": username.strip()})
                 row = result.fetchone()
 
                 if row:
-                    db_id, db_email, db_password_hash = row
+                    db_id, db_email, db_password_hash, db_permission, db_isActive = row
                     userid = db_id
                     
-                    if bcrypt.checkpw(password.encode('utf-8'), db_password_hash.encode('utf-8')):
+                    if bcrypt.checkpw(password.encode('utf-8'), db_password_hash.encode('utf-8')) and db_isActive:
+                        if db_permission == 3 : 
+                            success_sess, token_ou_erreur = AuthController.set_session(db_id)
                         
-                        success_sess, token_ou_erreur = AuthController.set_session(db_id)
-                        
-                        if success_sess:
-                            return True, token_ou_erreur, userid, db_email
-                        else:
-                            return False, f"Erreur session : {token_ou_erreur}"
+                            if success_sess:
+                                return True, token_ou_erreur, userid, db_email
+                            else:
+                                return False, f"Erreur session : {token_ou_erreur}"
+                        else : 
+                            return False, "Non autorisé"
                     else:
-                        return False, "Mot de passe incorrect."
+                        return False, "Utilisateur introuvable."
                 else:
                     return False, "Utilisateur introuvable."
 
