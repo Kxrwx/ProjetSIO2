@@ -45,7 +45,7 @@ app.post('/api/signalements', async (req, res) => {
     const { cat, pri, stat } = await getRelationIds(categorie, priorite);
     
     if (!cat || !pri || !stat) {
-      console.log("❌ Relations non trouvées:", { cat, pri, stat });
+      console.log("Relations non trouvées:", { cat, pri, stat });
       return res.status(400).json({ error: 'Catégorie, priorité ou statut invalide' });
     }
 
@@ -53,7 +53,7 @@ app.post('/api/signalements', async (req, res) => {
     const signalementData = {
       title: titre,
       trackingCode: trackingCode,
-      trackingPasswordHash: hashPassword(password), // ✅ Hashé côté serveur
+      trackingPasswordHash: hashPassword(password), // Hashé côté serveur
       victimNameEncrypted: nom || null,
       victimContactEncrypted: contact || null,
       descriptionEncrypted: description,
@@ -68,15 +68,15 @@ app.post('/api/signalements', async (req, res) => {
 
     const signalement = await prisma.signalement.create({ data: signalementData });
 
-    console.log("✅ SIGNALEMENT CRÉÉ:", signalement);
+    console.log("SIGNALEMENT CRÉÉ:", signalement);
     res.status(201).json({ 
       trackingCode: signalement.trackingCode,
       id: signalement.idSignalement
     });
     
   } catch (error) {
-    console.error("❌ ERREUR PRISMA:", error.message);
-    console.error("❌ ERREUR COMPLÈTE:", error);
+    console.error("ERREUR PRISMA:", error.message);
+    console.error("ERREUR COMPLÈTE:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -89,7 +89,7 @@ app.post('/api/signalements/consult', async (req, res) => {
       return res.status(400).json({ error: 'Numéro de suivi et mot de passe requis' });
     }
 
-    const passwordHash = hashPassword(password); // ✅ Même logique que la création
+    const passwordHash = hashPassword(password); 
 
     const signalement = await prisma.signalement.findFirst({
       where: {
@@ -117,7 +117,7 @@ app.post('/api/signalements/consult', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Serveur Prêt sur http://localhost:${PORT}`);
+  console.log(`Serveur Prêt sur http://localhost:${PORT}`);
 });
 
 app.get('/health', (req, res) => { 
