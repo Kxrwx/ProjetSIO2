@@ -3,7 +3,6 @@ import "../styles/Report.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import CryptoJS from 'crypto-js';
 
 export default function Report() {
   const [trackingCode, setTrackingCode] = useState("");
@@ -49,9 +48,7 @@ export default function Report() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Hash du mot de passe (SHA256 comme dans ton schéma)
-    const passwordHash = CryptoJS.SHA256(formData.password).toString();
-    console.log("🔐 Mot de passe hashé:", passwordHash);
+
 
     // Prépare les données pour le backend
     const dataToSend = {
@@ -63,7 +60,7 @@ export default function Report() {
       categorie: formData.categorie,      // "Harcèlement", "Discrimination", "Violence"
       priorite: formData.priorite,        // "Modéré", "Haute", "Critique"
       description: formData.description,
-      password: passwordHash,
+      password: formData.password,
       trackingCode: trackingCode
     };
 
