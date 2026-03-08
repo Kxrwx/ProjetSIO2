@@ -114,3 +114,7 @@ app.post('/api/signalements/consult', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Serveur Prêt sur http://localhost:${PORT}`);
 });
+
+app.get('/health', (req, res) => { 
+  res.json({ status: 'healthy' });
+});
