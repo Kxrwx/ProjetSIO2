@@ -14,6 +14,11 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+// Utilitaire : hasher un mot de passe en SHA-256
+function hashPassword(password) {
+  return crypto.createHash('sha256').update(password).digest('hex');
+}
+
 
 //a mettre dans le controller
 
@@ -50,7 +55,7 @@ app.post('/api/signalements', async (req, res) => {
     const { cat, pri, stat } = await getRelationIds(categorie, priorite);
     
     if (!cat || !pri || !stat) {
-      console.log("❌ Relations non trouvées:", { cat, pri, stat });
+      console.log("Relations non trouvées:", { cat, pri, stat });
       return res.status(400).json({ error: 'Catégorie, priorité ou statut invalide' });
     }
 
@@ -60,7 +65,7 @@ app.post('/api/signalements', async (req, res) => {
     const signalementData = {
       title: titre,
       trackingCode: trackingCode,
-      trackingPasswordHash: password,
+      trackingPasswordHash: hashPassword(password), // Hashé côté serveur
       victimNameEncrypted: nom || null,
       victimContactEncrypted: contact || null,
       descriptionEncrypted: description,
@@ -77,22 +82,22 @@ app.post('/api/signalements', async (req, res) => {
     // a mettre dans models 
     const signalement = await prisma.signalement.create({ data: signalementData });
 
-    console.log("✅ SIGNEMENT CRÉÉ:", signalement);
+    console.log("SIGNALEMENT CRÉÉ:", signalement);
     res.status(201).json({ 
       trackingCode: signalement.trackingCode,
       id: signalement.idSignalement
     });
     
   } catch (error) {
-    console.error("❌ ERREUR PRISMA:", error.message);
-    console.error("❌ ERREUR COMPLÈTE:", error);
+    console.error("ERREUR PRISMA:", error.message);
+    console.error("ERREUR COMPLÈTE:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
 
 // a découpé routers et controller
-// Réception : retrouver un signalement par numéro de suivi + mot de passe
+// Consultation : retrouver un signalement par numéro de suivi + mot de passe
 app.post('/api/signalements/consult', async (req, res) => {
   try {
     const { trackingCode, password } = req.body;
@@ -100,7 +105,7 @@ app.post('/api/signalements/consult', async (req, res) => {
       return res.status(400).json({ error: 'Numéro de suivi et mot de passe requis' });
     }
 
-    const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+    const passwordHash = hashPassword(password); 
 
 
     // a mettre dans models 
@@ -130,5 +135,37 @@ app.post('/api/signalements/consult', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Serveur Prêt sur http://localhost:${PORT}`);
+  console.log(`Serveur Prêt sur http://localhost:${PORT}`);
+});
+
+app.get('/health', (req, res) => { 
+  res.json({ status: 'healthy' });
+});
+
+app.get('/api/testdb', async (req, res) => {
+  try {
+    const [categories, priorites, statuts, signalements] = await Promise.all([
+      prisma.categorie.findMany(),
+      prisma.priorite.findMany(),
+      prisma.statut.findMany(),
+      prisma.signalement.count(),
+    ]);
+
+    res.json({
+      status: 'Connecté à la base de données',
+      counts: {
+        signalements,
+        categories: categories.length,
+        priorites: priorites.length,
+        statuts: statuts.length,
+      },
+      data: { categories, priorites, statuts },
+    });
+  } catch (error) {
+    console.error('Erreur testdb:', error);
+    res.status(500).json({ 
+      status: 'Déconnecté',
+      error: error.message 
+    });
+  }
 });
