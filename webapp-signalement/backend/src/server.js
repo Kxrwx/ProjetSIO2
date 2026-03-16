@@ -1,3 +1,6 @@
+
+//setup node express
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -11,10 +14,15 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+
+//a mettre dans le controller
+
 // Récupère les IDs depuis les noms
 async function getRelationIds(categorieName, prioriteName) {
   console.log("Recherche IDs pour:", { categorie: categorieName, priorite: prioriteName });
   
+
+  //a mettre dans models
   const [cat, pri, stat] = await Promise.all([
     prisma.categorie.findFirst({ where: { nameCategorie: categorieName } }),
     prisma.priorite.findFirst({ where: { namePriorite: prioriteName } }),
@@ -25,9 +33,11 @@ async function getRelationIds(categorieName, prioriteName) {
   return { cat, pri, stat };
 }
 
+//a mettre dans route
+
 app.post('/api/signalements', async (req, res) => {
   console.log("REQUÊTE COMPLETE :", JSON.stringify(req.body, null, 2));
-  
+  // a mettre dans controllers
   try {
     const { titre, nom, contact, lieu, date, categorie, priorite, description, password, trackingCode } = req.body;
 
@@ -44,11 +54,13 @@ app.post('/api/signalements', async (req, res) => {
       return res.status(400).json({ error: 'Catégorie, priorité ou statut invalide' });
     }
 
+
+    //a mettre dans une lib
     // MAPPING vers le schéma Prisma
     const signalementData = {
       title: titre,
       trackingCode: trackingCode,
-      trackingPasswordHash: password, // Déjà hashé par le frontend
+      trackingPasswordHash: password,
       victimNameEncrypted: nom || null,
       victimContactEncrypted: contact || null,
       descriptionEncrypted: description,
@@ -61,6 +73,8 @@ app.post('/api/signalements', async (req, res) => {
 
     console.log("📊 DONNÉES PRÊTES POUR PRISMA:", signalementData);
 
+
+    // a mettre dans models 
     const signalement = await prisma.signalement.create({ data: signalementData });
 
     console.log("✅ SIGNEMENT CRÉÉ:", signalement);
@@ -76,6 +90,8 @@ app.post('/api/signalements', async (req, res) => {
   }
 });
 
+
+// a découpé routers et controller
 // Réception : retrouver un signalement par numéro de suivi + mot de passe
 app.post('/api/signalements/consult', async (req, res) => {
   try {
@@ -86,6 +102,8 @@ app.post('/api/signalements/consult', async (req, res) => {
 
     const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
 
+
+    // a mettre dans models 
     const signalement = await prisma.signalement.findFirst({
       where: {
         trackingCode: trackingCode.trim(),
