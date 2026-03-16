@@ -1,17 +1,31 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../styles/Tracking.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
+interface Signalement {
+  trackingCode: string;
+  title: string;
+  statut?: { nameStatut: string };
+  priorite?: { namePriorite: string };
+  categorie?: { nameCategorie: string };
+  descriptionEncrypted: string;
+  messages?: Array<{
+    id: number;
+    createdAt: string;
+    contenuEncrypted: string;
+  }>;
+}
+
 export default function Tracking() {
   const [trackingCode, setTrackingCode] = useState("");
   const [password, setPassword] = useState("");
-  const [signalement, setSignalement] = useState(null);
+  const [signalement, setSignalement] = useState<Signalement | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : any) => {
     e.preventDefault();
     setError("");
     setSignalement(null);
@@ -89,15 +103,17 @@ export default function Tracking() {
           <p><strong>Priorité :</strong> {signalement.priorite?.namePriorite}</p>
           <p><strong>Catégorie :</strong> {signalement.categorie?.nameCategorie}</p>
           <p><strong>Description :</strong> {signalement.descriptionEncrypted}</p>
-          {signalement.messages?.length > 0 && (
+          {(signalement.messages?.length ?? 0) > 0 && (
             <div className="container-messages">
               <h3>Conversation</h3>
-              {signalement.messages.map((msg) => (
+              {signalement.messages?.map((msg) => (
                 <div key={msg.id} className="message-item">
-                  <span className="message-date">{new Date(msg.createdAt).toLocaleString()}</span>
+                  <span className="message-date">
+                  {new Date(msg.createdAt).toLocaleString()}
+                  </span>
                   <p>{msg.contenuEncrypted}</p>
-                </div>
-              ))}
+                 </div>
+            ))}
             </div>
           )}
         </div>
