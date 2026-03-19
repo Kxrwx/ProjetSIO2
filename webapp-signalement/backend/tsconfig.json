@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "types": ["node"],
     "target": "ES2022",
     "module": "commonjs",
     "lib": ["ES2022"],
@@ -12,5 +14,5 @@
     "rootDir": "src",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/index.ts"]
 }

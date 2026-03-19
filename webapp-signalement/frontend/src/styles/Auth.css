@@ -1,0 +1,97 @@
+.container-auth {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.container-btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.btn-back {
+    background: none;
+    border: 1px solid #000;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #eee;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background: white;
+    border: 2px solid #000;
+    border-radius: 20px;
+    box-shadow: 10px 10px 0px #000; /* Effet un peu rétro/brutalist */
+}
+
+.auth-header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 8px;
+}
+
+.input-group label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #a7c4f9;
+}
+
+.btn-login {
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #a7c4f9; /* Le même bleu que ta page d'accueil */
+    border: 2px solid #000;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-login:hover {
+    transform: scale(1.02);
+    background-color: #91b3f0;
+}

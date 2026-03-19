@@ -13,8 +13,8 @@ export default function Report() {
     contact: "",
     lieu: "",
     date: "",
-    categorie: "Harcèlement",  // DOIT correspondre exactement à nameCategorie en BDD
-    priorite: "Modéré",        // DOIT correspondre exactement à namePriorite en BDD
+    categorie: "Harcèlement",  
+    priorite: "Modéré",        
     description: "",
     password: ""
   });
@@ -40,12 +40,12 @@ export default function Report() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e : any) => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : any) => {
     e.preventDefault();
     
 

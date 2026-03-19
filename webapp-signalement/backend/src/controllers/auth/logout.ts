@@ -1,0 +1,22 @@
+import type { Request, Response } from "express";
+import { deleteSession } from "../../models/session"
+
+
+export default async function logout(req : Request, res : Response) {
+    try {
+        const userId = req.user?.id
+        if(!userId) return res.status(404).json({error : "Unauthentified"})
+        const reponse = await deleteSession(userId)
+        if(!reponse) return res.status(404).json({error : "Aucune session"})
+        res.clearCookie("session_token", {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            domain : process.env.NODE_ENV === "production" ? process.env.FRONT : undefined
+        })
+        return res.status(200).json({message : "Deconnexion reussi"})
+    }
+    catch(error) {
+        return res.status(500).json({error : "Erreur serveur"})
+    }
+}

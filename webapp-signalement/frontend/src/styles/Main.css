@@ -1,3 +1,4 @@
+/* Structure globale */
 .container-main {
     width: 100vw;
     height: 100vh;
@@ -6,88 +7,122 @@
     align-items: center;
     justify-content: flex-start;
     position: relative;
+    overflow-x: hidden;
 }
 
+/* Bouton Admin - Positionné en haut à droite sans gêner le flux */
+.container-admin-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.btn-admin {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #ffffff; /* Fond blanc pour éviter la transparence sur le titre */
+    border: 1px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-admin:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Section Titre - Corrigée pour éviter le bouton admin */
 .container-title {
     display: flex;
-    width: auto;
-    padding: 20px 0 30px 0;
-    justify-self: flex-start;
-    position: relative;
-
+    width: 100%;
+    padding: 30px 0;
+    justify-content: center;
+    align-items: center;
 }
 
 .container-title h1 {
-    font-size: 45px;
+    font-size: 38px; /* Taille réduite de 45px à 38px pour plus de place */
+    margin: 0 160px; /* Zone de sécurité pour ne jamais toucher le bouton admin */
+    text-align: center;
+    line-height: 1.2;
 }
 
+/* Section Description */
 .container-desc {
     max-width: 750px;
     min-width: 300px;
-    border-top:2px solid #000000;
-    border-bottom:  2px solid #000000;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    padding: 15px 0;
+    text-align: center;
 }
 
 .container-desc h3 {
     font-size: 20px;
     font-weight: 200;
+    margin: 10px 0;
+    line-height: 1.4;
 }
 
+/* Section Boutons Centraux */
 .container-button {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex-grow: 1; 
     width: 100%;
     align-items: center;
     justify-content: center;
 }
 
-.container-button div{
+.container-button div {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     min-width: 600px;
     width: 650px;
     max-width: 700px;
-    flex-direction:  row;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 70px;
+}
+
+/* Style commun des gros boutons */
+.btn-tracking, .btn-report {
+    padding: 17px 30px;
+    border-radius: 50px;
+    font-size: 20px;
+    border: 2px solid #000000;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-weight: 500;
 }
 
 .btn-tracking {
-    padding: 17px 30px;
-    border-radius: 50px;
-    font-size: 20px;
     background-color: #a1dba2;
-    border: 2px solid #000000;
-    
-    transition: ease 0.5s;
 }
 
 .btn-report {
-    padding: 17px 30px;
-    border-radius: 50px;
-    font-size: 20px;
     background-color: #a7c4f9;
-    border: 2px solid #000000;
-    transition: ease 0.5s;
 }
 
 .btn-report:hover, 
 .btn-tracking:hover {
     transform: scale(1.05);
-    transition: ease 0.5s;
 }
 
-
+/* Footer */
 .container-footer {
-    margin-top: auto;
+    margin-top: auto; 
     border-top: 2px solid #000000;
-    padding: 0 30px 30px 30px;
+    padding: 20px 30px 30px 30px;
     max-width: 750px;
     min-width: 300px;
+    text-align: center;
 }
 
 .container-footer p {
     font-size: 13px;
     font-weight: 200;
+    margin: 0;
+    line-height: 1.5;
 }

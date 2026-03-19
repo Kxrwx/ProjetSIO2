@@ -12,7 +12,7 @@ generator client {
 // --- Modèles de Données ---
 
 model User {
-  id              Int       @id @default(autoincrement())
+  id              String       @id @default(uuid()) @db.VarChar(36)
   name            String    @db.VarChar(70)
   surname         String    @db.VarChar(70)
   email           String    @unique @db.VarChar(255)
@@ -26,6 +26,7 @@ model User {
   role            Role?     @relation(fields: [roleId], references: [idRole])
   messages        Message[]
   auditLogs       AuditLog[]
+  sessions     Session[]
 
   @@map("users")
 }
@@ -128,7 +129,7 @@ model PieceJointe {
 model Message {
   id                Int       @id @default(autoincrement())
   idSignalement     Int       @map("id_signalement")
-  userId            Int?      @map("user_id") // Peut être null si déposant anonyme
+  userId            String?   @map("user_id") @db.VarChar(36) // Peut être null si déposant anonyme
   contenuEncrypted  String    @map("contenu_encrypted") @db.VarChar(255)
   isRead            Boolean   @default(false) @map("is_read") @db.TinyInt
   createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
@@ -143,7 +144,7 @@ model Message {
 model AuditLog {
   id                Int       @id @default(autoincrement())
   idSignalement     Int?      @map("id_signalement")
-  userId            Int?      @map("user_id")
+  userId            String?   @map("user_id") @db.VarChar(36)
   action            String    @db.VarChar(255)
   detailsEncrypted  String?   @map("details_encrypted") @db.VarChar(255)
   ipAddress         String?   @map("ip_address") @db.VarChar(255)
@@ -169,4 +170,17 @@ model IaClassification {
   categorieProposee       Categorie? @relation(fields: [categorieProposeeId], references: [idCategorie])
 
   @@map("ia_classifications")
+}
+
+model Session {
+  id           String    @id @default(cuid()) @db.VarChar(255)
+  userId       String?      @map("user_id") 
+  sessionToken String?   @unique @map("session_token") @db.VarChar(255)
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  expiresAt    DateTime? @map("expires_at") @db.DateTime(0)
+
+  // Relation
+  user         User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
