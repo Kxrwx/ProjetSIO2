@@ -91,27 +91,34 @@ model Categorie {
 }
 
 model Role {
-  idRole        Int       @id @default(autoincrement()) @map("id_role")
-  nameRole      String    @map("name_role") @db.VarChar(50)
-  idPermission  Int       @map("id_permission")
+  idRole    Int               @id @default(autoincrement()) @map("id_role")
+  nameRole  String            @map("name_role") @db.VarChar(50)
 
-  // Relations
-  permission    Permission? @relation(fields: [idPermission], references: [idPermission])
-  users         User[]
+  permissions RolePermission[]
+  users       User[]
 
   @@map("role")
 }
 
 model Permission {
-  idPermission  Int    @id @default(autoincrement()) @map("id_permission")
-  nameRole      String @map("name_role") @db.VarChar(70) // Attention : Le nom de colonne dans la BDD est "name_role"
+  idPermission Int               @id @default(autoincrement()) @map("id_permission")
+  nameRole     String            @map("name_role") @db.VarChar(70) 
 
-  // Relation inverse
-  roles         Role[]
+  roles        RolePermission[]
 
   @@map("permission")
 }
 
+model RolePermission {
+  idRole       Int @map("id_role")
+  idPermission Int @map("id_permission")
+
+  role       Role       @relation(fields: [idRole], references: [idRole])
+  permission Permission @relation(fields: [idPermission], references: [idPermission])
+
+  @@id([idRole, idPermission]) // Clé primaire composite
+  @@map("role_permissions")
+}
 model PieceJointe {
   id                        Int       @id @default(autoincrement())
   idSignalement             Int       @map("id_signalement")
