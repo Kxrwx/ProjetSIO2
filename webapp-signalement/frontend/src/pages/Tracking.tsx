@@ -52,11 +52,13 @@ export default function Tracking() {
 
   return (
     <div className="container-tracking">
-      <div className="container-btn-main">
+      <div className="container-btn-back">
         <Link to="/">
-          <button className="text-black"><FontAwesomeIcon icon={faArrowLeft} /></button>
+          <button className="btn-back">
+            <FontAwesomeIcon icon={faArrowLeft} /> Retour
+          </button>
         </Link>
-      </div>
+      </div> 
       <div className="container-title">
         <h1>Signalement harcèlement professionnel</h1>
       </div>

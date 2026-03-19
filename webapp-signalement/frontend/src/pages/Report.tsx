@@ -64,7 +64,7 @@ export default function Report() {
       trackingCode: trackingCode
     };
 
-    console.log("📤 DONNÉES ENVOYÉES AU BACKEND:", JSON.stringify(dataToSend, null, 2));
+    console.log("DONNÉES ENVOYÉES AU BACKEND:", JSON.stringify(dataToSend, null, 2));
 
     try {
       const response = await fetch('http://localhost:5000/api/signalements', {
@@ -93,9 +93,11 @@ export default function Report() {
 
   return (
     <div className="container-report">
-      <div className="container-btn-main">
+      <div className="container-btn-back">
         <Link to="/">
-          <button className="text-black"><FontAwesomeIcon icon={faArrowLeft} /></button>
+          <button className="btn-back">
+            <FontAwesomeIcon icon={faArrowLeft} /> Retour
+          </button>
         </Link>
       </div>    
 
