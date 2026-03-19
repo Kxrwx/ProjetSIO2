@@ -23,6 +23,7 @@
     border-radius: 8px;
     font-size: 14px;
     background-color: #ffffff; /* Fond blanc pour éviter la transparence sur le titre */
+    color: #000000;
     border: 1px solid #000000;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -98,15 +99,18 @@
 }
 
 .btn-tracking {
-    background-color: #a1dba2;
+    background-color: #47c149;
 }
 
 .btn-report {
-    background-color: #a7c4f9;
+    background-color: #dc6949;
 }
-
-.btn-report:hover, 
+.btn-report:hover{
+    background-color: #ff3700;
+    transform: scale(1.05);
+} 
 .btn-tracking:hover {
+    background-color: #2cd32f;
     transform: scale(1.05);
 }
 
