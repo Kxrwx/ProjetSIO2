@@ -1,8 +1,9 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import { deleteSession } from "../../models/session"
+import { AuthRequest } from "../../middleware/auth.middleware";
 
 
-export default async function logout(req : Request, res : Response) {
+export default async function logout(req : AuthRequest, res : Response) {
     try {
         const userId = req.user?.id
         if(!userId) return res.status(404).json({error : "Unauthentified"})

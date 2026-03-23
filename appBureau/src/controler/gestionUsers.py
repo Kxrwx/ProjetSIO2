@@ -24,7 +24,8 @@ class GestionUsers :
                     SELECT users.*, role.name_role AS role_name, permission.name_role AS perm_name
                     FROM users 
                     INNER JOIN role ON users.role_id = role.id_role 
-                    INNER JOIN permission ON role.id_permission = permission.id_permission
+                    INNER JOIN role_permissions ON role.id_role = role_permissions.id_role
+                    INNER JOIN permission ON role_permissions.id_permission = permission.id_permission
                     WHERE users.id = :id
                 """)
             

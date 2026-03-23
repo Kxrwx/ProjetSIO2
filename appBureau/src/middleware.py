@@ -13,7 +13,7 @@ class Middleware:
             
         try:
             with engine.connect() as conn:
-                sql = text("SELECT session_token, expires_at, role.id_permission, users.is_active FROM sessions INNER JOIN users ON users.id = sessions.user_id INNER JOIN role ON role.id_role = users.role_id WHERE user_id = :u ORDER BY expires_at DESC LIMIT 1")
+                sql = text("SELECT session_token, expires_at, role_permissions.id_permission, users.is_active FROM sessions INNER JOIN users ON users.id = sessions.user_id INNER JOIN role ON role.id_role = users.role_id INNER JOIN role_permissions ON role.id_role = role_permissions.id_role WHERE user_id = :u ORDER BY expires_at DESC LIMIT 1")
                 result = conn.execute(sql, {"u": user_id,}).fetchone()
                 token_session = result[0]
                 notexpired = bool(result[1] >= datetime.now())
