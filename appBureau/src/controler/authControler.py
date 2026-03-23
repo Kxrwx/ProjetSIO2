@@ -16,7 +16,7 @@ class AuthController:
 
         try:
             with engine.connect() as conn:
-                sql = text("SELECT users.id, users.email, users.password_hash, role.id_permission, users.is_active FROM users INNER JOIN role ON users.role_id = role.id_role WHERE users.email = :user_name LIMIT 1")
+                sql = text("SELECT users.id, users.email, users.password_hash, role_permissions.id_permission, users.is_active FROM users INNER JOIN role ON users.role_id = role.id_role INNER JOIN role_permissions ON role.id_role = role_permissions.id_role WHERE users.email = :user_name LIMIT 1")
                 result = conn.execute(sql, {"user_name": username.strip()})
                 row = result.fetchone()
 
