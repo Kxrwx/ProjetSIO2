@@ -1,21 +1,19 @@
 import type { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
-import { prisma } from "../db/prisma";
-import { User, Session } from "@prisma/client";
+import { User, Session, Role, Permission } from "@prisma/client";
 import {getSession} from "../models/session"
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: User; 
-      session?: Session
-    }
+import { getPermissionByRole, getUserAll } from "../models/user";
+export interface AuthRequest extends Request
+{
+    user?: User,
+    session? : Session
+    role?: Role,
+    permissions?: Permission[];
   }
-}
 
-export async function authenticate(req: Request, res: Response, next: NextFunction) {
-    const token = req.cookies.session_token;
-
+export async function authenticate(req: AuthRequest, res: Response, next: NextFunction) {
+    const token = req.cookies?.session_token;
+    
     if (!token) {
         return res.status(401).json({ error: "Non autorisé : session manquante" });
     }
@@ -28,17 +26,18 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         if (!session || !session.expiresAt || session.expiresAt < new Date()) {
             return res.status(401).json({ error: "Session invalide ou expirée" });
         }
-
-        (req as any).user = session.user;
+        if(!session.userId) return res.status(401).json({error : "Unauthorize"})
         
+        const user = await getUserAll(session.userId)
 
-        if (session.user) {
-        req.user = session.user; 
-        }
-        if (session) {
-            req.session = session
-        }
-
+        if(!user) return res.status(401).json({error : "Aucune permission"})
+        if(!user.role) return res.status(401).json({error : "Aucun role"})
+        const permission = await getPermissionByRole(user.roleId)
+        if(!permission) return res.status(401).json({error : "Aucune permission"})
+        req.session = session;
+        req.user = user;
+        req.role = user.role
+        req.permissions = permission
         next(); 
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de l'authentification" });

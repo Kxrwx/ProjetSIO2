@@ -21,3 +21,21 @@ export async function selectSignalementDB(trackingCode : string, trackingPasswor
     })
     return req
 }
+
+export async function getAllSignalement() {
+    const signalements = await prisma.signalement.findMany(
+        {
+            select : {idSignalement : true, title : true, statut : true, categorie : true, dateEncrypted : true, priorite : true}
+        }
+    );
+    return signalements; 
+}
+
+export async function  getDetailSignalement(idSignalement: number) {
+    const req = await prisma.signalement.findUnique(
+        {
+            where : {idSignalement}
+        }
+    )
+    return req
+}
