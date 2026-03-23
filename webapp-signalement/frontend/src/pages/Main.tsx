@@ -3,6 +3,8 @@
 //Import
 import { Link } from "react-router-dom";
 import "../styles/Main.css"
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 //Bloc HTML
@@ -11,7 +13,7 @@ export default function Main() {
     <div className="container-main">
     <div className="container-admin-link">
     <Link to="/auth">
-      <button className="btn-admin">Accès Administration</button>
+      <button className="btn-admin">  Accès administration <FontAwesomeIcon icon={faArrowRight} /></button>
     </Link>
   </div>
 
