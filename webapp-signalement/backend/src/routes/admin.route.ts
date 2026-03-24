@@ -12,6 +12,11 @@ route.get("/user", authenticate, getUser);
 route.get("/signalement", authenticate, allSignalement)
 route.post("/signalement/detail", authenticate, detailSignalement)
 route.post("/signalement/update", authenticate, updateSignalement)
+route.post("/signalement/createMesssage", authenticate, )
+
+
+
+
 route.get("", authenticate, isAuth)
 
 export default route;
