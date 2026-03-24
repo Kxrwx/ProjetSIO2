@@ -34,7 +34,11 @@ export default function InfoAdminAcc() {
     }, []);
 
     // ← STOP ici si user est null, évite le crash
-    if (!user) return <p className="p-4">Chargement...</p>;
+    if (!user) return   <div className="flex h-screen w-full items-center justify-center bg-white">
+                            <div className="text-lg font-medium">
+                            Chargement...
+                            </div>
+                        </div>;
 
     return (
         
@@ -45,7 +49,7 @@ export default function InfoAdminAcc() {
                     
                     {/* Bouton positionné en bas à gauche de la zone de navigation */}
                     <div className="absolute bottom-4 left-12 top-20">
-                        <Link to="/Admin">
+                        <Link to="/admin">
                             <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors shadow-sm">
                                 <FontAwesomeIcon icon={faArrowLeft} /> Retour
                             </button>

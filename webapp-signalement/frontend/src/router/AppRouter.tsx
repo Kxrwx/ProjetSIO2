@@ -6,6 +6,7 @@ import Auth from "../pages/Auth";
 import Admin from "../pages/Admin";
 import ProtectedRoute from "./ProtectedRoute"; 
 import InfoAdminAcc from "../pages/InfoAdmin/InfoAdminAcc";
+import DetailsSigna from "../pages/Ticket/DetailsSigna";
 
 export const AppRouter = () => {
   return (
@@ -13,14 +14,15 @@ export const AppRouter = () => {
       <Routes>
         {/* --- Routes Publiques --- */}
         <Route path="/" element={<Main />} />
-        <Route path="/Report" element={<Report />} />
-        <Route path="/Tracking" element={<Tracking />} />
-        <Route path="/Auth" element={<Auth />} />
+        <Route path="/report" element={<Report />} />
+        <Route path="/tracking" element={<Tracking />} />
+        <Route path="/auth" element={<Auth />} />
 
         {/* --- Routes Protégées --- */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/Admin" element={<Admin />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/infoadminaccount" element={<InfoAdminAcc />} />
+          <Route path="/admin/signalement/detail/:id" element={<DetailsSigna />} />
         </Route>
       </Routes>
     </BrowserRouter>

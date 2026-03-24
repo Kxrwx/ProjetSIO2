@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 5000;
 
 const authLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, 
-  max: 5,
+  max: 12225,
   message: { error: "Trop de tentatives, réessayez plus tard" },
   standardHeaders: true, 
   legacyHeaders: false,  
