@@ -20,7 +20,7 @@ export function chiffrement(text: string) {
     return iv.toString('hex') + ":" + encrypted;
 }
 
-export function dechiffrement(hash : any) {
+export function dechiffrement(hash : string) {
   if (!hash) return null;
     const [ivHex, encryptedText] = hash.split(':');
     const ivBuffer = Buffer.from(ivHex, 'hex');
