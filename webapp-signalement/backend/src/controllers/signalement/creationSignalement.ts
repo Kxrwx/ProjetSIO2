@@ -39,13 +39,10 @@ const signalementData = {
   idPriorite: pri.idPriorite,
   idStatut: stat.idStatut,
 };
-
-    console.log("📊 DONNÉES PRÊTES POUR PRISMA:", signalementData);
-
     const signalement = await createSignalementDB(signalementData)
 
     console.log("SIGNALEMENT CRÉÉ:", signalement);
-    res.status(201).json({ 
+    res.status(200).json({ 
       trackingCode: signalement.trackingCode,
       id: signalement.idSignalement
     });

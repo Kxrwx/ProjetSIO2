@@ -119,18 +119,28 @@ model RolePermission {
   @@id([idRole, idPermission]) // Clé primaire composite
   @@map("role_permissions")
 }
-model PieceJointe {
-  id                        Int       @id @default(autoincrement())
-  idSignalement             Int       @map("id_signalement")
-  encryptedPath             String    @map("encrypted_path") @db.VarChar(255)
-  originalFilenameEncrypted Bytes?    @map("original_filename_encrypted") @db.Blob // BLOB est mappé à Bytes dans Prisma
-  fileSize                  Int?      @map("file_size")
-  createdAt                 DateTime  @default(now()) @map("created_at") @db.DateTime(0) // Default (CURRENT_TIMESTAMP)
 
-  // Relations
-  signalement               Signalement? @relation(fields: [idSignalement], references: [idSignalement])
+
+model PieceJointe {
+  id                         Int          @id @default(autoincrement())
+  idSignalement              Int          @map("id_signalement")
+  
+  // La clé unique du fichier sur R2 (ex: "uploads/random-id.png")
+  fileKey                    String       @map("file_key") @db.VarChar(512) 
+  
+  // Nom d'origine chiffré pour la confidentialité
+  originalFilenameEncrypted  Bytes?       @map("original_filename_encrypted") @db.Blob 
+  
+  // BigInt pour éviter tout overflow sur la taille des fichiers
+  fileSize                   BigInt?      @map("file_size") 
+  
+  createdAt                  DateTime     @default(now()) @map("created_at") @db.DateTime(0)
+
+  // Relation : Une pièce jointe appartient forcément à un signalement
+  signalement                Signalement  @relation(fields: [idSignalement], references: [idSignalement], onDelete: Cascade)
 
   @@map("pieces_jointes")
+  @@index([idSignalement]) // Index pour accélérer les recherches par signalement
 }
 
 model Message {
