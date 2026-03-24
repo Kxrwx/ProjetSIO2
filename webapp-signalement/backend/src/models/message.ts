@@ -7,3 +7,13 @@ export async function createMessage(idSignalement:number, message : string, user
     })
     return req
 }
+
+
+export async function getMessage(idSignalement:number) {
+    const req = await prisma.message.findMany({
+        where : {idSignalement},
+        orderBy : {createdAt : "asc"}
+    }
+    )
+    return req
+}
