@@ -99,7 +99,7 @@ export default function Report() {
                   <FontAwesomeIcon icon={faArrowLeft} /> Retour      
               </button>
           </Link>
-      </div>   
+      </div>    
 
       <div className="container-title">
         <h1>Signalement harcèlement professionnel</h1>

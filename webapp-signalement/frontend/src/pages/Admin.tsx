@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, data } from "react-router-dom"; // Imports regroupés
-import ButtonLogout from "../components/Logout";
+import Navigation from "./Navigation";
+import InfoAdminAcc from "./InfoAdmin/InfoAdminAcc";
 import "../styles/Admin.css";
 
 
@@ -33,6 +34,7 @@ export default function Admin() {
         if (response.ok) {
           setSignalements(result);
           console.log("Signalements récupérés:", result);
+
         } else {
           console.error("Erreur API:", result.error || "Impossible de récupérer les données");
         }
@@ -46,10 +48,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col">
-      <nav className="admin-nav">
-        <h2>Dashboard Admin</h2>
-        <ButtonLogout/>
-      </nav>
+      <Navigation/>
 
       <main className="admin-content">
         <div className="welcome-card">
