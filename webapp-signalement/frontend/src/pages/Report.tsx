@@ -194,20 +194,27 @@ export default function Report() {
 
         <div className="container-cm">
           <label>
-            Catégorie *
-            <select
-              id="categorie"
-              value={formData.categorie}
-              onChange={handleChange}
-              required
-            >
-              <option value="Harcèlement">Harcèlement</option>
-              <option value="Discrimination">Discrimination</option>
-              <option value="Violence">Violence</option>
-            </select>
+            <div className="text-black">
+              Catégorie *
+            </div>
+            <div className="text-white">
+              <select
+                id="categorie"
+                value={formData.categorie}
+                onChange={handleChange}
+                required
+              >
+                <option value="Harcèlement">Harcèlement</option>
+                <option value="Discrimination">Discrimination</option>
+                <option value="Violence">Violence</option>
+              </select>
+            </div>
           </label>
           <label>
-            Priorité *
+            <div className="text-black">
+              Priorité *
+            </div>
+            <div className="text-white">
             <select
               id="priorite"
               value={formData.priorite}
@@ -218,6 +225,7 @@ export default function Report() {
               <option value="Haute">Haute</option>
               <option value="Critique">Critique</option>
             </select>
+            </div>
           </label>
         </div>
 
