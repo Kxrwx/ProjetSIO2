@@ -5,6 +5,7 @@ import Report from "../pages/Report";
 import Auth from "../pages/Auth";
 import Admin from "../pages/Admin";
 import ProtectedRoute from "./ProtectedRoute"; 
+import InfoAdminAcc from "../pages/InfoAdmin/InfoAdminAcc";
 
 export const AppRouter = () => {
   return (
@@ -19,6 +20,7 @@ export const AppRouter = () => {
         {/* --- Routes Protégées --- */}
         <Route element={<ProtectedRoute />}>
           <Route path="/Admin" element={<Admin />} />
+          <Route path="/infoadminaccount" element={<InfoAdminAcc />} />
         </Route>
       </Routes>
     </BrowserRouter>
