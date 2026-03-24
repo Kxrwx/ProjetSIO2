@@ -48,22 +48,19 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col">
-      <Navigation/>
+        <Navigation/>
 
       <main className="admin-content">
-        <div className="welcome-card">
-          <h1>Bienvenue, {user?.name || "Administrateur"} !</h1>
-          <p>La connexion a réussi et la session est active.</p>
-        </div>
+        
 
-        <div className="test-status">
+        <div className="">
         <h3 className="text-xl font-bold mb-4">Signalements ({signalements.length}) :</h3>
         
         <ul className="space-y-4">
           {signalements.map((sign, index) => (
             // On utilise un seul <li> par signalement
             <li key={sign.id || index} className="p-4 border rounded-lg shadow-sm bg-white flex flex-col gap-1">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center space-x-6">
                 <p><strong>Titre :</strong> {sign.title}</p>
                 <p><strong>Catégorie :</strong> {sign.categorie.nameCategorie}</p>
                 <p><strong>Priorité :</strong> {sign.priorite.namePriorite}</p>
