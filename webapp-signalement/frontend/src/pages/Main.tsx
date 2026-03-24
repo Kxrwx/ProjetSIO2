@@ -13,7 +13,7 @@ export default function Main() {
     <div className="container-main">
     <div className="container-admin-link">
     <Link to="/auth">
-      <button className="btn-admin">  Accès administration <FontAwesomeIcon icon={faArrowRight} /></button>
+      <button className="btn-admin">Accès administration <FontAwesomeIcon icon={faArrowRight} /></button>
     </Link>
   </div>
 
