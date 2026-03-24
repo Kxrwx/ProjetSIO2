@@ -1,5 +1,5 @@
 import {prisma} from "../db/prisma"
-import { Prisma } from "@prisma/client"
+import { Prisma, Statut } from "@prisma/client"
 
 export type SignalementData = Prisma.SignalementUncheckedCreateInput;
 
@@ -37,5 +37,14 @@ export async function  getDetailSignalement(idSignalement: number) {
             where : {idSignalement}
         }
     )
+    return req
+}
+
+
+export async function updateSignalementAdmin(idSignalement:number, idStatut : number, ) {
+    const req = await prisma.signalement.update({
+        where : {idSignalement}, 
+        data : {idStatut, updatedAt : new Date()}
+    })
     return req
 }

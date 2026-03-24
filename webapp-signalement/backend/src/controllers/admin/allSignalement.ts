@@ -4,6 +4,7 @@ import { getAllSignalement } from "../../models/signalement";
 
 export default async function allSignalement(req : AuthRequest, res : Response) {
     try {
+        const userId = req
         const signalement = await getAllSignalement()
         return res.status(200).json(signalement)
     }
