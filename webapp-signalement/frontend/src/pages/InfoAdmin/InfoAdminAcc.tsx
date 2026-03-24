@@ -34,7 +34,11 @@ export default function InfoAdminAcc() {
     }, []);
 
     // ← STOP ici si user est null, évite le crash
-    if (!user) return <p className="p-4">Chargement...</p>;
+    if (!user) return   <div className="flex h-screen w-full items-center justify-center bg-white">
+                            <div className="text-lg font-medium">
+                            Chargement...
+                            </div>
+                        </div>;
 
     return (
         

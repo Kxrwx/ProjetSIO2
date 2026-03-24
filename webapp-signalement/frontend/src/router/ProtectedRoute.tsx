@@ -14,7 +14,11 @@ export default function ProtectedRoute() {
     }, []);
 
     if (status === "loading") {
-        return <div className="loading-screen">Vérification de la session...</div>;
+        return  <div className="flex h-screen w-full items-center justify-center bg-white">
+                    <div className="text-lg font-medium">
+                    Vérification de la session...
+                    </div>
+                </div>;
     }
 
     return status === "auth" ? <Outlet /> : <Navigate to="/Auth" replace />;
