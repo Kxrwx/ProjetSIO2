@@ -48,3 +48,13 @@ export async function updateSignalementAdmin(idSignalement:number, idStatut : nu
     })
     return req
 }
+
+
+export async function signalementExist(idSignalement:number, trackingCode : string, trackingPasswordHash : string)
+{
+    const req = await prisma.signalement.findUnique({
+        where : {idSignalement, trackingCode, trackingPasswordHash}
+    })
+    if(req) return false
+    return true
+}

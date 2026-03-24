@@ -11,9 +11,14 @@ import getMessageAdmin from "../controllers/admin/getMessage";
 const route = express.Router();
 
 route.get("/user", authenticate, getUser);
+
+//signalement
 route.get("/signalement", authenticate, allSignalement)
 route.post("/signalement/detail", authenticate, detailSignalement)
 route.post("/signalement/update", authenticate, updateSignalement)
+
+
+//Message
 route.post("/signalement/createMesssage", authenticate, createMessageAdmin)
 route.post("/signalement/getMessage", authenticate, getMessageAdmin)
 

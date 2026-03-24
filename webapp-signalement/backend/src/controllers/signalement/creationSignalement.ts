@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import {getRelationIds} from "../../models/relation"
-import {hashPassword} from "../../lib/bib"
+import {hashPassword, chiffrement} from "../../lib/bib"
 import {createSignalementDB} from "../../models/signalement"
 
 export default async function createSignalement(req:Request, res : Response) {
@@ -23,19 +23,22 @@ export default async function createSignalement(req:Request, res : Response) {
     }
 
     // MAPPING vers le schéma Prisma
-    const signalementData = {
-      title: titre,
-      trackingCode: trackingCode,
-      trackingPasswordHash: hashPassword(password),
-      victimNameEncrypted: nom || null,
-      victimContactEncrypted: contact || null,
-      descriptionEncrypted: description,
-      lieuEncrypted: lieu || null,
-      dateEncrypted: (date && date !== "") ? new Date(date) : null,
-      idCategorie: cat.idCategorie,
-      idPriorite: pri.idPriorite,
-      idStatut: stat.idStatut,
-    };
+const signalementData = {
+  title: titre,
+  trackingCode: trackingCode,
+  trackingPasswordHash: hashPassword(password),
+
+  descriptionEncrypted: chiffrement(description),
+
+  victimNameEncrypted: nom ? chiffrement(nom) : null,
+  victimContactEncrypted: contact ? chiffrement(contact) : null,
+  lieuEncrypted: lieu ? chiffrement(lieu) : null,
+  dateEncrypted: date ? new Date(date) : null,
+
+  idCategorie: cat.idCategorie,
+  idPriorite: pri.idPriorite,
+  idStatut: stat.idStatut,
+};
 
     console.log("📊 DONNÉES PRÊTES POUR PRISMA:", signalementData);
 

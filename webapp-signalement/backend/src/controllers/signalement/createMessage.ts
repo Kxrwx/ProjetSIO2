@@ -7,6 +7,7 @@ export default async function createMessageNoAdmin(req:Request, res : Response) 
         const {bodymessage, idSignalement} = req.body
         if(!bodymessage || !idSignalement) return res.status(400).json({error : "Données manquantes"})
         const messageCrypt = chiffrement(bodymessage)
+        if(!messageCrypt) return res.status(400).json({erreur : "Erreur de chiffrement"})
         const response = await createMessage(idSignalement, messageCrypt, null)
         if(!response) return res.status(400).json({error : "Erreur lors de la création"})
         return res.status(200).json({success : true})
