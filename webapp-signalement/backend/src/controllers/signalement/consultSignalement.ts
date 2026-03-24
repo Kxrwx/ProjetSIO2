@@ -17,7 +17,7 @@ export default async function getSignalement(req:Request, res: Response) {
     }
 
     const { trackingPasswordHash, ...safe } = signalement;
-    res.json(safe);
+    res.status(200).json(safe);
   } catch (error : any) {
     res.status(500).json({ error: error.message });
   }

@@ -18,13 +18,14 @@ import {prisma} from './db/prisma'
 dotenv.config();
 
 const app = express();
+app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors({
   origin: process.env.FRONT_URL || "http://localhost:5173",
   credentials: true
 }));
 app.use(cookieParser());
-app.use(morgan("dev"));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
@@ -82,3 +83,5 @@ app.get('/api/testdb', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Serveur Prêt sur http://localhost:${PORT}`);
 });
+
+
