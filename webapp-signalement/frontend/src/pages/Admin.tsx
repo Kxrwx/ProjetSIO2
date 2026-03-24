@@ -83,7 +83,7 @@ export default function Admin() {
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-lg">{sign.title}</p>
                   <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
-                    {sign.statut.nameStatut} Je veux nouveau signalememnt ici 
+                    {sign.statut.nameStatut} 
                   </span>
                   <span>
                     <Link to={`/admin/signalement/detail/${sign.idSignalement}`}>
