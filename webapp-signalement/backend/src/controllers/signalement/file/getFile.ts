@@ -1,10 +1,13 @@
 import type { Request, Response } from "express";
-import { hashPassword } from "../../../lib/bib";
+import { hashPassword, chiffrement } from "../../../lib/bib";
 import { signalementExist } from "../../../models/signalement";
 import { getFile, setUrlViewFile } from "../../../models/file";
+import { createLog } from "../../../models/autid";
 
 export default async function getFileNoAdmin(req: Request, res: Response) {
   try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
     const { idSignalement, trackingCode, password } = req.body;
     if (!trackingCode || !password || !idSignalement) {
       return res.status(400).json({ error: "Données manquantes : id, numéro de suivi et mot de passe requis" });
@@ -29,6 +32,8 @@ export default async function getFileNoAdmin(req: Request, res: Response) {
         };
       })
     );
+
+    await createLog("victim", idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
 
     return res.status(200).json({
       data: filesWithUrls

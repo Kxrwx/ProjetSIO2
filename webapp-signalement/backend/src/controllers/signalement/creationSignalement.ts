@@ -3,9 +3,12 @@ import { getRelationIds } from "../../models/relation";
 import { hashPassword, chiffrement } from "../../lib/bib";
 import { createSignalementDB } from "../../models/signalement";
 import { uploadToS3, createPieceJointe } from "../../models/file";
+import { createLog } from "../../models/autid";
 
 export default async function createSignalement(req: Request, res: Response) {
   try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
     const { titre, nom, contact, lieu, date, categorie, priorite, description, password, trackingCode } = req.body;
 
     if (!titre || !categorie || !priorite || !description || !password || !trackingCode) {
@@ -45,6 +48,7 @@ export default async function createSignalement(req: Request, res: Response) {
         })
       );
     }
+    await createLog("victim", signalement.idSignalement , "creation signalement", chiffrement("creation signalement par une victime"), ip)
 
     res.status(200).json({ 
       trackingCode: signalement.trackingCode,

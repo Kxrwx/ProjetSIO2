@@ -1,10 +1,13 @@
 import type { Request, Response } from "express";
-import { hashPassword, dechiffrement } from "../../lib/bib";
+import { hashPassword, dechiffrement, chiffrement } from "../../lib/bib";
 import {selectSignalementDB} from "../../models/signalement"
+import { createLog } from "../../models/autid";
 
 
 export default async function getSignalement(req:Request, res: Response) {
     try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
     const { trackingCode, password } = req.body;
     if (!trackingCode || !password) {
       return res.status(400).json({ error: 'Numéro de suivi et mot de passe requis' });
@@ -31,6 +34,8 @@ export default async function getSignalement(req:Request, res: Response) {
         description: descriptionEncrypted ? dechiffrement(descriptionEncrypted) : null,
         lieu: lieuEncrypted ? dechiffrement(lieuEncrypted) : null
     };
+
+    await createLog("victim", detailDechiffre.idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
 
     return res.status(200).json(detailDechiffre);
   } catch (error : any) {
