@@ -125,22 +125,23 @@ model PieceJointe {
   id                         Int          @id @default(autoincrement())
   idSignalement              Int          @map("id_signalement")
   
-  // La clé unique du fichier sur R2 (ex: "uploads/random-id.png")
-  fileKey                    String       @map("file_key") @db.VarChar(512) 
+  // Correction ici : le nom dans MySQL est "encrypted_path"
+  encryptedPath              String       @map("encrypted_path") @db.VarChar(512) 
   
-  // Nom d'origine chiffré pour la confidentialité
+  // Correspond bien au BLOB NULL
   originalFilenameEncrypted  Bytes?       @map("original_filename_encrypted") @db.Blob 
   
-  // BigInt pour éviter tout overflow sur la taille des fichiers
+  // Correspond bien au BIGINT NULL
   fileSize                   BigInt?      @map("file_size") 
   
+  // Correspond bien au DATETIME DEFAULT CURRENT_TIMESTAMP
   createdAt                  DateTime     @default(now()) @map("created_at") @db.DateTime(0)
 
-  // Relation : Une pièce jointe appartient forcément à un signalement
+  // Relation
   signalement                Signalement  @relation(fields: [idSignalement], references: [idSignalement], onDelete: Cascade)
 
   @@map("pieces_jointes")
-  @@index([idSignalement]) // Index pour accélérer les recherches par signalement
+  @@index([idSignalement])
 }
 
 model Message {
