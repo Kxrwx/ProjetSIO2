@@ -2,7 +2,7 @@ import type { Response } from "express";
 import { getFile, setUrlViewFile } from "../../../models/file";
 import { AuthRequest } from "../../../middleware/auth.middleware";
 
-export default async function getFileNoAdmin(req: AuthRequest, res: Response) {
+export default async function getFileAdmin(req: AuthRequest, res: Response) {
   try {
     const { idSignalement} = req.body;
     if (!idSignalement) {

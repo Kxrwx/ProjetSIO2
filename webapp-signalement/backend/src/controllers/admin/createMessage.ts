@@ -5,8 +5,9 @@ import { chiffrement } from "../../lib/bib";
 
 export default async function createMessageAdmin(req:AuthRequest, res : Response) {
     try{
-        const {bodymessage, idSignalement, userId} = req.body
-        if(!userId)return res.status(401).json({error : "Non autorisé"})
+        const {bodymessage, idSignalement} = req.body
+        const userId = req.user?.id
+        if(!userId) return res.status(401).json({error : "Unauthorize"})
         if(!bodymessage || !idSignalement) return res.status(404).json({error : "Donnée manquante"})
         const messageCrypt = chiffrement(bodymessage)
         if(!messageCrypt) return res.status(400).json({erreur : "Erreur de chiffrement"})

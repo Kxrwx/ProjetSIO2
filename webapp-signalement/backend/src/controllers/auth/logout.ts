@@ -6,7 +6,7 @@ import { AuthRequest } from "../../middleware/auth.middleware";
 export default async function logout(req : AuthRequest, res : Response) {
     try {
         const userId = req.user?.id
-        if(!userId) return res.status(404).json({error : "Unauthentified"})
+        if(!userId) return res.status(401).json({error : "Unauthentified"})
         const reponse = await deleteSession(userId)
         if(!reponse) return res.status(404).json({error : "Aucune session"})
         res.clearCookie("session_token", {
