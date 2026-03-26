@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import Loader from "../components/Loader";
 
 export default function ProtectedRoute() {
     const [status, setStatus] = useState<"loading" | "auth" | "no-auth">("loading");
@@ -14,11 +15,15 @@ export default function ProtectedRoute() {
     }, []);
 
     if (status === "loading") {
-        return  <div className="flex h-screen w-full items-center justify-center bg-white">
-                    <div className="text-lg font-medium">
+        return  <div className="flex h-screen w-full flex-col items-center justify-center bg-white gap-4">
+                {/* Loader */}
+                <Loader />
+                <div className="flex flex-col items-center gap-1">
+                    <div className="text-xl font-semibold text-gray-800">
                     Vérification de la session...
                     </div>
-                </div>;
+                </div>
+                </div>
     }
 
     return status === "auth" ? <Outlet /> : <Navigate to="/Auth" replace />;
