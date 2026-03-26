@@ -9,6 +9,7 @@ import createMessageAdmin from "../controllers/admin/createMessage";
 import getMessageAdmin from "../controllers/admin/getMessage";
 import getFileAdmin from "../controllers/admin/file/getFile";
 import getLogController from "../controllers/admin/log/getLog";
+import createLogFile from "../controllers/admin/log/createLogFile";
 
 const route = express.Router();
 
@@ -29,6 +30,7 @@ route.post("/signalement/file", authenticate, getFileAdmin)
 
 //log
 route.get("/log", authenticate, getLogController)
+route.get("/createLog", authenticate, createLogFile)
 
 route.get("", authenticate, isAuth)
 

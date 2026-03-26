@@ -1,4 +1,6 @@
 import crypto from "crypto"
+import fs from 'fs/promises';
+import path from 'path';
 
 const algorithm = 'aes-256-cbc';
 const key = crypto.createHash('sha256')
@@ -28,4 +30,27 @@ export function dechiffrement(hash : string) {
     let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
+}
+
+
+
+
+export async function generateLogFile(ligne: string | string[]) {
+    const dirPath = './logs';
+    const filePath = path.join(dirPath, 'audit-backup.txt');
+    
+    await fs.mkdir(dirPath, { recursive: true });
+
+    const entete = `--- RAPPORT D'AUDIT DU ${new Date().toLocaleString()} ---\n\n`;
+    await fs.writeFile(filePath, entete);
+
+    if (Array.isArray(ligne)) {
+        const blocTexte = ligne.map(l => `${l}\n`).join('');
+        await fs.appendFile(filePath, blocTexte);
+    } else {
+        await fs.appendFile(filePath, `${ligne}\n`);
+    }
+    await fs.appendFile(filePath, "\n--- FIN DU RAPPORT ---\n");
+
+    return filePath;
 }

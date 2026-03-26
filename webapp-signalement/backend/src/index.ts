@@ -12,6 +12,7 @@ import SignalementRouter from "./routes/signalement.route"
 import AuthRouter from "./routes/auth.route"
 import AdminRouter from "./routes/admin.route"
 import {prisma} from './db/prisma'
+import { initLogJobs } from "./routes/jobLogBatch";
 
 
 //config index
@@ -82,6 +83,7 @@ app.get('/api/testdb', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Serveur Prêt sur http://localhost:${PORT}`);
+  initLogJobs()
 });
 
 

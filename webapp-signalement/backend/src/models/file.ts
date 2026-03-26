@@ -41,16 +41,14 @@ export async function uploadToS3(file: Express.Multer.File, idSignalement: numbe
     return fileKey;
 }
 
-export async function uploadToS3Log(file : Express.Multer.File, userId: string) {
-    const uniqueSuffix = crypto.randomBytes(4).toString('hex');
-    const folder = Date.now()
-    const fileKey = `log/${folder}/${Date.now()}-${uniqueSuffix}-${userId}`;
+export async function uploadToS3Log(fileBuffer: Buffer, originalName: string) {
+    const fileKey = `logs/audit-${Date.now()}.txt`;
 
     const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
         Key: fileKey,
-        Body: file.buffer, 
-        ContentType: file.mimetype, 
+        Body: fileBuffer, 
+        ContentType: "text/plain",
     });
 
     await s3.send(command);
