@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useCallback } from "react";
 import "../styles/Tracking.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,19 +6,14 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ChatBox from "../components/ChatBoxNoAdmin";
 
 interface Signalement {
-  idSignalement : number;
+  idSignalement: number;
   trackingCode: string;
   title: string;
   statut?: { nameStatut: string };
   priorite?: { namePriorite: string };
   categorie?: { nameCategorie: string };
-  descriptionEncrypted: string;
-  messages?: Array<{
-    id: number;
-    createdAt: string;
-    contenuEncrypted: string;
-    userId: string | null;
-  }>;
+  description: string; 
+  messagesDechiffres: any[]; 
 }
 
 export default function Tracking() {
@@ -28,11 +23,11 @@ export default function Tracking() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e : any) => {
-    e.preventDefault();
-    setError("");
-    setSignalement(null);
-    setLoading(true);
+  // Fonction fetch extraite pour être réutilisée par le polling et ChatBox
+  const fetchSignalement = useCallback(async (isPolling = false) => {
+    if (!trackingCode || !password) return;
+    
+    if (!isPolling) setLoading(true);
     try {
       const response = await fetch("http://localhost:5000/api/signalements/consult", {
         method: "POST",
@@ -40,40 +35,44 @@ export default function Tracking() {
         body: JSON.stringify({ trackingCode: trackingCode.trim(), password }),
       });
       const data = await response.json();
+      
       if (!response.ok) {
-        setError(data.error || "Erreur lors de la récupération du signalement.");
+        if (!isPolling) setError(data.error || "Erreur de récupération.");
         return;
       }
       setSignalement(data);
     } catch (err) {
       console.error(err);
-      setError("Connexion au serveur impossible. Vérifiez que le backend est démarré sur le port 5000.");
+      if (!isPolling) setError("Connexion au serveur impossible.");
     } finally {
-      setLoading(false);
+      if (!isPolling) setLoading(false);
     }
+  }, [trackingCode, password]);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setError("");
+    fetchSignalement();
   };
 
   return (
     <div className="container-tracking">
       <div className="absolute px-4 py-2 top-4 left-4">
-          <Link to="/">
-              <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
-                  <FontAwesomeIcon icon={faArrowLeft} /> Retour      
-              </button>
-          </Link>
+        <Link to="/">
+          <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
+            <FontAwesomeIcon icon={faArrowLeft} /> Retour      
+          </button>
+        </Link>
       </div>   
+
       <div className="container-title">
         <h1>Signalement harcèlement professionnel</h1>
-      </div>
-      <div className="container-desc">
-        <h3>Avant d'envoyer votre signalement, sachez que vous etes en sécurité ici, que votre voix compte et que nous vous protégeons avec la plus strict confidentialité</h3>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="container-input-code">
           <label>Numéro de suivi
             <input
-              id="trackingCode"
               type="text"
               required
               placeholder="Ex: SIG-XXXXXXXX"
@@ -83,7 +82,6 @@ export default function Tracking() {
           </label>
           <label>Mot de passe
             <input
-              id="password"
               type="password"
               required
               value={password}
@@ -107,19 +105,15 @@ export default function Tracking() {
           <p><strong>Statut :</strong> {signalement.statut?.nameStatut}</p>
           <p><strong>Priorité :</strong> {signalement.priorite?.namePriorite}</p>
           <p><strong>Catégorie :</strong> {signalement.categorie?.nameCategorie}</p>
-          <p><strong>Description :</strong> {signalement.descriptionEncrypted}</p>
+          <p><strong>Description :</strong> {signalement.description}</p>
           
-        <ChatBox 
-  idSignalement={signalement.idSignalement} 
-  trackingCode={trackingCode} 
-  password={password} 
-/>
+          <ChatBox 
+            idSignalement={signalement.idSignalement} 
+            messages={signalement.messagesDechiffres || []}
+            onRefresh={() => fetchSignalement(true)} 
+          />
         </div>
       )}
-
-      <div className="container-footer">
-        <p>Votre signalement est pris très au sérieux; vous n'êtes pas responsable de ce que vous subissez et nous ferons tout notre possible pour vous accompagner en toute confidentialité.</p>
-      </div>
     </div>
   );
 }

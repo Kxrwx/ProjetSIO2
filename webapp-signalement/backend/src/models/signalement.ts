@@ -1,6 +1,7 @@
 import { UNABLE_TO_FIND_POSTINSTALL_TRIGGER_JSON_PARSE_ERROR } from "@prisma/client/scripts/postinstall.js";
 import {prisma} from "../db/prisma"
 import { Prisma } from "@prisma/client"
+import { includes } from "zod";
 
 export type SignalementData = Prisma.SignalementUncheckedCreateInput;
 
@@ -10,17 +11,35 @@ export async function createSignalementDB(data : SignalementData) {
     return req
 }
 
-export async function selectSignalementDB(trackingCode : string, trackingPasswordHash : string){
-    const req = await prisma.signalement.findFirst({
-        where : {trackingCode, trackingPasswordHash},
+export async function selectSignalementDB(trackingCode: string, trackingPasswordHash: string) {
+  const req = await prisma.signalement.findFirst({
+    where: { 
+      trackingCode, 
+      trackingPasswordHash 
+    },
+    include: {
+      statut: true,
+      priorite: true,
+      categorie: true,
+      messages: {
+        orderBy: { createdAt: 'asc' },
         include: {
-        statut: true,
-        priorite: true,
-        categorie: true,
-        messages: { orderBy: { createdAt: 'asc' } },
+          user: {
+            select: {
+              name: true,
+              surname: true,
+              role: {
+                select: {
+                  nameRole: true
+                }
+              }
+            }
+          }
+        }
       },
-    })
-    return req
+    },
+  });
+  return req;
 }
 
 export async function getAllSignalement() {

@@ -2,55 +2,31 @@ import { useState, useEffect, useRef } from "react";
 
 interface Message {
   id: number;
+  idSignalement: number;
   userId: string | null;
   contenu: string; 
+  isRead: boolean;
   createdAt: string;
   user?: {
     name: string;
-    role: { nameRole: string };
+    surname: string; 
+    role: { 
+      nameRole: string 
+    };
   } | null;
 }
-
 interface ChatBoxProps {
+  messages: Message[];
   idSignalement: number;
-  trackingCode: string;
-  password: string;   
+  onRefresh: () => void; 
 }
 
-export default function ChatBox({ idSignalement, trackingCode, password }: ChatBoxProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxProps) {
   const [newMessage, setNewMessage] = useState("");
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 1. Charger les messages avec le BODY spécifique (POST)
-  const fetchMessages = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/signalements/getMessage", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            idSignalement, 
-            trackingCode, 
-            password 
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setMessages(data);
-      }
-    } catch (err) {
-      console.error("Erreur chargement messages:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchMessages();
-    const interval = setInterval(fetchMessages, 10000); // Polling 10s
-    return () => clearInterval(interval);
-  }, [idSignalement]);
-
+  // Scroll automatique vers le bas à chaque nouveau message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -61,19 +37,18 @@ export default function ChatBox({ idSignalement, trackingCode, password }: ChatB
 
     setSending(true);
     try {
-      const response = await fetch("http://localhost:5000/api/messages/create", {
+      const response = await fetch("http://localhost:5000/api/signalements/createMessage", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
             idSignalement, 
             bodymessage: newMessage, 
-            userId: null 
         }),
       });
 
       if (response.ok) {
         setNewMessage("");
-        await fetchMessages();
+        onRefresh();
       }
     } catch (err) {
       console.error("Erreur envoi:", err);
@@ -102,12 +77,13 @@ export default function ChatBox({ idSignalement, trackingCode, password }: ChatB
               }`}>
                 <div className="flex items-center justify-between gap-4 mb-1">
                   <span className={`text-[10px] font-black uppercase tracking-tighter ${isAdmin ? "text-blue-600" : "text-blue-100"}`}>
-                    {isAdmin ? `⚖️ ${msg.user?.role?.nameRole} (${msg.user?.name})` : "👤 Vous"}
+                    {isAdmin ? `⚖️ ${msg.user?.role?.nameRole || "Admin"}` : "👤 Vous"}
                   </span>
                   <span className="text-[9px] opacity-60 font-mono">
                     {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
+                {/* Note : On affiche contenuEncrypted tel quel selon votre retour API */}
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.contenu}</p>
               </div>
             </div>

@@ -24,16 +24,28 @@ export default async function getSignalement(req:Request, res: Response) {
         descriptionEncrypted, 
         lieuEncrypted,
         trackingPasswordHash, 
+        messages,
         ...rest               
     } = signalement;
+
+    const messagesDechiffres = messages.map(msg => {
+                  const { contenuEncrypted, ...reste } = msg;
+                  return {
+                      ...reste,
+                      contenu: dechiffrement(contenuEncrypted)
+                  };
+        });
     
     const detailDechiffre = {
         ...rest, 
+        messagesDechiffres,
         victimContact: victimContactEncrypted ? dechiffrement(victimContactEncrypted) : null,
         victimName: victimNameEncrypted ? dechiffrement(victimNameEncrypted) : null,
         description: descriptionEncrypted ? dechiffrement(descriptionEncrypted) : null,
         lieu: lieuEncrypted ? dechiffrement(lieuEncrypted) : null
     };
+
+    
 
     await createLog(null, detailDechiffre.idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
 
