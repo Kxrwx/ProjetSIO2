@@ -7,7 +7,7 @@ import Admin from "../pages/Admin";
 import ProtectedRoute from "./ProtectedRoute"; 
 import InfoAdminAcc from "../pages/InfoAdmin/InfoAdminAcc";
 import DetailsSigna from "../pages/Ticket/DetailsSigna";
-
+import Messages from "../pages/Message/Messages";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -23,6 +23,7 @@ export const AppRouter = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/infoadminaccount" element={<InfoAdminAcc />} />
           <Route path="/admin/signalement/detail/:id" element={<DetailsSigna />} />
+          <Route path="/admin/signalement/detail/messages/:id" element={<Messages />} /> {/* Nouvelle route pour les messages */}
         </Route>
       </Routes>
     </BrowserRouter>
