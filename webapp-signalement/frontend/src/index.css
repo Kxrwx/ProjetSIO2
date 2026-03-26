@@ -1,36 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  /* On utilise Montserrat pour tout le projet */
   font-family: 'Montserrat', sans-serif;
-  width: 100vw;
-  height: 100vh;
-  letter-spacing: 0.05px;
-  line-height: 1.2; 
-  color-scheme: light dark;
-  color: #000000;
-  background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
-  list-style: none;
-  font-synthesis: none;
+  
+  /* Supprime impérativement width/height ici pour laisser le contenu respirer */
+  letter-spacing: -0.01em; /* Un peu plus serré pour le look moderne */
+  line-height: 1.5; 
+  
+  /* On force le mode clair pour la cohérence de l'app de signalement */
+  color-scheme: light;
+  color: #1e293b; /* text-slate-800 */
+  
+  /* Le fond global en Slate-50 (f8fafc) pour éviter les coupures au scroll */
+  background-color: #f8fafc; 
+  
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+html, body, #root {
+  /* On permet au body de prendre toute la hauteur nécessaire sans le bloquer */
+  min-height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
+  background-color: #f8fafc; /* Sécurité anti-flash blanc */
 }
 
+body {
+  /* On retire "place-items: center" qui casse souvent les layouts longs */
+  display: block; 
+}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #000000;
-    background: linear-gradient(135deg, #F4F4F6, #F5F5F7);
+/* Custom Scrollbar pour coller à l'UI Indigo */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0; /* slate-200 */
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c7d2fe; /* indigo-200 */
   }
 }
 
-
+/* Reset des listes pour éviter les puces par défaut */
+ul, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

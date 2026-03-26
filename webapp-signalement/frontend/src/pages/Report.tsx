@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Report.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -116,8 +115,7 @@ export default function Report() {
 
   // ─── Écran de confirmation ───────────────────────────────────────────────────
 return (
-  <>
-  <div className="min-h-screen w-full bg-slate-50 font-sans selection:bg-emerald-100 flex flex-col">
+  <div className="w-full min-h-full bg-slate-50 font-sans selection:bg-indigo-100 flex flex-col items-center overflow-visible">
     {/* 1. ÉCRAN DE SUCCÈS (SI SOUMIS) */}
     <AnimatePresence>
       {submitted ? (
@@ -128,19 +126,19 @@ return (
           {/* Bouton retour en haut à gauche */}
           <div className="absolute top-8 left-8">
             <Link to="/" className="group flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all shadow-sm">
+              <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white group-hover:border-indigo-500 transition-all shadow-sm">
                 <FontAwesomeIcon icon={faArrowLeft} />
               </div>
-              <span className="text-sm font-bold text-slate-500 group-hover:text-black">Quitter</span>
+              <span className="text-sm font-bold text-slate-500 group-hover:text-indigo-600 transition-colors">Quitter</span>
             </Link>
           </div>
 
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            className="bg-white rounded-[2.5rem] p-10 md:p-16 max-w-lg w-full text-center shadow-[0_30px_100px_rgba(0,0,0,0.04)] border border-slate-100"
+            className="bg-white rounded-[2.5rem] p-10 md:p-16 max-w-lg w-full text-center shadow-[0_30px_100px_rgba(79,70,229,0.08)] border border-indigo-50"
           >
-            <div className="w-20 h-20 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8">
+            <div className="w-20 h-20 bg-emerald-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner">
               <motion.div
                 initial={{ rotate: -15, scale: 0 }}
                 animate={{ rotate: 0, scale: 1 }}
@@ -152,14 +150,14 @@ return (
               </motion.div>
             </div>
 
-            <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Signalement transmis</h2>
+            <h2 className="text-3xl font-black text-slate-800 mb-4 tracking-tight">Signalement transmis</h2>
             <p className="text-slate-500 text-sm leading-relaxed mb-10">
               Votre déposition a été enregistrée avec succès. Notez votre code de suivi pour consulter les futures mises à jour.
             </p>
 
-            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 mb-10">
-              <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Référence unique</span>
-              <div className="text-2xl md:text-3xl font-mono font-black text-black tracking-tighter">
+            <div className="bg-indigo-50/50 rounded-2xl p-6 border border-indigo-100 mb-10">
+              <span className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2">Référence unique</span>
+              <div className="text-2xl md:text-3xl font-mono font-black text-indigo-600 tracking-tighter">
                 #{trackingCode}
               </div>
             </div>
@@ -171,7 +169,7 @@ return (
                 setFormData({ titre: "", nom: "", contact: "", lieu: "", date: "", categorie: "Harcèlement", priorite: "Modéré", description: "", password: "" });
                 setIsAnonymous(false);
               }}
-              className="text-sm font-bold text-slate-400 hover:text-emerald-600 underline underline-offset-8 transition-all"
+              className="text-sm font-bold text-slate-400 hover:text-indigo-600 underline underline-offset-8 transition-all"
             >
               Effectuer un nouveau signalement
             </button>
@@ -185,43 +183,43 @@ return (
         >
           {/* Bouton retour contextuel */}
           <div className="max-w-4xl mx-auto px-4 mb-10">
-            <Link to="/" className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm hover:shadow-md transition-all group">
-              <FontAwesomeIcon icon={faArrowLeft} className="text-slate-400 group-hover:text-black" />
-              <span className="text-sm font-bold text-slate-600 group-hover:text-black">Retour à l'accueil</span>
+            <Link to="/" className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm hover:shadow-md hover:border-indigo-200 transition-all group">
+              <FontAwesomeIcon icon={faArrowLeft} className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
+              <span className="text-sm font-bold text-slate-600 group-hover:text-indigo-600 transition-colors">Retour à l'accueil</span>
             </Link>
           </div>
 
           <div className="max-w-4xl mx-auto px-4">
             {/* Header / Tracking info */}
             <header className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 bg-slate-900 text-white rounded-full px-4 py-1.5 mb-6 shadow-xl shadow-slate-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 rounded-full px-4 py-1.5 mb-6 shadow-sm border border-indigo-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                 <span className="text-[10px] font-black tracking-widest uppercase">Session Chiffrée</span>
               </div>
-              <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">Déclarer un incident</h1>
+              <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Déclarer un incident</h1>
               <p className="text-slate-500 text-sm mb-6 font-medium">Anonymat garanti et protection des données de bout en bout.</p>
               
               <div className="flex items-center justify-center gap-3 text-xs font-bold text-slate-400">
                 <span>RÉF :</span>
-                <span className="bg-slate-100 px-3 py-1 rounded-md text-slate-900 font-mono">#{trackingCode}</span>
+                <span className="bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-md text-indigo-600 font-mono">#{trackingCode}</span>
               </div>
             </header>
 
             {/* Stepper Dynamique */}
             <div className="relative flex justify-between items-center mb-12 px-4">
-              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
+              <div className="absolute top-1/2 left-0 w-full h-[3px] bg-slate-200 -translate-y-1/2 z-0 rounded-full" />
               <motion.div 
-                className="absolute top-1/2 left-0 h-[2px] bg-emerald-500 -translate-y-1/2 z-0"
+                className="absolute top-1/2 left-0 h-[3px] bg-indigo-500 -translate-y-1/2 z-0 rounded-full"
                 animate={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
               />
               {STEPS.map((s) => (
                 <div key={s.id} className="relative z-10 flex flex-col items-center gap-2">
                   <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black transition-all duration-500 shadow-sm ${
-                    step >= s.id ? "bg-black text-white scale-110 shadow-lg shadow-black/20" : "bg-white text-slate-300 border border-slate-100"
+                    step >= s.id ? "bg-indigo-600 text-white scale-110 shadow-lg shadow-indigo-500/30" : "bg-white text-slate-300 border border-slate-200"
                   }`}>
                     {step > s.id ? <FontAwesomeIcon icon={faCheckCircle} className="text-xs" /> : s.id}
                   </div>
-                  <span className={`text-[10px] font-black uppercase tracking-tighter ${step >= s.id ? "text-black" : "text-slate-400"}`}>
+                  <span className={`text-[10px] font-black uppercase tracking-tighter ${step >= s.id ? "text-indigo-600" : "text-slate-400"}`}>
                     {s.label}
                   </span>
                 </div>
@@ -229,7 +227,7 @@ return (
             </div>
 
             {/* Carte Principale avec Transition de contenu */}
-            <div className="bg-white rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.03)] border border-slate-100 overflow-hidden">
+            <div className="bg-white rounded-[2.5rem] shadow-[0_40px_100px_rgba(79,70,229,0.05)] border border-indigo-50 overflow-hidden">
               <div className="p-8 md:p-12">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -243,16 +241,16 @@ return (
                     {step === 1 && (
                       <div className="space-y-8">
                         <div>
-                          <h2 className="text-2xl font-black text-slate-900 mb-2">Nature de l'incident</h2>
+                          <h2 className="text-2xl font-black text-slate-800 mb-2">Nature de l'incident</h2>
                           <p className="text-sm text-slate-400 font-medium">Catégorisez votre signalement pour un traitement optimal.</p>
                         </div>
 
                         <div className="space-y-4">
-                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Titre du dossier</label>
+                          <label className="text-[10px] font-black uppercase text-indigo-400 tracking-widest ml-1">Titre du dossier</label>
                           <input
                             id="titre" type="text" value={formData.titre} onChange={handleChange}
                             placeholder="Sujet bref du signalement..."
-                            className="w-full bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl px-6 py-4 outline-none transition-all font-medium"
+                            className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all font-medium text-slate-700"
                           />
                         </div>
 
@@ -261,7 +259,7 @@ return (
                             <button
                               key={cat.value} type="button" onClick={() => setFormData((p) => ({ ...p, categorie: cat.value }))}
                               className={`flex flex-col items-center gap-3 p-6 rounded-3xl border-2 transition-all duration-300 ${
-                                formData.categorie === cat.value ? "border-black bg-black text-white shadow-xl shadow-black/10 scale-[0.98]" : "border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200"
+                                formData.categorie === cat.value ? "border-indigo-500 bg-indigo-50 text-indigo-700 shadow-md scale-[0.98]" : "border-slate-100 bg-slate-50 text-slate-500 hover:border-indigo-200 hover:bg-white"
                               }`}
                             >
                               <span className="text-2xl">{cat.icon}</span>
@@ -271,16 +269,16 @@ return (
                         </div>
 
                         <div className="pt-4">
-                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1 mb-4 block">Priorité estimée</label>
-                          <div className="flex flex-wrap gap-3">
+                          <label className="text-[10px] font-black uppercase text-indigo-400 tracking-widest ml-1 mb-4 block">Priorité estimée</label>
+                          <div className="flex flex-wrap justify-center gap-3">
                             {PRIORITY_OPTIONS.map((p) => (
                               <button
                                 key={p.value} type="button" onClick={() => setFormData((prev) => ({ ...prev, priorite: p.value }))}
                                 className={`flex items-center gap-3 px-6 py-3 rounded-2xl border-2 text-xs font-bold transition-all ${
-                                  formData.priorite === p.value ? "border-black bg-white text-black shadow-md" : "border-slate-50 bg-slate-50 text-slate-400"
+                                  formData.priorite === p.value ? "border-indigo-500 bg-white text-indigo-700 shadow-md" : "border-slate-100 bg-slate-50 text-slate-400 hover:border-indigo-200"
                                 }`}
                               >
-                                <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-slate-200"}`} />
+                                <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-slate-300"}`} />
                                 {p.value}
                               </button>
                             ))}
@@ -293,29 +291,29 @@ return (
                     {step === 2 && (
                       <div className="space-y-8">
                         <div>
-                          <h2 className="text-2xl font-black text-slate-900 mb-2">Détails des faits</h2>
+                          <h2 className="text-2xl font-black text-slate-800 mb-2">Détails des faits</h2>
                           <p className="text-sm text-slate-400 font-medium">Localisation et description précise de l'incident.</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Lieu</label>
-                            <input id="lieu" value={formData.lieu} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none focus:ring-2 ring-black/5" placeholder="Bureau, étage, site..." />
+                            <label className="text-[10px] font-black uppercase text-indigo-400 ml-1">Lieu</label>
+                            <input id="lieu" value={formData.lieu} onChange={handleChange} className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all text-slate-700" placeholder="Bureau, étage, site..." />
                           </div>
                           <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Date approximative</label>
-                            <input id="date" type="date" value={formData.date} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none" />
+                            <label className="text-[10px] font-black uppercase text-indigo-400 ml-1">Date approximative</label>
+                            <input id="date" type="date" value={formData.date} onChange={handleChange} className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all text-slate-700" />
                           </div>
                         </div>
 
                         <div className="space-y-2">
                           <div className="flex justify-between ml-1">
-                            <label className="text-[10px] font-black uppercase text-slate-400">Description factuelle</label>
-                            <span className="text-[10px] font-bold text-slate-300">{formData.description.length} car.</span>
+                            <label className="text-[10px] font-black uppercase text-indigo-400">Description factuelle</label>
+                            <span className="text-[10px] font-bold text-slate-400">{formData.description.length} car.</span>
                           </div>
                           <textarea 
                             id="description" rows={6} value={formData.description} onChange={handleChange}
-                            className="w-full bg-slate-50 rounded-3xl px-6 py-5 outline-none focus:bg-white border-2 border-transparent focus:border-black transition-all resize-none font-medium"
+                            className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-3xl px-6 py-5 outline-none transition-all resize-none font-medium text-slate-700"
                             placeholder="Décrivez ce qu'il s'est passé de manière objective..."
                           />
                         </div>
@@ -326,27 +324,27 @@ return (
                     {step === 3 && (
                       <div className="space-y-8">
                         <div>
-                          <h2 className="text-2xl font-black text-slate-900 mb-2">Votre identité</h2>
+                          <h2 className="text-2xl font-black text-slate-800 mb-2">Votre identité</h2>
                           <p className="text-sm text-slate-400 font-medium">Choisissez le niveau de confidentialité de votre déposition.</p>
                         </div>
 
                         <button
                           type="button" onClick={handleAnonymousToggle}
                           className={`w-full flex items-center justify-between p-6 rounded-3xl border-2 transition-all ${
-                            isAnonymous ? "border-emerald-500 bg-emerald-50/30" : "border-slate-100 bg-slate-50"
+                            isAnonymous ? "border-indigo-500 bg-indigo-50" : "border-slate-100 bg-slate-50 hover:border-indigo-200 hover:bg-white"
                           }`}
                         >
                           <div className="flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${isAnonymous ? "bg-emerald-500 text-white" : "bg-white text-slate-400 shadow-sm"}`}>
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl transition-colors ${isAnonymous ? "bg-indigo-500 text-white shadow-md" : "bg-white text-slate-400 shadow-sm"}`}>
                               {isAnonymous ? <FontAwesomeIcon icon={faShieldAlt} /> : "👤"}
                             </div>
                             <div className="text-left">
-                              <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Signalement anonyme</p>
+                              <p className={`font-black text-sm uppercase tracking-tight ${isAnonymous ? "text-indigo-700" : "text-slate-700"}`}>Signalement anonyme</p>
                               <p className="text-xs text-slate-500 font-medium italic">Aucune donnée personnelle ne sera transmise</p>
                             </div>
                           </div>
                           {/* Toggle Animé */}
-                          <div className={`w-12 h-6 rounded-full relative transition-colors ${isAnonymous ? "bg-emerald-500" : "bg-slate-200"}`}>
+                          <div className={`w-12 h-6 rounded-full relative transition-colors duration-300 ${isAnonymous ? "bg-indigo-500" : "bg-slate-300"}`}>
                             <motion.div 
                               animate={{ x: isAnonymous ? 26 : 4 }}
                               className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm"
@@ -357,18 +355,18 @@ return (
                         {!isAnonymous && (
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                              <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Nom Complet</label>
-                              <input id="nom" value={formData.nom} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none border-2 border-transparent focus:border-black transition-all" />
+                              <label className="text-[10px] font-black uppercase text-indigo-400 ml-1">Nom Complet</label>
+                              <input id="nom" value={formData.nom} onChange={handleChange} className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all text-slate-700" />
                             </div>
                             <div className="space-y-2">
-                              <label className="text-[10px] font-black uppercase text-slate-400 ml-1">E-mail (pour suivi)</label>
-                              <input id="contact" value={formData.contact} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none border-2 border-transparent focus:border-black transition-all" />
+                              <label className="text-[10px] font-black uppercase text-indigo-400 ml-1">E-mail (pour suivi)</label>
+                              <input id="contact" value={formData.contact} onChange={handleChange} className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all text-slate-700" />
                             </div>
                           </motion.div>
                         )}
 
                         {isAnonymous && (
-                          <div className="p-5 rounded-2xl bg-amber-50 border border-amber-100 flex gap-4">
+                          <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200/50 flex gap-4">
                             <span className="text-amber-500">⚠️</span>
                             <p className="text-xs text-amber-700 font-medium leading-relaxed">
                               En mode anonyme, nous ne pourrons pas vous recontacter. Le suivi se fera uniquement via votre code et mot de passe.
@@ -382,40 +380,60 @@ return (
                     {step === 4 && (
                       <div className="space-y-8">
                         <div>
-                          <h2 className="text-2xl font-black text-slate-900 mb-2">Sécurisation & Validation</h2>
+                          <h2 className="text-2xl font-black text-slate-800 mb-2">Sécurisation & Validation</h2>
                           <p className="text-sm text-slate-400 font-medium">Vérifiez vos informations et protégez votre accès.</p>
                         </div>
 
-                        <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-6">
-                          <div>
-                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Catégorie</p>
-                            <p className="text-sm font-bold text-slate-800">{formData.categorie}</p>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Priorité</p>
-                            <p className="text-sm font-bold text-slate-800">{formData.priorite}</p>
-                          </div>
-                          <div className="col-span-2">
-                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Identité</p>
-                            <p className="text-sm font-bold text-slate-800 truncate">{isAnonymous ? "Anonymat total" : formData.nom}</p>
-                          </div>
-                        </div>
+<div className="bg-slate-50/80 rounded-3xl p-6 border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+  {/* Colonne 1 */}
+  <div className="flex flex-col items-center">
+    <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Catégorie</p>
+    <p className="text-sm font-bold text-slate-700">{formData.categorie}</p>
+  </div>
+  
+  {/* Colonne 2 (Ajout d'une bordure latérale sur desktop pour séparer proprement) */}
+  <div className="flex flex-col items-center md:border-x border-slate-200 px-4">
+    <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Priorité</p>
+    <p className="text-sm font-bold text-slate-700">{formData.priorite}</p>
+  </div>
+  
+  {/* Colonne 3 */}
+  <div className="flex flex-col items-center">
+    <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Identité</p>
+    <p className="text-sm font-bold text-slate-700 truncate w-full px-2">
+      {isAnonymous ? "Anonymat total" : formData.nom}
+    </p>
+  </div>
+</div>
 
                         <div className="space-y-4">
-                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Mot de passe de suivi</label>
+                          <label className="text-[10px] font-black uppercase text-indigo-400 tracking-widest ml-1">Mot de passe de suivi</label>
                           <div className="relative">
                             <input
                               id="password" type="password" value={formData.password} onChange={handleChange}
                               placeholder="6 caractères minimum..."
-                              className="w-full bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl px-6 py-4 outline-none transition-all font-mono"
+                              className="w-full bg-slate-50 border-2 border-transparent focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 rounded-2xl px-6 py-4 outline-none transition-all font-mono text-slate-700"
                             />
                             <div className="absolute bottom-[-10px] left-2 right-2 flex gap-1 px-2">
-                                {[1, 2, 3, 4].map((i) => (
-                                  <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-500 ${
-                                    formData.password.length >= i * 3 ? (formData.password.length > 9 ? "bg-emerald-500" : "bg-amber-400") : "bg-slate-200"
-                                  }`} />
-                                ))}
-                            </div>
+  {[1, 2, 3, 4].map((i) => {
+    // Calcul de la couleur selon la longueur totale
+    const len = formData.password.length;
+    let strengthColor = "bg-slate-200"; // Couleur par défaut (vide)
+
+    if (len >= i * 3) {
+      if (len <= 4) strengthColor = "bg-red-500";       // Trop court / Faible
+      else if (len <= 8) strengthColor = "bg-amber-400"; // Moyen
+      else strengthColor = "bg-emerald-500";            // Fort
+    }
+
+    return (
+      <div 
+        key={i} 
+        className={`h-1 flex-1 rounded-full transition-all duration-500 ${strengthColor}`} 
+      />
+    );
+  })}
+</div>
                           </div>
                         </div>
                       </div>
@@ -428,7 +446,7 @@ return (
               <div className="bg-slate-50/50 p-8 border-t border-slate-100 flex items-center justify-between">
                 <button
                   type="button" onClick={prev} disabled={step === 1}
-                  className={`flex items-center gap-2 px-6 py-3 text-sm font-black text-slate-400 hover:text-black transition-all ${step === 1 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+                  className={`flex items-center gap-2 px-6 py-3 text-sm font-black text-slate-400 hover:text-indigo-600 transition-all ${step === 1 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
                 >
                   <FontAwesomeIcon icon={faArrowLeft} /> Précédent
                 </button>
@@ -436,16 +454,16 @@ return (
                 {step === 4 ? (
                   <button
                     onClick={handleSubmit} disabled={!canProceedStep4 || isLoading}
-                    className="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 shadow-xl shadow-black/10 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400"
+                    className="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-sm hover:bg-indigo-700 hover:scale-[1.02] active:scale-95 shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                   >
                     {isLoading ? "Cryptage en cours..." : "Soumettre le signalement"}
-                    {!isLoading && <FontAwesomeIcon icon={faShieldAlt} className="text-emerald-400" />}
+                    {!isLoading && <FontAwesomeIcon icon={faShieldAlt} className="text-indigo-200" />}
                   </button>
                 ) : (
                   <button
                     type="button" onClick={next}
                     disabled={(step === 1 && !canProceedStep1) || (step === 2 && !canProceedStep2) || (step === 3 && !canProceedStep3)}
-                    className="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 shadow-xl shadow-black/10 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400"
+                    className="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-sm hover:bg-indigo-700 hover:scale-[1.02] active:scale-95 shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                   >
                     Continuer
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
@@ -455,7 +473,7 @@ return (
             </div>
 
             <p className="mt-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
-              <FontAwesomeIcon icon={faLock} className="mr-2 text-slate-300" />
+              <FontAwesomeIcon icon={faLock} className="mr-2 text-indigo-300" />
               SÉCURISÉ PAR CHIFFREMENT ASYMÉTRIQUE
             </p>
           </div>
@@ -463,6 +481,5 @@ return (
       )}
     </AnimatePresence>
   </div>
-  </>
 );
 }
