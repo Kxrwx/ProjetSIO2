@@ -17,7 +17,7 @@ const Loader = () => {
 
 const StyledWrapper = styled.div`
   .dots-container {
-    display: flex;
+    display: flex;  
     align-items: center;
     justify-content: center;
     height: 100%;

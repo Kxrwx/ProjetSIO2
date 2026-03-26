@@ -23,7 +23,7 @@ export const AppRouter = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/infoadminaccount" element={<InfoAdminAcc />} />
           <Route path="/admin/signalement/detail/:id" element={<DetailsSigna />} />
-          <Route path="/admin/signalement/detail/messages/:id" element={<Messages />} /> 
+          <Route path="/admin/signalement/detail/:id/messages" element={<Messages />} /> 
         </Route>
       </Routes>
     </BrowserRouter>
