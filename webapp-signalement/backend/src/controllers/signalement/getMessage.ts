@@ -16,8 +16,9 @@ export default async function getMessageNoAdmin(req:Request, res: Response) {
         const signlamentExist = await signalementExist(idSignalement, trackingCode,passwordHash)
         if(!signlamentExist) return res.status(401).json({error : "Non autorisée Aucun signalement trouvé"})
         const messages = await getMessage(idSignalement)
+        console.log('message : ')
         if(!messages) return res.status(400).json({error : "Aucun message récupéré"})
-        await createLog(null, idSignalement , "consultation message", chiffrement("consult message par une victime"), ip)
+        //await createLog(null, idSignalement , "consultation message", chiffrement("consult message par une victime"), ip)
         const messagesDechiffres = messages.map(msg => {
                   const { contenuEncrypted, ...reste } = msg;
                   return {

@@ -28,3 +28,4 @@ export default async function getMessageAdmin(req:AuthRequest, res: Response) {
         return res.status(500).json({error : "Erreur serveur"})
     }
 }
+

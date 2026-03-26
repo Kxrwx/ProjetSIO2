@@ -6,7 +6,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ChatBox from "../components/ChatBoxNoAdmin";
 
 interface Signalement {
-  id : number;
+  idSignalement : number;
   trackingCode: string;
   title: string;
   statut?: { nameStatut: string };
@@ -108,21 +108,9 @@ export default function Tracking() {
           <p><strong>Priorité :</strong> {signalement.priorite?.namePriorite}</p>
           <p><strong>Catégorie :</strong> {signalement.categorie?.nameCategorie}</p>
           <p><strong>Description :</strong> {signalement.descriptionEncrypted}</p>
-          {(signalement.messages?.length ?? 0) > 0 && (
-            <div className="container-messages">
-              <h3>Conversation</h3>
-              {signalement.messages?.map((msg) => (
-                <div key={msg.id} className="message-item">
-                  <span className="message-date">
-                  {new Date(msg.createdAt).toLocaleString()}
-                  </span>
-                  <p>{msg.contenuEncrypted}</p>
-                 </div>
-            ))}
-            </div>
-          )}
+          
         <ChatBox 
-  idSignalement={signalement.id} 
+  idSignalement={signalement.idSignalement} 
   trackingCode={trackingCode} 
   password={password} 
 />

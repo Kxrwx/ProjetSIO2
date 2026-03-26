@@ -1,3 +1,4 @@
+import { UNABLE_TO_FIND_POSTINSTALL_TRIGGER_JSON_PARSE_ERROR } from "@prisma/client/scripts/postinstall.js";
 import {prisma} from "../db/prisma"
 import { Prisma } from "@prisma/client"
 
@@ -55,6 +56,6 @@ export async function signalementExist(idSignalement:number, trackingCode : stri
     const req = await prisma.signalement.findUnique({
         where : {idSignalement, trackingCode, trackingPasswordHash}
     })
-    if(req) return false
+    if(!req) return UNABLE_TO_FIND_POSTINSTALL_TRIGGER_JSON_PARSE_ERROR
     return true
 }

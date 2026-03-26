@@ -13,8 +13,8 @@ interface Message {
 
 interface ChatBoxProps {
   idSignalement: number;
-  trackingCode: string; // Ajouté pour l'API
-  password: string;     // Ajouté pour l'API
+  trackingCode: string;
+  password: string;   
 }
 
 export default function ChatBox({ idSignalement, trackingCode, password }: ChatBoxProps) {
