@@ -125,13 +125,10 @@ model PieceJointe {
   id                         Int          @id @default(autoincrement())
   idSignalement              Int          @map("id_signalement")
   
-  // Correction ici : le nom dans MySQL est "encrypted_path"
   encryptedPath              String       @map("encrypted_path") @db.VarChar(512) 
   
-  // Correspond bien au BLOB NULL
   originalFilenameEncrypted  Bytes?       @map("original_filename_encrypted") @db.Blob 
   
-  // Correspond bien au BIGINT NULL
   fileSize                   BigInt?      @map("file_size") 
   
   // Correspond bien au DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -143,6 +140,21 @@ model PieceJointe {
   @@map("pieces_jointes")
   @@index([idSignalement])
 }
+
+model LogFile {
+  id        Int      @id @default(autoincrement())
+  
+  path      String   @db.VarChar(512) 
+  
+  filename  Bytes?   @db.Blob 
+  
+  fileSize  BigInt?  @map("file_size") 
+  
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(0)
+
+  @@map("log_files")
+}
+
 
 model Message {
   id                Int       @id @default(autoincrement())

@@ -22,3 +22,18 @@ export async function getLog() {
     })
     return req
 }
+
+export async function createLogEntry(fileKey: string, size: number, name: Buffer | null = null) {
+  return await prisma.logFile.create({
+    data: {
+      path: fileKey,
+      fileSize: BigInt(size),
+      filename: name
+    }
+  });
+}
+
+export async function clearAuditLogs() {
+    const req = await prisma.auditLog.deleteMany()
+    return req
+}
