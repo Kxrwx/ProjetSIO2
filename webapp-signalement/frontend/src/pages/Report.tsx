@@ -146,7 +146,7 @@ export default function Report() {
           <label className="label-suivi block text-xs text-gray-400 uppercase tracking-widest mb-1">
             Numéro de suivi
           </label>
-          <div className="label-nmr-suivi text-lg md:text-xl font-mono font-bold text-gray-900 break-all leading-tight">
+          <div className="label-nmr-suivi text-lg md:text-xl font-mono font-bold text-gray-900 break-all leading-tight ">
             #{trackingCode}
           </div>
         </div>
@@ -155,7 +155,16 @@ export default function Report() {
           onClick={() => {
             setSubmitted(false);
             setStep(1);
-            setFormData({ titre: "", nom: "", contact: "", lieu: "", date: "", categorie: "Harcèlement", priorite: "Modéré", description: "", password: "" });
+            setFormData({ 
+              titre: "", 
+              nom: "", 
+              contact: "", 
+              lieu: "", 
+              date: "", 
+              categorie: "Harcèlement", 
+              priorite: "Modéré", 
+              description: "", 
+              password: "" });
             setIsAnonymous(false);
           }}
           className="text-sm text-grey-400 hover:text-grey-700 underline underline-offset-4 transition-colors"
