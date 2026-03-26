@@ -110,7 +110,7 @@ export default function DetailsSigna() {
                   Détails de l'incident
                 </h2>
                 
-                <Link to={`/admin/signalement/details/messages/${data.idSignalement}`}>
+                <Link to={`/admin/signalement/detail/${data.idSignalement}/messages`}>
                   <button className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded-lg transition-colors shadow-sm text-sm">
                     Voir les messages
                   </button>
