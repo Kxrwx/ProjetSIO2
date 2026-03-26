@@ -1,5 +1,5 @@
 import {prisma} from "../db/prisma"
-import { Prisma, Statut } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 
 export type SignalementData = Prisma.SignalementUncheckedCreateInput;
 
