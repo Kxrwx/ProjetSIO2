@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { getMessage } from "../../models/message";
-import { hashPassword, chiffrement } from "../../lib/bib";
+import { hashPassword, chiffrement, dechiffrement } from "../../lib/bib";
 import { signalementExist } from "../../models/signalement";
 import { createLog } from "../../models/autid";
 
@@ -15,10 +15,17 @@ export default async function getMessageNoAdmin(req:Request, res: Response) {
         if(!idSignalement)return res.status(400).json({error : "Donnée manquant"})
         const signlamentExist = await signalementExist(idSignalement, trackingCode,passwordHash)
         if(!signlamentExist) return res.status(401).json({error : "Non autorisée Aucun signalement trouvé"})
-        const response = await getMessage(idSignalement)
-        if(!response) return res.status(400).json({error : "Aucun message récupéré"})
+        const messages = await getMessage(idSignalement)
+        if(!messages) return res.status(400).json({error : "Aucun message récupéré"})
         await createLog(null, idSignalement , "consultation message", chiffrement("consult message par une victime"), ip)
-        return res.status(200).json(response)
+        const messagesDechiffres = messages.map(msg => {
+                  const { contenuEncrypted, ...reste } = msg;
+                  return {
+                      ...reste,
+                      contenu: dechiffrement(contenuEncrypted)
+                  };
+        });
+              return res.status(200).json(messagesDechiffres)
     }
     catch (error : any) {
     res.status(500).json({ error: error.message || "Erreur"});

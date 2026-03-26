@@ -22,7 +22,7 @@ route.post("/signalement/update", authenticate, updateSignalement)
 
 
 //Message
-route.post("/signalement/createMesssage", authenticate, createMessageAdmin)
+route.post("/signalement/createMessage", authenticate, createMessageAdmin)
 route.post("/signalement/getMessage", authenticate, getMessageAdmin)
 
 //s3

@@ -3,8 +3,10 @@ import "../styles/Tracking.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import ChatBox from "../components/ChatBoxNoAdmin";
 
 interface Signalement {
+  id : number;
   trackingCode: string;
   title: string;
   statut?: { nameStatut: string };
@@ -15,6 +17,7 @@ interface Signalement {
     id: number;
     createdAt: string;
     contenuEncrypted: string;
+    userId: string | null;
   }>;
 }
 
@@ -118,6 +121,11 @@ export default function Tracking() {
             ))}
             </div>
           )}
+        <ChatBox 
+  idSignalement={signalement.id} 
+  trackingCode={trackingCode} 
+  password={password} 
+/>
         </div>
       )}
 

@@ -83,7 +83,7 @@ app.get('/api/testdb', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Serveur Prêt sur http://localhost:${PORT}`);
-  initLogJobs()
+  //initLogJobs()
 });
 
 
