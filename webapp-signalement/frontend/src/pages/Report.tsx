@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Report.css";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faShieldAlt, faCheckCircle, faLock } from "@fortawesome/free-solid-svg-icons";
 
 export default function Report() {
   const [step, setStep] = useState(1);
@@ -114,445 +115,354 @@ export default function Report() {
   ];
 
   // ─── Écran de confirmation ───────────────────────────────────────────────────
-  if (submitted) {
-  return (
-    /* 1. PARENT : On prend tout l'écran, on centre verticalement et horizontalement */
-    <div className="min-h-screen relative w-full flex items-center justify-center bg-gray-50 p-6">
-      
-      {/* Bouton retour — Sorti du flux avec absolute */}
-      <div className="absolute top-4 left-4 z-50">
-        <Link to="/">
-          <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
-            <FontAwesomeIcon icon={faArrowLeft} /> Retour
-          </button>
-        </Link>
-      </div>
-
-      {/* 2. CARD : On utilise mx-auto pour la sécurité horizontale */}
-      <div className="bg-white rounded-2xl p-8 md:p-12 max-w-md w-full text-center shadow-2xl mx-auto animate-in fade-in zoom-in-95 duration-300">
-        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        
-        <h2 className="text-2xl font-semibold text-grey-900 mb-3">Signalement transmis</h2>
-        <p className="text-grey-500 text-sm leading-relaxed mb-8">
-          Votre signalement a été enregistré de manière confidentielle. Conservez votre numéro de suivi pour consulter l'avancement de votre dossier.
-        </p>
-
-        {/* Numéro de suivi — Sécurisé contre le débordement */}
-        <div className="container-nmr-suivi mb-8 bg-gray-50 p-4 rounded-xl border border-gray-100 w-full max-w-full overflow-hidden">
-          <label className="label-suivi block text-xs text-gray-400 uppercase tracking-widest mb-1">
-            Numéro de suivi
-          </label>
-          <div className="label-nmr-suivi text-lg md:text-xl font-mono font-bold text-gray-900 break-all leading-tight">
-            #{trackingCode}
-          </div>
-        </div>
-
-        <button
-          onClick={() => {
-            setSubmitted(false);
-            setStep(1);
-            setFormData({ titre: "", nom: "", contact: "", lieu: "", date: "", categorie: "Harcèlement", priorite: "Modéré", description: "", password: "" });
-            setIsAnonymous(false);
-          }}
-          className="text-sm text-grey-400 hover:text-grey-700 underline underline-offset-4 transition-colors"
+return (
+  <>
+  <div className="min-h-screen w-full bg-slate-50 font-sans selection:bg-emerald-100 flex flex-col">
+    {/* 1. ÉCRAN DE SUCCÈS (SI SOUMIS) */}
+    <AnimatePresence>
+      {submitted ? (
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-50 p-6"
         >
-          Faire un nouveau signalement
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ─── Formulaire principal ────────────────────────────────────────────────────
-  return (
-    /* 1. PARENT : On enlève complètement le flexbox. On met juste relative (pour le bouton) et w-full */
-    <div className="min-h-screen relative w-full pt-20 pb-12">
-
-      {/* Bouton retour — reste en absolute */}
-      <div className="absolute px-4 py-2 top-4 left-4 z-50">
-        <Link to="/">
-          <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
-            <FontAwesomeIcon icon={faArrowLeft} /> Retour
-          </button>
-        </Link>
-      </div>
-      <div className="max-w-4xl w-full mx-auto px-4 md:px-8">
-
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-grey-800 border border-grey-700 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-grey-400 tracking-widest uppercase">Signalement Confidentiel</span>
+          {/* Bouton retour en haut à gauche */}
+          <div className="absolute top-8 left-8">
+            <Link to="/" className="group flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all shadow-sm">
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </div>
+              <span className="text-sm font-bold text-slate-500 group-hover:text-black">Quitter</span>
+            </Link>
           </div>
-          <h1 className="text-3xl font-semibold text-black tracking-tight mb-2">Déclarer un incident</h1>
-          <p className="text-grey-400 text-sm mb-4">Vos informations sont traitées de manière sécurisée et confidentielle.</p>
 
-          {/* Numéro de suivi — classes CSS originales préservées */}
-          <div className="container-nmr-suivi">
-            <label className="label-suivi">Numéro de suivi : </label>
-            <label className="label-nmr-suivi">#{trackingCode}</label>
-          </div>
-        </div>
-
-        {/* Indicateur d'étapes */}
-        <div className="flex items-center mb-8 px-2">
-          {STEPS.map((s, i) => (
-            <div key={s.id} className="flex items-center flex-1 last:flex-none">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 ${
-                  step > s.id ? "bg-emerald-500 text-white" : step === s.id ? "bg-white text-grey-900" : "bg-grey-800 text-grey-500 border border-grey-700"
-                }`}>
-                  {step > s.id ? (
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : s.id}
-                </div>
-                <span className={`text-xs font-medium transition-colors ${step === s.id ? "text-green-500" : "text-grey-600"}`}>
-                  {s.label}
-                </span>
-              </div>
-              {i < STEPS.length - 1 && (
-                <div className={`flex-1 h-px mx-3 mb-5 transition-colors duration-500 ${step > s.id ? "bg-emerald-500" : "bg-grey-800"}`} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-
-          {/* ── Étape 1 — Incident ─────────────────────────────────────────── */}
-          {step === 1 && (
-            <div className="p-8">
-              <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Type d'incident</h2>
-                <p className="text-sm text-grey-400">Décrivez brièvement l'incident et sa nature.</p>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-grey-700 mb-2">
-                  Titre du signalement <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="titre"
-                  type="text"
-                  placeholder="Ex : Comportement inapproprié lors d'une réunion"
-                  value={formData.titre}
-                  onChange={handleChange}
-                  className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                />
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-grey-700 mb-2">
-                  Catégorie <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {CATEGORY_OPTIONS.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => setFormData((p) => ({ ...p, categorie: cat.value }))}
-                      className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
-                        formData.categorie === cat.value
-                          ? "border-green-300 bg-grey-900 text-black bg-green-100"
-                          : "border-grey-200 bg-white text-grey-600 hover:border-grey-300 hover:bg-grey-50"
-                      }`}
-                    >
-                      <span className="text-xl">{cat.icon}</span>
-                      {cat.value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-grey-700 mb-2">
-                  Niveau de priorité <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {PRIORITY_OPTIONS.map((p) => (
-                    <button
-                      key={p.value}
-                      type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, priorite: p.value }))}
-                      className={`flex items-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
-                        formData.priorite === p.value
-                          ? p.color + " border-current"
-                          : "border-grey-200 bg-white text-grey-500 hover:border-grey-300"
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-grey-300"}`} />
-                      {p.value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ── Étape 2 — Détails ──────────────────────────────────────────── */}
-          {step === 2 && (
-            <div className="p-8">
-              <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Détails de l'incident</h2>
-                <p className="text-sm text-grey-400">Précisez le contexte, le lieu et la date des faits.</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">Lieu de l'incident</label>
-                  <input
-                    id="lieu"
-                    type="text"
-                    placeholder="Ex : Salle de réunion B3"
-                    value={formData.lieu}
-                    onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">Date de l'incident</label>
-                  <input
-                    id="date"
-                    type="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-grey-700 mb-2">
-                  Description détaillée <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="description"
-                  rows={6}
-                  placeholder="Décrivez les faits avec précision : qui, quoi, quand, comment. Évitez les jugements de valeur et restez factuel."
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition resize-none"
-                />
-                <p className="text-xs text-grey-400 mt-1.5">{formData.description.length} caractères</p>
-              </div>
-            </div>
-          )}
-
-          {/* ── Étape 3 — Identité ─────────────────────────────────────────── */}
-          {step === 3 && (
-            <div className="p-8">
-              <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Votre identité</h2>
-                <p className="text-sm text-grey-400">Vous pouvez rester anonyme. Votre choix n'affecte pas le traitement du dossier.</p>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleAnonymousToggle}
-                className={`w-full flex items-center justify-between px-5 py-4 rounded-xl border-2 mb-6 transition-all duration-200 ${
-                  isAnonymous ? "border-grey-900 bg-grey-900 text-white" : "border-grey-200 bg-white text-grey-700 hover:border-grey-300"
-                }`}
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            className="bg-white rounded-[2.5rem] p-10 md:p-16 max-w-lg w-full text-center shadow-[0_30px_100px_rgba(0,0,0,0.04)] border border-slate-100"
+          >
+            <div className="w-20 h-20 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8">
+              <motion.div
+                initial={{ rotate: -15, scale: 0 }}
+                animate={{ rotate: 0, scale: 1 }}
+                transition={{ type: "spring", delay: 0.2 }}
               >
-                <div className="text-black flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${isAnonymous ? "bg-grey-700" : "bg-grey-100"}`}>
-                    {isAnonymous ? "◎" : "○"}
-                  </div>
-                  <div className="text-left text-black">
-                    <p className="font-medium text-sm">Signalement anonyme</p>
-                    <p className="text-xs mt-0.5 text-grey-400">Votre identité ne sera pas divulguée</p>
-                  </div>
-                </div>
-                <div className={`border-black w-11 h-6 rounded-full relative transition-colors duration-200 ${isAnonymous ? "bg-emerald-400" : "bg-black-200"}`}>
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isAnonymous ? "trangrey-x-6" : "trangrey-x-1"}`} />
-                </div>
-              </button>
-
-              {!isAnonymous && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-grey-700 mb-2">
-                      Nom complet <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="nom"
-                      type="text"
-                      placeholder="Prénom Nom"
-                      value={formData.nom}
-                      onChange={handleChange}
-                      className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-grey-700 mb-2">
-                      Adresse e-mail <span className="text-grey-400 font-normal">(facultatif)</span>
-                    </label>
-                    <input
-                      id="contact"
-                      type="email"
-                      placeholder="vous@entreprise.com"
-                      value={formData.contact}
-                      onChange={handleChange}
-                      className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                    />
-                    <p className="text-xs text-grey-400 mt-1.5">
-                      Utilisé uniquement pour vous tenir informé de l'avancement du dossier.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {isAnonymous && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 flex gap-3">
-                  <span className="text-amber-500 text-lg mt-0.5">ℹ</span>
-                  <p className="text-sm text-amber-700 leading-relaxed">
-                    En mode anonyme, vous ne pourrez pas être recontacté. Conservez bien votre numéro de suivi affiché en haut de page.
-                  </p>
-                </div>
-              )}
+                <svg className="w-10 h-10 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </motion.div>
             </div>
-          )}
 
-          {/* ── Étape 4 — Sécurité ─────────────────────────────────────────── */}
-          {step === 4 && (
-            <form onSubmit={handleSubmit}>
-              <div className="p-8">
-                <div className="mb-7">
-                  <h2 className="text-xl font-semibold text-grey-900 mb-1">Sécurisation du dossier</h2>
-                  <p className="text-sm text-grey-400">Définissez un mot de passe pour accéder au suivi de votre signalement.</p>
-                </div>
+            <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">Signalement transmis</h2>
+            <p className="text-slate-500 text-sm leading-relaxed mb-10">
+              Votre déposition a été enregistrée avec succès. Notez votre code de suivi pour consulter les futures mises à jour.
+            </p>
 
-                {/* Récapitulatif */}
-                <div className="bg-grey-50 border border-grey-200 rounded-xl p-5 mb-6 space-y-2.5">
-                  <p className="text-xs font-semibold text-grey-400 uppercase tracking-widest mb-3">Récapitulatif</p>
-                  {[
-                    { label: "Titre", value: formData.titre },
-                    { label: "Catégorie", value: formData.categorie },
-                    { label: "Lieu", value: formData.lieu || "—" },
-                    { label: "Date", value: formData.date || "—" },
-                    { label: "Identité", value: isAnonymous ? "Anonyme" : formData.nom },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="flex items-center justify-between text-sm">
-                      <span className="text-grey-500">{label}</span>
-                      <span className="font-medium text-grey-800 max-w-xs truncate">{value}</span>
-                    </div>
-                  ))}
-                  <div className="flex items-center justify-between text-sm pt-0.5">
-                    <span className="text-grey-500">Priorité</span>
-                    <span className={`font-medium px-2.5 py-0.5 rounded-full text-xs ${
-                      formData.priorite === "Critique" ? "bg-red-100 text-red-700"
-                      : formData.priorite === "Haute" ? "bg-orange-100 text-orange-700"
-                      : "bg-amber-100 text-amber-700"
-                    }`}>
-                      {formData.priorite}
-                    </span>
+            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 mb-10">
+              <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Référence unique</span>
+              <div className="text-2xl md:text-3xl font-mono font-black text-black tracking-tighter">
+                #{trackingCode}
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setSubmitted(false);
+                setStep(1);
+                setFormData({ titre: "", nom: "", contact: "", lieu: "", date: "", categorie: "Harcèlement", priorite: "Modéré", description: "", password: "" });
+                setIsAnonymous(false);
+              }}
+              className="text-sm font-bold text-slate-400 hover:text-emerald-600 underline underline-offset-8 transition-all"
+            >
+              Effectuer un nouveau signalement
+            </button>
+          </motion.div>
+        </motion.div>
+      ) : (
+        /* 2. FORMULAIRE PRINCIPAL */
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+          className="relative w-full pt-12 pb-20"
+        >
+          {/* Bouton retour contextuel */}
+          <div className="max-w-4xl mx-auto px-4 mb-10">
+            <Link to="/" className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-full shadow-sm hover:shadow-md transition-all group">
+              <FontAwesomeIcon icon={faArrowLeft} className="text-slate-400 group-hover:text-black" />
+              <span className="text-sm font-bold text-slate-600 group-hover:text-black">Retour à l'accueil</span>
+            </Link>
+          </div>
+
+          <div className="max-w-4xl mx-auto px-4">
+            {/* Header / Tracking info */}
+            <header className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-slate-900 text-white rounded-full px-4 py-1.5 mb-6 shadow-xl shadow-slate-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] font-black tracking-widest uppercase">Session Chiffrée</span>
+              </div>
+              <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">Déclarer un incident</h1>
+              <p className="text-slate-500 text-sm mb-6 font-medium">Anonymat garanti et protection des données de bout en bout.</p>
+              
+              <div className="flex items-center justify-center gap-3 text-xs font-bold text-slate-400">
+                <span>RÉF :</span>
+                <span className="bg-slate-100 px-3 py-1 rounded-md text-slate-900 font-mono">#{trackingCode}</span>
+              </div>
+            </header>
+
+            {/* Stepper Dynamique */}
+            <div className="relative flex justify-between items-center mb-12 px-4">
+              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-slate-200 -translate-y-1/2 z-0" />
+              <motion.div 
+                className="absolute top-1/2 left-0 h-[2px] bg-emerald-500 -translate-y-1/2 z-0"
+                animate={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
+              />
+              {STEPS.map((s) => (
+                <div key={s.id} className="relative z-10 flex flex-col items-center gap-2">
+                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black transition-all duration-500 shadow-sm ${
+                    step >= s.id ? "bg-black text-white scale-110 shadow-lg shadow-black/20" : "bg-white text-slate-300 border border-slate-100"
+                  }`}>
+                    {step > s.id ? <FontAwesomeIcon icon={faCheckCircle} className="text-xs" /> : s.id}
                   </div>
+                  <span className={`text-[10px] font-black uppercase tracking-tighter ${step >= s.id ? "text-black" : "text-slate-400"}`}>
+                    {s.label}
+                  </span>
                 </div>
+              ))}
+            </div>
 
-                {/* Mot de passe */}
-                <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">
-                    Mot de passe de suivi <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Minimum 6 caractères"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
-                  />
-                  <div className="flex gap-1 mt-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                        formData.password.length >= i * 3
-                          ? formData.password.length >= 10 ? "bg-emerald-500"
-                          : formData.password.length >= 7 ? "bg-amber-400"
-                          : "bg-red-400"
-                          : "bg-grey-200"
-                      }`} />
-                    ))}
-                  </div>
-                  <p className="text-xs text-grey-400 mt-1.5">
-                    Ce mot de passe vous permettra de consulter et suivre votre signalement.
-                  </p>
-                </div>
+            {/* Carte Principale avec Transition de contenu */}
+            <div className="bg-white rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.03)] border border-slate-100 overflow-hidden">
+              <div className="p-8 md:p-12">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={step}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {/* ÉTAPE 1 : TYPE D'INCIDENT */}
+                    {step === 1 && (
+                      <div className="space-y-8">
+                        <div>
+                          <h2 className="text-2xl font-black text-slate-900 mb-2">Nature de l'incident</h2>
+                          <p className="text-sm text-slate-400 font-medium">Catégorisez votre signalement pour un traitement optimal.</p>
+                        </div>
+
+                        <div className="space-y-4">
+                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Titre du dossier</label>
+                          <input
+                            id="titre" type="text" value={formData.titre} onChange={handleChange}
+                            placeholder="Sujet bref du signalement..."
+                            className="w-full bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl px-6 py-4 outline-none transition-all font-medium"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {CATEGORY_OPTIONS.map((cat) => (
+                            <button
+                              key={cat.value} type="button" onClick={() => setFormData((p) => ({ ...p, categorie: cat.value }))}
+                              className={`flex flex-col items-center gap-3 p-6 rounded-3xl border-2 transition-all duration-300 ${
+                                formData.categorie === cat.value ? "border-black bg-black text-white shadow-xl shadow-black/10 scale-[0.98]" : "border-slate-50 bg-slate-50 text-slate-500 hover:border-slate-200"
+                              }`}
+                            >
+                              <span className="text-2xl">{cat.icon}</span>
+                              <span className="text-xs font-black uppercase tracking-tight">{cat.value}</span>
+                            </button>
+                          ))}
+                        </div>
+
+                        <div className="pt-4">
+                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1 mb-4 block">Priorité estimée</label>
+                          <div className="flex flex-wrap gap-3">
+                            {PRIORITY_OPTIONS.map((p) => (
+                              <button
+                                key={p.value} type="button" onClick={() => setFormData((prev) => ({ ...prev, priorite: p.value }))}
+                                className={`flex items-center gap-3 px-6 py-3 rounded-2xl border-2 text-xs font-bold transition-all ${
+                                  formData.priorite === p.value ? "border-black bg-white text-black shadow-md" : "border-slate-50 bg-slate-50 text-slate-400"
+                                }`}
+                              >
+                                <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-slate-200"}`} />
+                                {p.value}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ÉTAPE 2 : DÉTAILS */}
+                    {step === 2 && (
+                      <div className="space-y-8">
+                        <div>
+                          <h2 className="text-2xl font-black text-slate-900 mb-2">Détails des faits</h2>
+                          <p className="text-sm text-slate-400 font-medium">Localisation et description précise de l'incident.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Lieu</label>
+                            <input id="lieu" value={formData.lieu} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none focus:ring-2 ring-black/5" placeholder="Bureau, étage, site..." />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Date approximative</label>
+                            <input id="date" type="date" value={formData.date} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none" />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="flex justify-between ml-1">
+                            <label className="text-[10px] font-black uppercase text-slate-400">Description factuelle</label>
+                            <span className="text-[10px] font-bold text-slate-300">{formData.description.length} car.</span>
+                          </div>
+                          <textarea 
+                            id="description" rows={6} value={formData.description} onChange={handleChange}
+                            className="w-full bg-slate-50 rounded-3xl px-6 py-5 outline-none focus:bg-white border-2 border-transparent focus:border-black transition-all resize-none font-medium"
+                            placeholder="Décrivez ce qu'il s'est passé de manière objective..."
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ÉTAPE 3 : IDENTITÉ */}
+                    {step === 3 && (
+                      <div className="space-y-8">
+                        <div>
+                          <h2 className="text-2xl font-black text-slate-900 mb-2">Votre identité</h2>
+                          <p className="text-sm text-slate-400 font-medium">Choisissez le niveau de confidentialité de votre déposition.</p>
+                        </div>
+
+                        <button
+                          type="button" onClick={handleAnonymousToggle}
+                          className={`w-full flex items-center justify-between p-6 rounded-3xl border-2 transition-all ${
+                            isAnonymous ? "border-emerald-500 bg-emerald-50/30" : "border-slate-100 bg-slate-50"
+                          }`}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${isAnonymous ? "bg-emerald-500 text-white" : "bg-white text-slate-400 shadow-sm"}`}>
+                              {isAnonymous ? <FontAwesomeIcon icon={faShieldAlt} /> : "👤"}
+                            </div>
+                            <div className="text-left">
+                              <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Signalement anonyme</p>
+                              <p className="text-xs text-slate-500 font-medium italic">Aucune donnée personnelle ne sera transmise</p>
+                            </div>
+                          </div>
+                          {/* Toggle Animé */}
+                          <div className={`w-12 h-6 rounded-full relative transition-colors ${isAnonymous ? "bg-emerald-500" : "bg-slate-200"}`}>
+                            <motion.div 
+                              animate={{ x: isAnonymous ? 26 : 4 }}
+                              className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm"
+                            />
+                          </div>
+                        </button>
+
+                        {!isAnonymous && (
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Nom Complet</label>
+                              <input id="nom" value={formData.nom} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none border-2 border-transparent focus:border-black transition-all" />
+                            </div>
+                            <div className="space-y-2">
+                              <label className="text-[10px] font-black uppercase text-slate-400 ml-1">E-mail (pour suivi)</label>
+                              <input id="contact" value={formData.contact} onChange={handleChange} className="w-full bg-slate-50 rounded-2xl px-6 py-4 outline-none border-2 border-transparent focus:border-black transition-all" />
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {isAnonymous && (
+                          <div className="p-5 rounded-2xl bg-amber-50 border border-amber-100 flex gap-4">
+                            <span className="text-amber-500">⚠️</span>
+                            <p className="text-xs text-amber-700 font-medium leading-relaxed">
+                              En mode anonyme, nous ne pourrons pas vous recontacter. Le suivi se fera uniquement via votre code et mot de passe.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* ÉTAPE 4 : SÉCURITÉ & RÉCAP */}
+                    {step === 4 && (
+                      <div className="space-y-8">
+                        <div>
+                          <h2 className="text-2xl font-black text-slate-900 mb-2">Sécurisation & Validation</h2>
+                          <p className="text-sm text-slate-400 font-medium">Vérifiez vos informations et protégez votre accès.</p>
+                        </div>
+
+                        <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-6">
+                          <div>
+                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Catégorie</p>
+                            <p className="text-sm font-bold text-slate-800">{formData.categorie}</p>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Priorité</p>
+                            <p className="text-sm font-bold text-slate-800">{formData.priorite}</p>
+                          </div>
+                          <div className="col-span-2">
+                            <p className="text-[10px] font-black text-slate-300 uppercase mb-1">Identité</p>
+                            <p className="text-sm font-bold text-slate-800 truncate">{isAnonymous ? "Anonymat total" : formData.nom}</p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Mot de passe de suivi</label>
+                          <div className="relative">
+                            <input
+                              id="password" type="password" value={formData.password} onChange={handleChange}
+                              placeholder="6 caractères minimum..."
+                              className="w-full bg-slate-50 border-2 border-transparent focus:border-black focus:bg-white rounded-2xl px-6 py-4 outline-none transition-all font-mono"
+                            />
+                            <div className="absolute bottom-[-10px] left-2 right-2 flex gap-1 px-2">
+                                {[1, 2, 3, 4].map((i) => (
+                                  <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-500 ${
+                                    formData.password.length >= i * 3 ? (formData.password.length > 9 ? "bg-emerald-500" : "bg-amber-400") : "bg-slate-200"
+                                  }`} />
+                                ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              <div className="px-8 pb-8">
+              {/* Barre d'actions Footer */}
+              <div className="bg-slate-50/50 p-8 border-t border-slate-100 flex items-center justify-between">
                 <button
-                  type="submit"
-                  disabled={!canProceedStep4 || isLoading}
-                  className="text-black bg-green-300 w-full py-4 rounded-xl bg-grey-900 text-white text-sm font-semibold tracking-wide hover:bg-grey-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                  type="button" onClick={prev} disabled={step === 1}
+                  className={`flex items-center gap-2 px-6 py-3 text-sm font-black text-slate-400 hover:text-black transition-all ${step === 1 ? "opacity-0 pointer-events-none" : "opacity-100"}`}
                 >
-                  {isLoading ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                      </svg>
-                      Envoi en cours...
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                      Soumettre le signalement
-                    </>
-                  )}
+                  <FontAwesomeIcon icon={faArrowLeft} /> Précédent
                 </button>
-                <p className="text-center text-xs text-grey-400 mt-3">
-                  Vos données sont chiffrées et confidentielles
-                </p>
+
+                {step === 4 ? (
+                  <button
+                    onClick={handleSubmit} disabled={!canProceedStep4 || isLoading}
+                    className="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 shadow-xl shadow-black/10 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400"
+                  >
+                    {isLoading ? "Cryptage en cours..." : "Soumettre le signalement"}
+                    {!isLoading && <FontAwesomeIcon icon={faShieldAlt} className="text-emerald-400" />}
+                  </button>
+                ) : (
+                  <button
+                    type="button" onClick={next}
+                    disabled={(step === 1 && !canProceedStep1) || (step === 2 && !canProceedStep2) || (step === 3 && !canProceedStep3)}
+                    className="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 shadow-xl shadow-black/10 transition-all flex items-center gap-3 disabled:bg-slate-200 disabled:text-slate-400"
+                  >
+                    Continuer
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+                  </button>
+                )}
               </div>
-            </form>
-          )}
-
-          {/* Navigation (étapes 1–3) */}
-          {step < 4 && (
-            <div className="px-8 pb-8 flex items-center justify-between">
-              <button
-                type="button"
-                onClick={prev}
-                disabled={step === 1}
-                className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-grey-500 hover:text-grey-900 disabled:opacity-0 transition-all"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Retour
-              </button>
-
-              <button
-                type="button"
-                onClick={next}
-                disabled={
-                  (step === 1 && !canProceedStep1) ||
-                  (step === 2 && !canProceedStep2) ||
-                  (step === 3 && !canProceedStep3)
-                }
-                className="flex items-center text-black gap-2 px-6 py-2.5 rounded-xl bg-grey-900 text-white text-sm font-semibold hover:bg-grey-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
-              >
-                Continuer
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
             </div>
-          )}
-        </div>
 
-        <p className="text-center text-xs text-grey-600 mt-6">
-          Ce formulaire est sécurisé · Traitement confidentiel garanti
-        </p>
-      </div>
-    </div>
-  );
+            <p className="mt-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
+              <FontAwesomeIcon icon={faLock} className="mr-2 text-slate-300" />
+              SÉCURISÉ PAR CHIFFREMENT ASYMÉTRIQUE
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+  </>
+);
 }
