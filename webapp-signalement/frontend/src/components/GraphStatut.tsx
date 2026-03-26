@@ -75,8 +75,8 @@ export default function GraphStatut({
   return (
     <div className="w-full flex justify-center items-center">
       <PieChart
-        width={450} // J'ai un peu réduit pour que ça rentre mieux dans ton 1/3
-        height={350}
+        width={650} // J'ai un peu réduit pour que ça rentre mieux dans ton 1/3
+        height={400}
         margin={{ top: 20, right: 100, bottom: 20, left: 100 }}
       >
         <Pie
