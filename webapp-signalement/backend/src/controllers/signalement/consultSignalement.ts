@@ -35,7 +35,7 @@ export default async function getSignalement(req:Request, res: Response) {
         lieu: lieuEncrypted ? dechiffrement(lieuEncrypted) : null
     };
 
-    await createLog("victim", detailDechiffre.idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
+    await createLog(null, detailDechiffre.idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
 
     return res.status(200).json(detailDechiffre);
   } catch (error : any) {

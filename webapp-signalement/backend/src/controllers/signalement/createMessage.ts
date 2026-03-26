@@ -13,7 +13,7 @@ export default async function createMessageNoAdmin(req:Request, res : Response) 
         if(!messageCrypt) return res.status(400).json({erreur : "Erreur de chiffrement"})
         const response = await createMessage(idSignalement, messageCrypt, null)
         if(!response) return res.status(400).json({error : "Erreur lors de la création"})
-        await createLog("victim", idSignalement , "creation message", chiffrement("creation message par une victime"), ip)
+        await createLog(null, idSignalement , "creation message", chiffrement("creation message par une victime"), ip)
         return res.status(200).json({success : true})
     }
     catch (error : any) {

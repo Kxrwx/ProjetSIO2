@@ -8,6 +8,7 @@ import updateSignalement from "../controllers/admin/updateSignalement";
 import createMessageAdmin from "../controllers/admin/createMessage";
 import getMessageAdmin from "../controllers/admin/getMessage";
 import getFileAdmin from "../controllers/admin/file/getFile";
+import getLogController from "../controllers/admin/log/getLog";
 
 const route = express.Router();
 
@@ -25,6 +26,9 @@ route.post("/signalement/getMessage", authenticate, getMessageAdmin)
 
 //s3
 route.post("/signalement/file", authenticate, getFileAdmin)
+
+//log
+route.get("/log", authenticate, getLogController)
 
 route.get("", authenticate, isAuth)
 

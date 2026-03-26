@@ -48,7 +48,7 @@ export default async function createSignalement(req: Request, res: Response) {
         })
       );
     }
-    await createLog("victim", signalement.idSignalement , "creation signalement", chiffrement("creation signalement par une victime"), ip)
+    await createLog(null, signalement.idSignalement , "creation signalement", chiffrement("creation signalement par une victime"), ip)
 
     res.status(200).json({ 
       trackingCode: signalement.trackingCode,

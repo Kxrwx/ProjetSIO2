@@ -41,6 +41,22 @@ export async function uploadToS3(file: Express.Multer.File, idSignalement: numbe
     return fileKey;
 }
 
+export async function uploadToS3Log(file : Express.Multer.File, userId: string) {
+    const uniqueSuffix = crypto.randomBytes(4).toString('hex');
+    const folder = Date.now()
+    const fileKey = `log/${folder}/${Date.now()}-${uniqueSuffix}-${userId}`;
+
+    const command = new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: fileKey,
+        Body: file.buffer, 
+        ContentType: file.mimetype, 
+    });
+
+    await s3.send(command);
+    return fileKey;
+}
+
 export async function createPieceJointe(idSignalement: number, fileKey: string, fileSize: number) {
     return await prisma.pieceJointe.create({
         data: {
