@@ -117,7 +117,7 @@ export default function Report() {
   if (submitted) {
   return (
     /* 1. PARENT : On prend tout l'écran, on centre verticalement et horizontalement */
-    <div className="min-h-screen relative w-full flex items-center justify-center bg-gray-50 p-6">
+    <div className="min-h-screen relative w-full flex items-center justify-center p-6">
       
       {/* Bouton retour — Sorti du flux avec absolute */}
       <div className="absolute top-4 left-4 z-50">
@@ -136,8 +136,8 @@ export default function Report() {
           </svg>
         </div>
         
-        <h2 className="text-2xl font-semibold text-grey-900 mb-3">Signalement transmis</h2>
-        <p className="text-grey-500 text-sm leading-relaxed mb-8">
+        <h2 className="text-2xl font-semibold mb-3">Signalement transmis</h2>
+        <p className="text-sm leading-relaxed mb-8">
           Votre signalement a été enregistré de manière confidentielle. Conservez votre numéro de suivi pour consulter l'avancement de votre dossier.
         </p>
 
@@ -167,7 +167,7 @@ export default function Report() {
               password: "" });
             setIsAnonymous(false);
           }}
-          className="text-sm text-grey-400 hover:text-grey-700 underline underline-offset-4 transition-colors"
+          className="text-sm underline underline-offset-4 transition-colors"
         >
           Faire un nouveau signalement
         </button>
@@ -193,12 +193,12 @@ export default function Report() {
 
         {/* Header */}
         <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-grey-800 border border-grey-700 rounded-full px-4 py-1.5 mb-6">
+          <div className="inline-flex items-center gap-2 bg-gray-100 border border-gray-700 rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-grey-400 tracking-widest uppercase">Signalement Confidentiel</span>
+            <span className="text-xs text-gray-400 tracking-widest hover:text-green-400 uppercase">Signalement Confidentiel</span>
           </div>
           <h1 className="text-3xl font-semibold text-black tracking-tight mb-2">Déclarer un incident</h1>
-          <p className="text-grey-400 text-sm mb-4">Vos informations sont traitées de manière sécurisée et confidentielle.</p>
+          <p className="text-gray-400 text-sm mb-4">Vos informations sont traitées de manière sécurisée et confidentielle.</p>
 
           {/* Numéro de suivi — classes CSS originales préservées */}
           <div className="container-nmr-suivi">
@@ -213,7 +213,7 @@ export default function Report() {
             <div key={s.id} className="flex items-center flex-1 last:flex-none">
               <div className="flex flex-col items-center gap-1.5">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 ${
-                  step > s.id ? "bg-emerald-500 text-white" : step === s.id ? "bg-white text-grey-900" : "bg-grey-800 text-grey-500 border border-grey-700"
+                  step > s.id ? "bg-emerald-500 text-white" : step === s.id ? "bg-white " : "border"
                 }`}>
                   {step > s.id ? (
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -221,12 +221,12 @@ export default function Report() {
                     </svg>
                   ) : s.id}
                 </div>
-                <span className={`text-xs font-medium transition-colors ${step === s.id ? "text-green-500" : "text-grey-600"}`}>
+                <span className={`text-xs font-medium transition-colors ${step === s.id ? "text-green-500" : "text-gray-400"}`}>
                   {s.label}
                 </span>
               </div>
               {i < STEPS.length - 1 && (
-                <div className={`flex-1 h-px mx-3 mb-5 transition-colors duration-500 ${step > s.id ? "bg-emerald-500" : "bg-grey-800"}`} />
+                <div className={`flex-1 h-px mx-3 mb-5 transition-colors duration-500 ${step > s.id ? "bg-emerald-500" : "bg-gray-300"}`} />
               )}
             </div>
           ))}
@@ -239,12 +239,12 @@ export default function Report() {
           {step === 1 && (
             <div className="p-8">
               <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Type d'incident</h2>
-                <p className="text-sm text-grey-400">Décrivez brièvement l'incident et sa nature.</p>
+                <h2 className="text-xl font-semibold  mb-1">Type d'incident</h2>
+                <p className="text-sm ">Décrivez brièvement l'incident et sa nature.</p>
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-medium text-grey-700 mb-2">
+                <label className="block text-sm font-medium  mb-2">
                   Titre du signalement <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -253,12 +253,12 @@ export default function Report() {
                   placeholder="Ex : Comportement inapproprié lors d'une réunion"
                   value={formData.titre}
                   onChange={handleChange}
-                  className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                  className="bg-white w-full px-4 py-3 rounded-xl border  text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
                 />
               </div>
 
               <div className="mb-6">
-                <label className="block text-sm font-medium text-grey-700 mb-2">
+                <label className="block text-sm font-medium   mb-2">
                   Catégorie <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -269,8 +269,8 @@ export default function Report() {
                       onClick={() => setFormData((p) => ({ ...p, categorie: cat.value }))}
                       className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
                         formData.categorie === cat.value
-                          ? "border-green-300 bg-grey-900 text-black bg-green-100"
-                          : "border-grey-200 bg-white text-grey-600 hover:border-grey-300 hover:bg-grey-50"
+                          ? "border-green-300  text-black bg-green-100"
+                          : "bg-white"
                       }`}
                     >
                       <span className="text-xl">{cat.icon}</span>
@@ -281,7 +281,7 @@ export default function Report() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-grey-700 mb-2">
+                <label className="block text-sm font-medium mb-2">
                   Niveau de priorité <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -293,10 +293,10 @@ export default function Report() {
                       className={`flex items-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
                         formData.priorite === p.value
                           ? p.color + " border-current"
-                          : "border-grey-200 bg-white text-grey-500 hover:border-grey-300"
+                          : " bg-white "
                       }`}
                     >
-                      <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-grey-300"}`} />
+                      <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-gray-300"}`} />
                       {p.value}
                     </button>
                   ))}
@@ -309,36 +309,37 @@ export default function Report() {
           {step === 2 && (
             <div className="p-8">
               <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Détails de l'incident</h2>
-                <p className="text-sm text-grey-400">Précisez le contexte, le lieu et la date des faits.</p>
+                <h2 className="text-xl font-semibold  mb-1">Détails de l'incident</h2>
+                <p className="text-sm ">Précisez le contexte, le lieu et la date des faits.</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">Lieu de l'incident</label>
+                  <label className="block text-sm font-medium mb-2">Lieu de l'incident</label>
                   <input
                     id="lieu"
                     type="text"
                     placeholder="Ex : Salle de réunion B3"
                     value={formData.lieu}
                     onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                    className="bg-white w-full px-4 py-3 rounded-xl border text-sm 
+                     focus:outline-none focus:ring-2 focus:border-transparent transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">Date de l'incident</label>
+                  <label className="block text-sm font-medium mb-2">Date de l'incident</label>
                   <input
                     id="date"
                     type="date"
                     value={formData.date}
                     onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                    className="bg-white w-full px-4 py-3 rounded-xl borde text-sm focus:outline-none focus:ring-2 focus:border-transparent transition"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-grey-700 mb-2">
+                <label className="block text-sm font-medium  mb-2">
                   Description détaillée <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -347,9 +348,9 @@ export default function Report() {
                   placeholder="Décrivez les faits avec précision : qui, quoi, quand, comment. Évitez les jugements de valeur et restez factuel."
                   value={formData.description}
                   onChange={handleChange}
-                  className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition resize-none"
+                  className="bg-white w-full px-4 py-3 rounded-xl bordertext-sm focus:outline-none focus:ring-2 focus:border-transparent transition resize-none"
                 />
-                <p className="text-xs text-grey-400 mt-1.5">{formData.description.length} caractères</p>
+                <p className="text-xs mt-1.5">{formData.description.length} caractères</p>
               </div>
             </div>
           )}
@@ -358,35 +359,35 @@ export default function Report() {
           {step === 3 && (
             <div className="p-8">
               <div className="mb-7">
-                <h2 className="text-xl font-semibold text-grey-900 mb-1">Votre identité</h2>
-                <p className="text-sm text-grey-400">Vous pouvez rester anonyme. Votre choix n'affecte pas le traitement du dossier.</p>
+                <h2 className="text-xl font-semibold  mb-1">Votre identité</h2>
+                <p className="text-sm ">Vous pouvez rester anonyme. Votre choix n'affecte pas le traitement du dossier.</p>
               </div>
 
               <button
                 type="button"
                 onClick={handleAnonymousToggle}
                 className={`w-full flex items-center justify-between px-5 py-4 rounded-xl border-2 mb-6 transition-all duration-200 ${
-                  isAnonymous ? "border-grey-900 bg-grey-900 text-white" : "border-grey-200 bg-white text-grey-700 hover:border-grey-300"
+                  isAnonymous ? "text-white" : " bg-white "
                 }`}
               >
                 <div className="text-black flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${isAnonymous ? "bg-grey-700" : "bg-grey-100"}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${isAnonymous ? "" : ""}`}>
                     {isAnonymous ? "◎" : "○"}
                   </div>
                   <div className="text-left text-black">
                     <p className="font-medium text-sm">Signalement anonyme</p>
-                    <p className="text-xs mt-0.5 text-grey-400">Votre identité ne sera pas divulguée</p>
+                    <p className="text-xs mt-0.5 text--400">Votre identité ne sera pas divulguée</p>
                   </div>
                 </div>
                 <div className={`border-black w-11 h-6 rounded-full relative transition-colors duration-200 ${isAnonymous ? "bg-emerald-400" : "bg-black-200"}`}>
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isAnonymous ? "trangrey-x-6" : "trangrey-x-1"}`} />
+                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isAnonymous ? "tran-x-6" : "tran-x-1"}`} />
                 </div>
               </button>
 
               {!isAnonymous && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-grey-700 mb-2">
+                    <label className="block text-sm font-medium text--700 mb-2">
                       Nom complet <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -395,12 +396,12 @@ export default function Report() {
                       placeholder="Prénom Nom"
                       value={formData.nom}
                       onChange={handleChange}
-                      className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                      className="bg-white w-full px-4 py-3 rounded-xl border border--200 bg--50 text--900 text-sm placeholder--400 focus:outline-none focus:ring-2 focus:ring--900 focus:border-transparent transition"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-grey-700 mb-2">
-                      Adresse e-mail <span className="text-grey-400 font-normal">(facultatif)</span>
+                    <label className="block text-sm font-medium text--700 mb-2">
+                      Adresse e-mail <span className="text--400 font-normal">(facultatif)</span>
                     </label>
                     <input
                       id="contact"
@@ -408,9 +409,9 @@ export default function Report() {
                       placeholder="vous@entreprise.com"
                       value={formData.contact}
                       onChange={handleChange}
-                      className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                      className="bg-white w-full px-4 py-3 rounded-xl border border--200 bg--50 text--900 text-sm placeholder--400 focus:outline-none focus:ring-2 focus:ring--900 focus:border-transparent transition"
                     />
-                    <p className="text-xs text-grey-400 mt-1.5">
+                    <p className="text-xs text--400 mt-1.5">
                       Utilisé uniquement pour vous tenir informé de l'avancement du dossier.
                     </p>
                   </div>
@@ -433,13 +434,13 @@ export default function Report() {
             <form onSubmit={handleSubmit}>
               <div className="p-8">
                 <div className="mb-7">
-                  <h2 className="text-xl font-semibold text-grey-900 mb-1">Sécurisation du dossier</h2>
-                  <p className="text-sm text-grey-400">Définissez un mot de passe pour accéder au suivi de votre signalement.</p>
+                  <h2 className="text-xl font-semibold text--900 mb-1">Sécurisation du dossier</h2>
+                  <p className="text-sm text--400">Définissez un mot de passe pour accéder au suivi de votre signalement.</p>
                 </div>
 
                 {/* Récapitulatif */}
-                <div className="bg-grey-50 border border-grey-200 rounded-xl p-5 mb-6 space-y-2.5">
-                  <p className="text-xs font-semibold text-grey-400 uppercase tracking-widest mb-3">Récapitulatif</p>
+                <div className="bg--50 border border--200 rounded-xl p-5 mb-6 space-y-2.5">
+                  <p className="text-xs font-semibold text--400 uppercase tracking-widest mb-3">Récapitulatif</p>
                   {[
                     { label: "Titre", value: formData.titre },
                     { label: "Catégorie", value: formData.categorie },
@@ -448,12 +449,12 @@ export default function Report() {
                     { label: "Identité", value: isAnonymous ? "Anonyme" : formData.nom },
                   ].map(({ label, value }) => (
                     <div key={label} className="flex items-center justify-between text-sm">
-                      <span className="text-grey-500">{label}</span>
-                      <span className="font-medium text-grey-800 max-w-xs truncate">{value}</span>
+                      <span className="text--500">{label}</span>
+                      <span className="font-medium text--800 max-w-xs truncate">{value}</span>
                     </div>
                   ))}
                   <div className="flex items-center justify-between text-sm pt-0.5">
-                    <span className="text-grey-500">Priorité</span>
+                    <span className="text--500">Priorité</span>
                     <span className={`font-medium px-2.5 py-0.5 rounded-full text-xs ${
                       formData.priorite === "Critique" ? "bg-red-100 text-red-700"
                       : formData.priorite === "Haute" ? "bg-orange-100 text-orange-700"
@@ -466,7 +467,7 @@ export default function Report() {
 
                 {/* Mot de passe */}
                 <div>
-                  <label className="block text-sm font-medium text-grey-700 mb-2">
+                  <label className="block text-sm font-medium text--700 mb-2">
                     Mot de passe de suivi <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -475,7 +476,7 @@ export default function Report() {
                     placeholder="Minimum 6 caractères"
                     value={formData.password}
                     onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl border border-grey-200 bg-grey-50 text-grey-900 text-sm placeholder-grey-400 focus:outline-none focus:ring-2 focus:ring-grey-900 focus:border-transparent transition"
+                    className="bg-white w-full px-4 py-3 rounded-xl border border--200 bg--50 text--900 text-sm placeholder--400 focus:outline-none focus:ring-2 focus:ring--900 focus:border-transparent transition"
                   />
                   <div className="flex gap-1 mt-2">
                     {[1, 2, 3, 4].map((i) => (
@@ -484,11 +485,11 @@ export default function Report() {
                           ? formData.password.length >= 10 ? "bg-emerald-500"
                           : formData.password.length >= 7 ? "bg-amber-400"
                           : "bg-red-400"
-                          : "bg-grey-200"
+                          : "bg--200"
                       }`} />
                     ))}
                   </div>
-                  <p className="text-xs text-grey-400 mt-1.5">
+                  <p className="text-xs text--400 mt-1.5">
                     Ce mot de passe vous permettra de consulter et suivre votre signalement.
                   </p>
                 </div>
@@ -498,7 +499,7 @@ export default function Report() {
                 <button
                   type="submit"
                   disabled={!canProceedStep4 || isLoading}
-                  className="text-black bg-green-300 w-full py-4 rounded-xl bg-grey-900 text-white text-sm font-semibold tracking-wide hover:bg-grey-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                  className="text-black bg-green-300 w-full py-4 rounded-xl bg--900 text-white text-sm font-semibold tracking-wide hover:bg--800 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -517,7 +518,7 @@ export default function Report() {
                     </>
                   )}
                 </button>
-                <p className="text-center text-xs text-grey-400 mt-3">
+                <p className="text-center text-xs text--400 mt-3">
                   Vos données sont chiffrées et confidentielles
                 </p>
               </div>
@@ -531,7 +532,7 @@ export default function Report() {
                 type="button"
                 onClick={prev}
                 disabled={step === 1}
-                className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-grey-500 hover:text-grey-900 disabled:opacity-0 transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text--500 hover:text--900 disabled:opacity-0 transition-all"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -547,7 +548,7 @@ export default function Report() {
                   (step === 2 && !canProceedStep2) ||
                   (step === 3 && !canProceedStep3)
                 }
-                className="flex items-center text-black gap-2 px-6 py-2.5 rounded-xl bg-grey-900 text-white text-sm font-semibold hover:bg-grey-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                className="flex items-center text-black gap-2 px-6 py-2.5 rounded-xl bg--900 text-white text-sm font-semibold hover:bg--700 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
               >
                 Continuer
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -558,7 +559,7 @@ export default function Report() {
           )}
         </div>
 
-        <p className="text-center text-xs text-grey-600 mt-6">
+        <p className="text-center text-xs text--600 mt-6">
           Ce formulaire est sécurisé · Traitement confidentiel garanti
         </p>
       </div>
