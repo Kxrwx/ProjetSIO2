@@ -39,11 +39,10 @@ export default function Admin() {
     return signalements.filter((sign: any) => sign.statut?.nameStatut === "Nouveau");
   }, [signalements]);
 
-  // 2. Préparer les données du graphique (basées sur tous les signalements ou seulement les nouveaux ?)
-  // Ici je reste sur tous les signalements pour le graphique
+  // 2. Préparer les données du graphique seulement les nouveaux 
   const chartData = useMemo(() => {
     const counts: Record<string, number> = {};
-    signalements.forEach((sign) => {
+    seulementNouveaux.forEach((sign) => {
       const categoryName = sign.categorie?.nameCategorie || "Sans catégorie";
       counts[categoryName] = (counts[categoryName] || 0) + 1;
     });
