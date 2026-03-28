@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faPaperPlane, faPaperclip, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faPaperPlane, faPaperclip, faFileLines, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function MessagesAdmin() {
   const { id } = useParams<{ id: string }>();
@@ -9,14 +9,15 @@ export default function MessagesAdmin() {
   const [attachments, setAttachments] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // État pour l'animation du bouton
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Récupération des fichiers via ton code node.js (getFileAdmin)
+  // 1. Récupération des fichiers
   const fetchFiles = useCallback(async () => {
     if (!id) return;
     try {
-      const response = await fetch("http://localhost:5000/api/admin/signalement/getFiles", {
+      const response = await fetch("http://localhost:5000/api/admin/signalement/file", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -29,6 +30,7 @@ export default function MessagesAdmin() {
     }
   }, [id]);
 
+  // 2. Récupération des messages
   const fetchMessages = useCallback(async () => {
     if (!id) return;
     try {
@@ -43,11 +45,18 @@ export default function MessagesAdmin() {
     } catch (err) { console.error(err); }
   }, [id]);
 
+  // 3. Fonction globale d'actualisation manuelle
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await Promise.all([fetchMessages(), fetchFiles()]);
+    // On laisse un petit délai pour l'effet visuel de rotation
+    setTimeout(() => setRefreshing(false), 500);
+  };
+
+  // 4. Appel uniquement au montage (refresh de la page)
   useEffect(() => {
     fetchMessages();
     fetchFiles();
-    const interval = setInterval(() => { fetchMessages(); fetchFiles(); }, 20000);
-    return () => clearInterval(interval);
   }, [fetchMessages, fetchFiles]);
 
   useEffect(() => {
@@ -65,7 +74,10 @@ export default function MessagesAdmin() {
         credentials: "include",
         body: JSON.stringify({ idSignalement: Number(id), bodymessage: newMessage }),
       });
-      if (response.ok) { setNewMessage(""); fetchMessages(); }
+      if (response.ok) {
+        setNewMessage("");
+        fetchMessages();
+      }
     } catch (err) { console.error(err); } finally { setSending(false); }
   };
 
@@ -82,7 +94,6 @@ export default function MessagesAdmin() {
           <div className="h-8 w-px bg-slate-200 mx-2" />
           <h1 className="text-lg font-bold text-slate-800 tracking-tight">Discussion Signalement <span className="text-blue-600">#{id}</span></h1>
           
-          {/* Liste des pièces jointes du signalement dans le header */}
           <div className="flex items-center gap-2 ml-4 overflow-x-auto max-w-md no-scrollbar">
             {attachments.map((file) => (
               <a key={file.id} href={file.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-[10px] font-black text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-all whitespace-nowrap">
@@ -93,9 +104,21 @@ export default function MessagesAdmin() {
           </div>
         </div>
         
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 font-bold text-[10px] text-emerald-700 uppercase tracking-widest">
-           <span className="relative flex h-2 w-2"><span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative rounded-full h-2 w-2 bg-emerald-500"></span></span>
-           Canal sécurisé
+        <div className="flex items-center gap-4">
+          {/* NOUVEAU : Bouton Actualiser */}
+          <button 
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm font-bold transition-all active:scale-95 disabled:opacity-50"
+          >
+            <FontAwesomeIcon icon={faSyncAlt} className={`${refreshing ? "animate-spin" : ""}`} />
+            {refreshing ? "Actualisation..." : "Actualiser"}
+          </button>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 font-bold text-[10px] text-emerald-700 uppercase tracking-widest">
+             <span className="relative flex h-2 w-2"><span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative rounded-full h-2 w-2 bg-emerald-500"></span></span>
+             Canal sécurisé
+          </div>
         </div>
       </header>
 
@@ -117,6 +140,7 @@ export default function MessagesAdmin() {
       </main>
 
       <footer className="p-6 bg-white border-t border-slate-200 w-full shadow-inner">
+        {/* ... (footer identique) */}
         <form onSubmit={handleSendMessage} className="max-w-5xl mx-auto flex gap-4">
           <input type="file" ref={fileInputRef} className="hidden" />
           <button type="button" onClick={() => fileInputRef.current?.click()} className="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm">
@@ -128,9 +152,7 @@ export default function MessagesAdmin() {
             disabled={sending || !newMessage.trim()}
             className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap">
             <span className="font-bold text-sm mr-2">Envoyer</span>
-            <FontAwesomeIcon
-            icon={faPaperPlane} 
-            className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
+            <FontAwesomeIcon icon={faPaperPlane} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
           </button>
         </form>
       </footer>
