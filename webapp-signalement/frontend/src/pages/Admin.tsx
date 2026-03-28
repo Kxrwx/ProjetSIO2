@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react"; // Ajout de useMemo pour la performance
 import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt, faFileLines, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Navigation from "./Navigation";
 import GraphStatut from "../components/GraphStatut";
 import "../styles/Admin.css";
@@ -100,12 +102,64 @@ export default function Admin() {
           </ul>
         </div>
 
-        {/* SECTION DROITE : GRAPHIQUE */}
-        <aside className="w-1/3 sticky top-8 h-fit">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h4 className="text-center font-bold mb-4 text-gray-700">Répartition par catégorie</h4>
-                <GraphStatut data={chartData} />
+      {/* SECTION DROITE : GRAPHIQUE & NAVIGATION */}
+      <aside className="w-1/3 sticky top-8 h-fit space-y-6">
+        
+        {/* BLOC GRAPHIQUE */}
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h4 className="text-center font-bold mb-4 text-gray-700 uppercase text-xs tracking-wider">
+            Répartition par catégorie
+          </h4>
+          <GraphStatut data={chartData} />
+        </div>
+
+          {/* BLOC NAVIGATION RAPIDE */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <h4 className="font-bold mb-4 text-gray-700 border-b pb-2">Gestion signalements</h4>
+            <div className="flex flex-col gap-3">
+              
+              {/* Bouton page nouveaux */}
+              <Link 
+                to="/admin/signalement/nouveaux" 
+                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500 rounded-xl transition-all group"
+              >
+                <span className="text-sm font-semibold text-slate-600 group-hover:text-blue-500">Gestion des nouveaux signalements</span>
+                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-blue-600">
+                  <FontAwesomeIcon icon={faArrowLeft} className="rotate-180 text-xs" />
+                </div>
+              </Link>
+
+              {/* Bouton page en cours */}
+              <Link 
+                to="/admin/signalement/encours" 
+                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-500 rounded-xl transition-all group"
+              >
+                <span className="text-sm font-semibold text-slate-600 group-hover:text-amber-500">Gestion des signalements en cours</span>
+                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-amber-600">
+                  <FontAwesomeIcon icon={faSyncAlt} className="text-xs" /> {/* Remplace par faUsers si tu l'as importé */}
+                </div>
+              </Link>
+
+              {/* Bouton page archivés */}
+              <Link 
+                to="/admin/signalement/archives" 
+                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 rounded-xl transition-all group"
+              >
+                <span className="text-sm font-semibold text-slate-600 group-hover:text-emerald-500">Gestion des signalements archivés</span>
+                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-emerald-600">
+                  <FontAwesomeIcon icon={faFileLines} className="text-xs" />
+                </div>
+              </Link>
+
             </div>
+          </div>
+
+          {/* PETIT RAPPEL DE SÉCURITÉ (Optionnel) */}
+          <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+            <p className="text-[10px] text-emerald-700 font-bold uppercase text-center tracking-widest">
+              Session Administrateur Sécurisée
+            </p>
+          </div>
         </aside>
       </main>
     </div>
