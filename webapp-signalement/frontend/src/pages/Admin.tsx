@@ -33,16 +33,10 @@ export default function Admin() {
     fetchSignalements();
   }, []);
 
-  // 1. Filtrer les signalements pour n'avoir que les "Nouveau"
-  // On utilise useMemo pour éviter de recalculer à chaque rendu si 'signalements' ne change pas
-  const seulementNouveaux = useMemo(() => {
-    return signalements.filter((sign: any) => sign.statut?.nameStatut === "Nouveau");
-  }, [signalements]);
-
-  // 2. Préparer les données du graphique seulement les nouveaux 
+ 
   const chartData = useMemo(() => {
     const counts: Record<string, number> = {};
-    seulementNouveaux.forEach((sign) => {
+    signalements.forEach((sign) => {
       const categoryName = sign.categorie?.nameCategorie || "Sans catégorie";
       counts[categoryName] = (counts[categoryName] || 0) + 1;
     });
@@ -57,16 +51,27 @@ export default function Admin() {
       <Navigation />
 
       <main className="p-8 flex flex-row gap-8">
-        {/* SECTION GAUCHE : LISTE DES NOUVEAUX SIGNALEMENTS */}
+        {/* SECTION GAUCHE : LISTE DE TOUS LES SIGNALEMENTS */}
         <div className="w-2/3">
           <h3 className="text-2xl font-bold mb-6 text-gray-800">
-            Nouveaux Signalements ({seulementNouveaux.length}) :
+            Tous les Signalements ({signalements.length}) :
           </h3>
 
           <ul className="space-y-4">
-            {seulementNouveaux.map((sign) => (
-              <li key={sign.idSignalement} className="p-5 border-l-4 border-blue-500 rounded-lg shadow-md bg-white flex flex-col gap-2 transition-transform hover:scale-[1.01]">
-                <div className="flex justify-between items-center">
+            {signalements.map((sign) => {
+                // Déterminer la couleur en fonction du statut
+                const statusColor = 
+                  sign.statut?.idStatut === 1 ? "border-blue-500" : // Nouveau
+                  sign.statut?.idStatut === 2 ? "border-amber-500" : // En cours
+                  sign.statut?.idStatut === 3 ? "border-emerald-500" : // Terminé
+                  "border-gray-300"; // Autre
+
+                return (
+                  <li 
+                    key={sign.idSignalement} 
+                    className={`p-5 border-l-4 ${statusColor} rounded-lg shadow-md bg-white flex flex-col gap-2 transition-transform hover:scale-[1.01]`}
+                  >
+                  <div className="flex justify-between items-center">
                   <p className="font-semibold text-lg">{sign.title}</p>
                   <div className="flex items-center gap-3">
                     <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
@@ -86,10 +91,11 @@ export default function Admin() {
                   <p><strong>ID :</strong> #{sign.idSignalement}</p>
                 </div>
               </li>
-            ))}
+              );
+            })}
 
-            {seulementNouveaux.length === 0 && (
-              <p className="text-gray-500 italic">Aucun nouveau signalement pour le moment.</p>
+            {signalements.length === 0 && (
+              <p className="text-gray-500 italic">Aucun signalement pour le moment.</p>
             )}
           </ul>
         </div>
