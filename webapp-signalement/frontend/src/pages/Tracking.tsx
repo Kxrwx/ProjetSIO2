@@ -37,10 +37,10 @@ export default function Tracking() {
   return (
     <div className="min-h-screen bg-gray-50 w-full relative flex flex-col items-center pt-20 pb-12 px-4 font-sans">
       
-      {/* Bouton Retour */}
-      <div className="absolute top-6 left-6 z-50">
+      {/* Bouton retour — reste en absolute */}
+      <div className="absolute px-4 py-2 top-4 left-4 z-50">
         <Link to="/">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-600 hover:text-green-600 hover:border-green-600 transition-all rounded-xl shadow-sm font-medium text-sm">
+          <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
             <FontAwesomeIcon icon={faArrowLeft} /> Retour
           </button>
         </Link>
