@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faArrowLeft, faPaperclip, faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faArrowLeft, faPaperclip, faFileLines, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 // --- INTERFACES ---
 interface Message {
@@ -34,18 +34,20 @@ interface Attachment {
   fileSize?: string;
 }
 
+// ... (Interfaces Message, ChatBoxProps, Attachment identiques)
+
 export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxProps) {
   const [newMessage, setNewMessage] = useState("");
   const [sending, setSending] = useState(false);
-  const [attachments, setAttachments] = useState<Attachment[]>([]); // Typage de l'état
+  const [refreshing, setRefreshing] = useState(false); // État pour l'animation
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Récupération des fichiers (URL R2)
   const fetchFiles = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/signalements/getFiles", {
+      const response = await fetch("http://localhost:5000/api/signalements/file", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idSignalement }),
@@ -57,14 +59,17 @@ export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxP
     }
   };
 
+  // Fonction d'actualisation manuelle
+  const handleManualRefresh = async () => {
+    setRefreshing(true);
+    await Promise.all([onRefresh(), fetchFiles()]);
+    setTimeout(() => setRefreshing(false), 600); // Petit délai pour voir l'icône tourner
+  };
+
   useEffect(() => {
     fetchFiles();
-    const interval = setInterval(() => { 
-      onRefresh(); 
-      fetchFiles(); 
-    }, 20000);
-    return () => clearInterval(interval);
-  }, [onRefresh, idSignalement]);
+    onRefresh();
+  }, []); // Pas d'intervalle, seulement au chargement
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,18 +121,30 @@ export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxP
           </div>
         </div>
         
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 text-emerald-700 font-bold text-[10px] uppercase tracking-widest">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          Canal sécurisé
+        <div className="flex items-center gap-4">
+          {/* BOUTON ACTUALISER CLIENT */}
+          <button 
+            onClick={handleManualRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm font-bold transition-all active:scale-95 disabled:opacity-50"
+          >
+            <FontAwesomeIcon icon={faSyncAlt} className={`${refreshing ? "animate-spin" : ""}`} />
+            {refreshing ? "Actualisation..." : "Actualiser"}
+          </button>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full border border-emerald-100 text-emerald-700 font-bold text-[10px] uppercase tracking-widest">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Canal sécurisé
+          </div>
         </div>
       </header>
 
       <main className="flex-1 overflow-y-auto px-4 py-8">
         <div className="max-w-5xl mx-auto space-y-6">
-          {messages.map((msg: Message) => ( // Typage explicite du msg ici
+          {messages.map((msg: Message) => (
             <div key={msg.id} className={`flex w-full ${msg.userId !== null ? "justify-start" : "justify-end"} animate-in fade-in`}>
               <div className={`max-w-[85%] md:max-w-[65%] p-4 rounded-2xl shadow-sm ${msg.userId !== null ? "bg-white border border-slate-200 text-slate-800 rounded-tl-none" : "bg-blue-600 text-white rounded-tr-none"}`}>
                 <div className={`flex items-center justify-between gap-6 mb-2 border-b pb-1 ${msg.userId !== null ? "border-slate-100" : "border-white/10"}`}>
@@ -165,8 +182,9 @@ export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxP
             className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap">
             <span className="font-bold text-sm mr-2">Envoyer</span>
             <FontAwesomeIcon
-            icon={faPaperPlane} 
-            className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
+              icon={faPaperPlane} 
+              className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+            />
           </button>
         </form>
       </footer>
