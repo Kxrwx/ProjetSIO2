@@ -2,7 +2,10 @@ import { useEffect, useState, useMemo } from "react"; // Ajout de useMemo pour l
 import { useNavigate, Link } from "react-router-dom";
 import Navigation from "../Navigation";
 import GraphStatut from "../../components/GraphStatut";
+import NaviAdmin from "../../components/NaviAdmin";
 import "../../styles/Admin.css";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function ArchivedTickets() {
   const [user, setUser] = useState<any>(null);
@@ -55,6 +58,13 @@ export default function ArchivedTickets() {
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col">
       <Navigation />
+      <div className="absolute top-20 left-4 z-50">
+        <Link to="/">
+          <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
+            <FontAwesomeIcon icon={faArrowLeft} /> Retour
+          </button>
+        </Link>
+      </div>
 
       <main className="p-8 flex flex-row gap-8">
         {/* SECTION GAUCHE : LISTE DES Ferme SIGNALEMENTS */}
@@ -100,6 +110,7 @@ export default function ArchivedTickets() {
                 <h4 className="text-center font-bold mb-4 text-gray-700">Répartition par catégorie</h4>
                 <GraphStatut data={chartData} />
             </div>
+            <NaviAdmin/>
         </aside>
       </main>
     </div>
