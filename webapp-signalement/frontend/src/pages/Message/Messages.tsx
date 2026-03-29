@@ -163,9 +163,7 @@ export default function MessagesAdmin() {
             <span>Retour</span>
           </Link>
           <div className="h-8 w-px bg-slate-200 mx-2" />
-          <h1 className="text-lg font-bold text-slate-800 tracking-tight">
-            Discussion Signalement <span className="text-blue-600">#{id}</span>
-          </h1>
+          
           
           <div className="flex items-center gap-2 ml-4 overflow-x-auto max-w-md no-scrollbar">
             {attachments.map((file) => (
