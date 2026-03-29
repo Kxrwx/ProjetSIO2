@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node src/index.ts"
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "prisma:generate": "prisma generate",
+    "postinstall": "node -e \"console.log('Prisma generate auto-skip enabled; run npm run prisma:generate manually.')\""
   },
   "keywords": [],
   "author": "",
@@ -26,7 +28,6 @@
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
     "node-cron": "^4.2.1",
-    "prisma": "^5.22.0",
     "zod": "^4.1.13"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "@types/mysql": "^2.15.27",
     "@types/node": "^25.5.0",
     "nodemon": "^3.1.14",
+    "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

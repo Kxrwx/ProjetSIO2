@@ -1,25 +1,20 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link, data } from "react-router-dom"; // Imports regroupés
+import { useEffect, useState, useMemo } from "react"; // Ajout de useMemo pour la performance
+import { useNavigate, Link } from "react-router-dom";
 import Navigation from "./Navigation";
 import GraphStatut from "../components/GraphStatut";
+import NaviAdmin from "../components/NaviAdmin";
 import "../styles/Admin.css";
-
-
 
 export default function Admin() {
   const [user, setUser] = useState<any>(null);
   const [signalements, setSignalements] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  // 1. Charger l'utilisateur au démarrage
   useEffect(() => {
     const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
+    if (userData) setUser(JSON.parse(userData));
   }, []);
 
-  // 2. Appel automatique des signalements au chargement de la page
   useEffect(() => {
     const fetchSignalements = async () => {
       try {
@@ -28,87 +23,95 @@ export default function Admin() {
           headers: { 'Content-Type': 'application/json' },
           credentials: "include",
         });
-
         const result = await response.json();
-
         if (response.ok) {
           setSignalements(result);
-          console.log("Signalements récupérés:", result);
-
-        } else {
-          console.error("Erreur API:", result.error || "Impossible de récupérer les données");
         }
       } catch (error) {
         console.error("Erreur connexion:", error);
       }
     };
-
     fetchSignalements();
-  }, []); // Le tableau vide [] assure que l'appel ne se fait qu'une seule fois
-  const prepareChartData = () => {
-  const counts: Record<string, number> = {};
+  }, []);
 
-  signalements.forEach((sign) => {
-    // On récupère le nom de la catégorie (ou sign.statut.nameStatut si tu préfères)
-    const categoryName = sign.categorie.nameCategorie;
-    counts[categoryName] = (counts[categoryName] || 0) + 1;
-  });
-  //Filtre pour les statut = nouveau /Nouveaux signalements 
-  const nouveauxSignalements = signalements.filter(
-  (sign) => sign.statut?.nameStatut === "Nouveau"
-  );
-  // On transforme l'objet en tableau formaté pour Recharts
-  return Object.keys(counts).map((name) => ({
+ 
+  const chartData = useMemo(() => {
+    const counts: Record<string, number> = {};
+    signalements.forEach((sign) => {
+      const categoryName = sign.categorie?.nameCategorie || "Sans catégorie";
+      counts[categoryName] = (counts[categoryName] || 0) + 1;
+    });
+    return Object.keys(counts).map((name) => ({
       name,
       value: counts[name],
     }));
-  };
-  
-  const chartData = prepareChartData();
+  }, [signalements]);
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col">
       <Navigation />
 
       <main className="p-8 flex flex-row gap-8">
-        {/* SECTION GAUCHE : LISTE (2/3 de l'écran) */}
+        {/* SECTION GAUCHE : LISTE DE TOUS LES SIGNALEMENTS */}
         <div className="w-2/3">
           <h3 className="text-2xl font-bold mb-6 text-gray-800">
-            Signalements ({signalements.length}) :
+            Tous les Signalements ({signalements.length}) :
           </h3>
 
           <ul className="space-y-4">
-            {signalements.map((sign, index) => (
-              <li key={sign.id || index} className="p-5 border-l-4 border-blue-500 rounded-lg shadow-md bg-white flex flex-col gap-2 transition-transform hover:scale-[1.01]">
-                <div className="flex justify-between items-center">
+            {signalements.map((sign) => {
+                // Déterminer la couleur en fonction du statut
+                const statusColor = 
+                  sign.statut?.idStatut === 1 ? "border-blue-500 bg-blue-100 text-blue-700" : // Nouveau
+                  sign.statut?.idStatut === 2 ? "border-amber-500 bg-amber-100 text-amber-700" : // En cours
+                  sign.statut?.idStatut === 3 ? "border-emerald-500 bg-emerald-100 text-emerald-700" : // Terminé
+                  "border-gray-300"; // Autre
+
+                return (
+                  <li 
+                    key={sign.idSignalement} 
+                    className={`p-5 border-l-4 ${statusColor} rounded-lg shadow-md bg-white flex flex-col gap-2 transition-transform hover:scale-[1.01]`}
+                  >
+                  <div className="flex justify-between items-center">
                   <p className="font-semibold text-lg">{sign.title}</p>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
-                    {sign.statut.nameStatut} 
-                  </span>
-                  <span>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-3 py-1 ${statusColor} rounded-full text-sm font-bold`}>
+                      {sign.statut?.nameStatut} 
+                    </span>
                     <Link to={`/admin/signalement/detail/${sign.idSignalement}`}>
                       <button className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors text-sm">
                         Détails
                       </button>
                     </Link>
-                  </span>
+                  </div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
-                  <p><strong>Catégorie :</strong> {sign.categorie.nameCategorie}</p>
-                  <p><strong>Priorité :</strong> {sign.priorite.namePriorite}</p>
+                  <p><strong>Catégorie :</strong> {sign.categorie?.nameCategorie}</p>
+                  <p><strong>Priorité :</strong> {sign.priorite?.namePriorite}</p>
+                  <p><strong>ID :</strong> #{sign.idSignalement}</p>
                 </div>
               </li>
-            ))}
+              );
+            })}
+
+            {signalements.length === 0 && (
+              <p className="text-gray-500 italic">Aucun signalement pour le moment.</p>
+            )}
           </ul>
         </div>
 
-        {/* SECTION DROITE : GRAPHIQUE (1/3 de l'écran) */}
-        <aside className="w-1/3 sticky top-8 h-fit">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h4 className="text-center font-bold mb-4 text-gray-700">Répartition des statuts</h4>
-                <GraphStatut data={chartData} />
-            </div>
+      {/* SECTION DROITE : GRAPHIQUE & NAVIGATION */}
+      <aside className="w-1/3 sticky top-8 h-fit space-y-6">
+        
+        {/* BLOC GRAPHIQUE */}
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h4 className="text-center font-bold mb-4 text-gray-700 uppercase text-xs tracking-wider">
+            Répartition par catégorie
+          </h4>
+          <GraphStatut data={chartData} />
+        </div>
+            <NaviAdmin />
         </aside>
       </main>
     </div>

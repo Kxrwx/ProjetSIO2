@@ -309,7 +309,7 @@ export default function Report() {
           {step === 2 && (
             <div className="p-8">
               <div className="mb-7">
-                <h2 className="text-xl font-semibold  mb-1">Détails de l'incident</h2>
+                <h2 className="text-xl font-semibold mb-1">Détails de l'incident</h2>
                 <p className="text-sm ">Précisez le contexte, le lieu et la date des faits.</p>
               </div>
 
@@ -333,7 +333,8 @@ export default function Report() {
                     type="date"
                     value={formData.date}
                     onChange={handleChange}
-                    className="bg-white w-full px-4 py-3 rounded-xl borde text-sm focus:outline-none focus:ring-2 focus:border-transparent transition"
+                    className="bg-white w-full px-4 py-3 rounded-xl border text-sm 
+                     focus:outline-none focus:ring-2 focus:border-transparent transition"
                   />
                 </div>
               </div>
@@ -345,10 +346,11 @@ export default function Report() {
                 <textarea
                   id="description"
                   rows={6}
-                  placeholder="Décrivez les faits avec précision : qui, quoi, quand, comment. Évitez les jugements de valeur et restez factuel."
+                  placeholder="Décrivez ici les faits avec précision : qui, quoi, quand, comment. Évitez les jugements de valeur et restez factuel."
                   value={formData.description}
                   onChange={handleChange}
-                  className="bg-white w-full px-4 py-3 rounded-xl bordertext-sm focus:outline-none focus:ring-2 focus:border-transparent transition resize-none"
+                  className="bg-white w-full px-4 py-3 rounded-xl border text-sm 
+                     focus:outline-none focus:ring-2 focus:border-transparent transition italic"
                 />
                 <p className="text-xs mt-1.5">{formData.description.length} caractères</p>
               </div>
