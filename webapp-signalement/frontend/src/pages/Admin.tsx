@@ -1,9 +1,8 @@
 import { useEffect, useState, useMemo } from "react"; // Ajout de useMemo pour la performance
 import { useNavigate, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSyncAlt, faFileLines, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Navigation from "./Navigation";
 import GraphStatut from "../components/GraphStatut";
+import NaviAdmin from "../components/NaviAdmin";
 import "../styles/Admin.css";
 
 export default function Admin() {
@@ -63,9 +62,9 @@ export default function Admin() {
             {signalements.map((sign) => {
                 // Déterminer la couleur en fonction du statut
                 const statusColor = 
-                  sign.statut?.idStatut === 1 ? "border-blue-500" : // Nouveau
-                  sign.statut?.idStatut === 2 ? "border-amber-500" : // En cours
-                  sign.statut?.idStatut === 3 ? "border-emerald-500" : // Terminé
+                  sign.statut?.idStatut === 1 ? "border-blue-500 bg-blue-100 text-blue-700" : // Nouveau
+                  sign.statut?.idStatut === 2 ? "border-amber-500 bg-amber-100 text-amber-700" : // En cours
+                  sign.statut?.idStatut === 3 ? "border-emerald-500 bg-emerald-100 text-emerald-700" : // Terminé
                   "border-gray-300"; // Autre
 
                 return (
@@ -76,7 +75,7 @@ export default function Admin() {
                   <div className="flex justify-between items-center">
                   <p className="font-semibold text-lg">{sign.title}</p>
                   <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
+                    <span className={`px-3 py-1 ${statusColor} rounded-full text-sm font-bold`}>
                       {sign.statut?.nameStatut} 
                     </span>
                     <Link to={`/admin/signalement/detail/${sign.idSignalement}`}>
@@ -112,54 +111,7 @@ export default function Admin() {
           </h4>
           <GraphStatut data={chartData} />
         </div>
-
-          {/* BLOC NAVIGATION RAPIDE */}
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-            <h4 className="font-bold mb-4 text-gray-700 border-b pb-2">Gestion signalements</h4>
-            <div className="flex flex-col gap-3">
-              
-              {/* Bouton page nouveaux */}
-              <Link 
-                to="/admin/signalement/nouveaux" 
-                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500 rounded-xl transition-all group"
-              >
-                <span className="text-sm font-semibold text-slate-600 group-hover:text-blue-500">Gestion des nouveaux signalements</span>
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-blue-600">
-                  <FontAwesomeIcon icon={faArrowLeft} className="rotate-180 text-xs" />
-                </div>
-              </Link>
-
-              {/* Bouton page en cours */}
-              <Link 
-                to="/admin/signalement/encours" 
-                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-500 rounded-xl transition-all group"
-              >
-                <span className="text-sm font-semibold text-slate-600 group-hover:text-amber-500">Gestion des signalements en cours</span>
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-amber-600">
-                  <FontAwesomeIcon icon={faSyncAlt} className="text-xs" /> {/* Remplace par faUsers si tu l'as importé */}
-                </div>
-              </Link>
-
-              {/* Bouton page archivés */}
-              <Link 
-                to="/admin/signalement/archives" 
-                className="flex items-center justify-between p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 rounded-xl transition-all group"
-              >
-                <span className="text-sm font-semibold text-slate-600 group-hover:text-emerald-500">Gestion des signalements archivés</span>
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:text-emerald-600">
-                  <FontAwesomeIcon icon={faFileLines} className="text-xs" />
-                </div>
-              </Link>
-
-            </div>
-          </div>
-
-          {/* PETIT RAPPEL DE SÉCURITÉ (Optionnel) */}
-          <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
-            <p className="text-[10px] text-emerald-700 font-bold uppercase text-center tracking-widest">
-              Session Administrateur Sécurisée
-            </p>
-          </div>
+            <NaviAdmin />
         </aside>
       </main>
     </div>
