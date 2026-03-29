@@ -35,7 +35,7 @@ export default function Tracking() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full relative flex flex-col items-center pt-20 pb-12 px-4 font-sans">
+    <div className="min-h-screen bg-gray-50 w-full relative flex flex-col items-center pt-20 pb-12 px-4">
       
       {/* Bouton retour — reste en absolute */}
       <div className="absolute px-4 py-2 top-4 left-4 z-50">
