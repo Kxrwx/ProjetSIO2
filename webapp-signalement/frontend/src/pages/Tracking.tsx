@@ -164,6 +164,8 @@ export default function Tracking() {
                   <ChatBox 
                     idSignalement={signalement.idSignalement} 
                     messages={signalement.messagesDechiffres || []}
+                    trackingCode={trackingCode} 
+                    password={password}
                     onRefresh={() => handleSubmit({ preventDefault: () => {} } as any)} 
                   />
                 </div>

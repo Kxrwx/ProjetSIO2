@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faArrowLeft, faPaperclip, faFileLines, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import InfoTracking from "../pages/InfoTracking";
 
 // --- INTERFACES ---
 interface Message {
@@ -25,6 +26,8 @@ interface ChatBoxProps {
   idSignalement: number;
   onRefresh: () => void;
   onClose?: () => void;
+  trackingCode: string; 
+  password: string;
 }
 
 interface Attachment {
@@ -36,7 +39,7 @@ interface Attachment {
 
 // ... (Interfaces Message, ChatBoxProps, Attachment identiques)
 
-export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxProps) {
+export default function ChatBox({ messages, idSignalement, onRefresh, trackingCode, password }: ChatBoxProps) {
   const [newMessage, setNewMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [refreshing, setRefreshing] = useState(false); // État pour l'animation
@@ -108,9 +111,12 @@ export default function ChatBox({ messages, idSignalement, onRefresh }: ChatBoxP
             </div>
             <span>Retour</span>
           </button>
+          {/* TITRE DU CHAT AVEC POPUP*/}
           <div className="h-8 w-px bg-slate-200 mx-2" />
-          <h1 className="text-lg font-bold text-slate-800">Discussion Signalement</h1>
-          
+            <InfoTracking 
+            idSignalement={Number(idSignalement)}
+            trackingCode={trackingCode} 
+            password={password} />
           <div className="flex items-center gap-2 ml-4 overflow-x-auto max-w-sm no-scrollbar">
             {attachments.map((file) => (
               <a key={file.id} href={file.url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-all whitespace-nowrap">
