@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Navigation from "./Navigation";
 import GraphStatut from "../components/GraphStatut";
 import NaviAdmin from "../components/NaviAdmin";
+import TinyBarChart from "../components/TinyBarChart";
 import "../styles/Admin.css";
 
 export default function Admin() {
@@ -25,6 +26,7 @@ export default function Admin() {
         });
         const result = await response.json();
         if (response.ok) {
+          console.log("Signalements récupérés:", result);
           setSignalements(result);
         }
       } catch (error) {
@@ -47,13 +49,53 @@ export default function Admin() {
     }));
   }, [signalements]);
 
+  // Formatage des données pour Recharts (TinyBarChart)
+  const priorityData = useMemo(() => {
+    const counts: Record<string, number> = {};
+
+    signalements.forEach((sign) => {
+      const priorityName = sign.priorite?.namePriorite || "Non définie";
+      counts[priorityName] = (counts[priorityName] || 0) + 1;
+    });
+
+    // 1. On définit l'ordre idéal ici (doit correspondre exactement aux noms de ton API)
+    const order = ["Modéré", "Haute", "Critique"];
+
+    return Object.keys(counts)
+      .map((key) => ({
+        name: key,
+        total: counts[key],
+      }))
+      // 2. ON TRIE ICI
+      .sort((a, b) => {
+        return order.indexOf(a.name) - order.indexOf(b.name);
+      });
+  }, [signalements]);
+
+
+
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col">
       <Navigation />
 
       <main className="p-8 flex flex-row gap-8">
         {/* SECTION GAUCHE : LISTE DE TOUS LES SIGNALEMENTS */}
-        <div className="w-2/3">
+        <div className="w-2/3 gap-6 flex flex-col">
+        {/* GRAPHIQUE RECHARTS EN HAUT */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-lg font-bold text-slate-800">Priorité des Signalements</h3>
+                <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold">Signalements déposés</p>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-black text-indigo-600 block leading-none">{signalements.length}</span>
+                <span className="text-[10px] text-slate-400 font-bold uppercase">Total Dossiers</span>
+              </div>
+            </div>
+            
+            <TinyBarChart data={priorityData} />
+          </div>
           <h3 className="text-2xl font-bold mb-6 text-gray-800">
             Tous les Signalements ({signalements.length}) :
           </h3>
