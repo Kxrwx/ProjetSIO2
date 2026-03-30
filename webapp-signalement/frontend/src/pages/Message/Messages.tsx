@@ -52,8 +52,11 @@ export default function MessagesAdmin() {
         credentials: "include",
       });
       const result = await response.json();
-      if (response.ok) setUser(result);
-    } catch (error) { console.error(error); }
+      if (response.ok)
+        setUser(result);
+    } catch (error) { 
+      console.error(error); 
+    }
   };
 
   const fetchFiles = useCallback(async () => {
@@ -219,48 +222,62 @@ export default function MessagesAdmin() {
 
       {/* FOOTER AU MILIEU */}
       <footer className="p-6 bg-white border-t border-slate-200 w-full shadow-inner animate-in slide-in-from-bottom duration-500">
-        <div className="max-w-5xl mx-auto flex flex-col items-center">
-          {uploading && (
-            <div className="mb-2 flex items-center gap-2 text-blue-600 text-[10px] font-black uppercase animate-pulse">
-              <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-              Upload en cours...
+        <div className="max-w-5xl mx-auto flex flex-col items-center w-full">
+          
+          {/* CONDITION : Si idRole === 3, on affiche le formulaire de réponse */}
+          {user?.role.idRole === 3 ? (
+            <>
+              {uploading && (
+                <div className="mb-2 flex items-center gap-2 text-blue-600 text-[10px] font-black uppercase animate-pulse">
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                  Upload en cours...
+                </div>
+              )}
+              
+              <form onSubmit={handleSendMessage} className="w-full flex gap-4">
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileChange}
+                  className="hidden" 
+                />
+                
+                <button 
+                  type="button" 
+                  onClick={() => fileInputRef.current?.click()} 
+                  disabled={uploading}
+                  className="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm disabled:opacity-50"
+                >
+                  <FontAwesomeIcon icon={uploading ? faSpinner : faPaperclip} className={uploading ? "animate-spin" : "text-lg"} />
+                </button>
+
+                <input 
+                  type="text" 
+                  value={newMessage} 
+                  onChange={(e) => setNewMessage(e.target.value)} 
+                  placeholder="Écrivez votre réponse en tant que juriste..." 
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none shadow-inner" 
+                />
+
+                <button
+                  type="submit"
+                  disabled={sending || !newMessage.trim()}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap"
+                >
+                  <span className="font-bold text-sm mr-2">Envoyer</span>
+                  <FontAwesomeIcon icon={faPaperPlane} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
+                </button>
+              </form>
+            </>
+          ) : (
+            /* BANDEAU POUR LES AUTRES (Non-Juristes) */
+            <div className="w-full p-4 bg-slate-50 border border-dashed border-slate-300 rounded-2xl flex items-center justify-center gap-3 text-slate-500">
+              <div className="w-2 h-2 rounded-full bg-slate-300 animate-pulse" />
+              <span className="text-xs font-medium italic">
+                Seuls les membres du pôle juridique (ID: 3) peuvent répondre à ce signalement.
+              </span>
             </div>
           )}
-          
-          <form onSubmit={handleSendMessage} className="w-full flex gap-4">
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange}
-              className="hidden" 
-            />
-            
-            <button 
-              type="button" 
-              onClick={() => fileInputRef.current?.click()} 
-              disabled={uploading}
-              className="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm disabled:opacity-50"
-            >
-              <FontAwesomeIcon icon={uploading ? faSpinner : faPaperclip} className={uploading ? "animate-spin" : "text-lg"} />
-            </button>
-
-            <input 
-              type="text" 
-              value={newMessage} 
-              onChange={(e) => setNewMessage(e.target.value)} 
-              placeholder="Écrivez votre réponse..." 
-              className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none shadow-inner" 
-            />
-
-            <button
-              type="submit"
-              disabled={sending || !newMessage.trim()}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap"
-            >
-              <span className="font-bold text-sm mr-2">Envoyer</span>
-              <FontAwesomeIcon icon={faPaperPlane} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
-            </button>
-          </form>
         </div>
       </footer>
     </div>
