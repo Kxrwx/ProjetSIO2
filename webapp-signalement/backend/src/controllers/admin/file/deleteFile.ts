@@ -1,19 +1,25 @@
 import type { Response } from "express";
-import { getFile, setUrlViewFile } from "../../../models/file";
+import { getFile, setUrlViewFile, deleteFromS3, deletePieceJointeDB } from "../../../models/file";
 import { AuthRequest } from "../../../middleware/auth.middleware";
 
 export default async function deleteFileAdmin(req: AuthRequest, res: Response) {
   try {
-    const { idSignalement, fileKey } = req.body;
-    if (!idSignalement || !fileKey) return res.status(400).json({ error: "id et fileKey requis" });
+    const { idSignalement, idFile, fileKey } = req.body;
 
-    const files = await getFile(Number(idSignalement));
+    if (!idSignalement || !idFile || !fileKey) {
+      return res.status(400).json({ error: "idSignalement, idFile et fileKey requis" });
+    }
+
+    await deleteFromS3(fileKey);
+
+    await deletePieceJointeDB(Number(idFile));
+
+    const updatedFiles = await getFile(Number(idSignalement));
 
     const filesWithUrls = await Promise.all(
-      files.map(async (file) => {
+      updatedFiles.map(async (file) => {
         const url = await setUrlViewFile(file.encryptedPath);
         
-        // CONVERSION DU BUFFER EN STRING ICI
         const fileName = file.originalFilenameEncrypted 
           ? Buffer.from(file.originalFilenameEncrypted).toString('utf-8')
           : `Fichier-${file.id}`;
@@ -21,16 +27,21 @@ export default async function deleteFileAdmin(req: AuthRequest, res: Response) {
         return {
           id: file.id,
           url: url,
-          name: fileName, // On ajoute le nom converti
+          name: fileName,
+          fileKey: file.encryptedPath, // On renvoie la clé pour la prochaine suppression
           createdAt: file.createdAt,
           fileSize: file.fileSize?.toString(), 
         };
       })
     );
 
-    return res.status(200).json({ data: filesWithUrls });
+    return res.status(200).json({ 
+      message: "Fichier supprimé avec succès",
+      data: filesWithUrls 
+    });
+
   } catch (error: any) {
-    console.error("Preview Error:", error);
-    return res.status(500).json({ error: "Erreur lors de la génération de la preview" });
+    console.error("Delete Error:", error);
+    return res.status(500).json({ error: "Erreur lors de la suppression du fichier" });
   }
 }

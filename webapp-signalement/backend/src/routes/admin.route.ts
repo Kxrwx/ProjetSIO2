@@ -8,6 +8,7 @@ import updateSignalement from "../controllers/admin/updateSignalement";
 import createMessageAdmin from "../controllers/admin/createMessage";
 import getMessageAdmin from "../controllers/admin/getMessage";
 import getFileAdmin from "../controllers/admin/file/getFile";
+import deleteFileAdmin from "../controllers/admin/file/deleteFile"; // Ajout de l'import
 import getLogController from "../controllers/admin/log/getLog";
 import createLogFile from "../controllers/admin/log/createLogFile";
 import createFileAdmin from "../controllers/admin/file/createFile";
@@ -28,9 +29,10 @@ route.post("/signalement/update", authenticate, updateSignalement)
 route.post("/signalement/createMessage", authenticate, createMessageAdmin)
 route.post("/signalement/getMessage", authenticate, getMessageAdmin)
 
-//s3
+//s3 / Pièces Jointes
 route.post("/signalement/file", authenticate, getFileAdmin)
 route.post("/signalement/createFile", authenticate, upload.single('file'), createFileAdmin)
+route.delete("/signalement/deleteFile", authenticate, deleteFileAdmin)
 
 //log
 route.get("/log", authenticate, getLogController)
