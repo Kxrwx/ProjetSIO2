@@ -11,13 +11,12 @@ export default async function deleteFileAdmin(req: AuthRequest, res: Response) {
     }
 
     await deleteFromS3(fileKey);
-
     await deletePieceJointeDB(Number(idFile));
 
     const updatedFiles = await getFile(Number(idSignalement));
 
     const filesWithUrls = await Promise.all(
-      updatedFiles.map(async (file) => {
+      updatedFiles.map(async (file: any) => { 
         const url = await setUrlViewFile(file.encryptedPath);
         
         const fileName = file.originalFilenameEncrypted 
@@ -28,7 +27,7 @@ export default async function deleteFileAdmin(req: AuthRequest, res: Response) {
           id: file.id,
           url: url,
           name: fileName,
-          fileKey: file.encryptedPath, // On renvoie la clé pour la prochaine suppression
+          fileKey: file.encryptedPath,
           createdAt: file.createdAt,
           fileSize: file.fileSize?.toString(), 
         };
