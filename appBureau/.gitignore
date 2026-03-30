@@ -3,7 +3,7 @@
 *.pem
 assets/*.pem
 
-# Python : On ignore les fichiers compilés (inutiles sur Git)
+# Fichiers compilés Python
 __pycache__/
 *.pyc
 *.pyo

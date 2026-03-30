@@ -3,7 +3,6 @@ import { s3 } from "../db/s3"
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from "crypto";
-import type { Multer } from "multer";
 
 export async function getFile(idSignalement:number) {
     const req = await prisma.pieceJointe.findMany({

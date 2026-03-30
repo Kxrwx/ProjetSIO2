@@ -2,7 +2,7 @@ customtkinter
 packaging
 pillow
 bcrypt
-sqlalchemy # DBlayer
-pymysql # Driver MySQL pour SQLAlchemy
-python-dotenv # Lecture .env
+sqlalchemy 
+pymysql 
+python-dotenv 
 uuid
