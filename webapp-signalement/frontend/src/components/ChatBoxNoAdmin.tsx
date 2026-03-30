@@ -239,7 +239,7 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
               type="text" 
               value={newMessage} 
               onChange={(e) => setNewMessage(e.target.value)} 
-              placeholder="Écrivez votre réponse..." 
+              placeholder="Écrivez votre message..." 
               className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none shadow-inner" 
             />
 
