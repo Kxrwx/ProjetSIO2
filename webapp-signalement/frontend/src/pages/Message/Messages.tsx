@@ -274,7 +274,7 @@ export default function MessagesAdmin() {
             <div className="w-full p-4 bg-slate-50 border border-dashed border-slate-300 rounded-2xl flex items-center justify-center gap-3 text-slate-500">
               <div className="w-2 h-2 rounded-full bg-slate-300 animate-pulse" />
               <span className="text-xs font-medium italic">
-                Seuls les membres du pôle juridique (ID: 3) peuvent répondre à ce signalement.
+                Seuls les membres du pôle juridique peuvent répondre à ce signalement.
               </span>
             </div>
           )}
