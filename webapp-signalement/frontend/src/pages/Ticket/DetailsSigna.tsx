@@ -9,8 +9,7 @@ import Loader from "../../components/Loader";
 const STATUTS_CONFIG: Record<number, { label: string; color: string }> = {
   1: { label: "Nouveau", color: "text-blue-500" },
   2: { label: "En cours", color: "text-orange-500" },
-  3: { label: "Terminé", color: "text-green-500" },
-  4: { label: "Rejeté", color: "text-red-500" },
+  3: { label: "Archivé", color: "text-green-500" },
 };
 
 // 2. Interface mise à jour avec idStatut
