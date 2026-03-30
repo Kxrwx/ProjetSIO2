@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 import morgan from "morgan"
 import helmet from "helmet"
 import rateLimit from "express-rate-limit";
+import type { CorsOptions } from "cors";
 
 
 //import fonction metier
@@ -21,10 +22,33 @@ dotenv.config();
 const app = express();
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONT_URL || "http://localhost:5173",
-  credentials: true
-}));
+
+const normalizeOrigin = (value: string) => value.trim().replace(/\/+$/, "");
+const envOrigins = (process.env.FRONT_URLS || process.env.FRONT_URL || "http://localhost:5173")
+  .split(",")
+  .map(normalizeOrigin)
+  .filter(Boolean);
+
+const allowedOrigins = new Set<string>([
+  ...envOrigins,
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+]);
+
+const corsOptions: CorsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    // Autorise les requetes sans origin (curl, serveur a serveur, etc.)
+    if (!origin) return callback(null, true);
+
+    const cleanOrigin = normalizeOrigin(origin);
+    if (allowedOrigins.has(cleanOrigin)) return callback(null, true);
+
+    return callback(new Error(`CORS blocked origin: ${origin}`));
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use(express.json());
