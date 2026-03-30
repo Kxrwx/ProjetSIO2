@@ -20,7 +20,7 @@ export default async function createLogFile(req: AuthRequest, res: Response) {
         const stats = await fs.stat(filePath);
         const fileContent = await fs.readFile(filePath); 
 
-        const fileKey = await uploadToS3Log(fileContent, "audit-log.txt");
+        const fileKey = await uploadToS3Log(fileContent);
 
         await createLogEntry(fileKey, stats.size, null);
 

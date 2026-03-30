@@ -128,7 +128,7 @@ model PieceJointe {
   
   encryptedPath              String       @map("encrypted_path") @db.VarChar(512) 
   
-  originalFilenameEncrypted  Bytes?       @map("original_filename_encrypted") @db.Blob 
+originalFilenameEncrypted String? @map("original_filename_encrypted")
   
   fileSize                   BigInt?      @map("file_size") 
   

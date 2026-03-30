@@ -44,7 +44,7 @@ export default async function createSignalement(req: Request, res: Response) {
       await Promise.all(
         files.map(async (file) => {
           const fileKey = await uploadToS3(file, signalement.idSignalement);
-          await createPieceJointe(signalement.idSignalement, fileKey, file.size);
+          await createPieceJointe(signalement.idSignalement, fileKey, file.size, file.originalname);
         })
       );
     }
