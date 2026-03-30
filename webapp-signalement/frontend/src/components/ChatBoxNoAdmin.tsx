@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faArrowLeft, faPaperclip, faFileLines, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import InfoTracking from "../pages/InfoTracking";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 // --- INTERFACES ---
 interface Message {
@@ -44,6 +45,8 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
   const [sending, setSending] = useState(false);
   const [refreshing, setRefreshing] = useState(false); // État pour l'animation
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const { id } = useParams<{ id: string }>();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -78,7 +81,6 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleFileClick = () => fileInputRef.current?.click();
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +101,45 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
     } finally { 
       setSending(false); 
     }
-  };
+    };
+    // --- LOGIQUE UPLOAD (IMPORT) ---
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    
+    // Utilise idSignalement (la prop) et non id (du params)
+    if (!selectedFile || !idSignalement) return;
+
+    setUploading(true);
+      try {
+        const formData = new FormData();
+        // On convertit en string pour FormData
+        formData.append("idSignalement", idSignalement.toString());
+        formData.append("file", selectedFile); 
+
+        // ATTENTION : Vérifie bien que l'URL est /api/signalements/createFile (Public)
+        // et non /api/admin/... (Réservé aux admins)
+        const response = await fetch("http://localhost:5000/api/signalements/createFile", {
+          method: "POST",
+          // Pas de headers Content-Type, le navigateur s'en charge avec FormData
+          body: formData,
+        });
+
+        if (response.ok) {
+          await fetchFiles(); // Rafraîchir la liste des fichiers
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        } else {
+          const errorData = await response.json();
+          console.error("Erreur serveur:", errorData);
+          alert("Erreur lors de l'envoi du fichier.");
+        }
+      } catch (err) { 
+        console.error("Erreur réseau:", err); 
+      } finally { 
+        setUploading(false); 
+      }
+    };
+
 
   return (
     <div className="fixed inset-0 flex flex-col h-screen w-full bg-slate-50 z-[100] overflow-hidden">
@@ -169,30 +209,50 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
         </div>
       </main>
 
-      <footer className="p-6 bg-white border-t border-slate-200 w-full shadow-lg">
-        <form onSubmit={handleSendMessage} className="max-w-5xl mx-auto flex gap-4">
-          <input type="file" ref={fileInputRef} className="hidden" onChange={() => {}} />
-          <button type="button" onClick={handleFileClick} className="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm">
-            <FontAwesomeIcon icon={faPaperclip} className="text-lg" />
-          </button>
-          <input 
-            type="text" 
-            value={newMessage} 
-            onChange={(e) => setNewMessage(e.target.value)} 
-            placeholder="Écrivez votre message ici..." 
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-inner" 
-          />
-          <button
-            type="submit"
-            disabled={sending || !newMessage.trim()}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap">
-            <span className="font-bold text-sm mr-2">Envoyer</span>
-            <FontAwesomeIcon
-              icon={faPaperPlane} 
-              className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+<footer className="p-6 bg-white border-t border-slate-200 w-full shadow-inner animate-in slide-in-from-bottom duration-500">
+        <div className="max-w-5xl mx-auto flex flex-col items-center">
+          {uploading && (
+            <div className="mb-2 flex items-center gap-2 text-blue-600 text-[10px] font-black uppercase animate-pulse">
+              <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+              Upload en cours...
+            </div>
+          )}
+          
+          <form onSubmit={handleSendMessage} className="w-full flex gap-4">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileChange}
+              className="hidden" 
             />
-          </button>
-        </form>
+            
+            <button 
+              type="button" 
+              onClick={() => fileInputRef.current?.click()} 
+              disabled={uploading}
+              className="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm disabled:opacity-50"
+            >
+              <FontAwesomeIcon icon={uploading ? faSpinner : faPaperclip} className={uploading ? "animate-spin" : "text-lg"} />
+            </button>
+
+            <input 
+              type="text" 
+              value={newMessage} 
+              onChange={(e) => setNewMessage(e.target.value)} 
+              placeholder="Écrivez votre réponse..." 
+              className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none shadow-inner" 
+            />
+
+            <button
+              type="submit"
+              disabled={sending || !newMessage.trim()}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white px-6 py-4 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200 active:scale-95 group whitespace-nowrap"
+            >
+              <span className="font-bold text-sm mr-2">Envoyer</span>
+              <FontAwesomeIcon icon={faPaperPlane} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"/>
+            </button>
+          </form>
+        </div>
       </footer>
     </div>
   );
