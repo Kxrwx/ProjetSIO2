@@ -41,13 +41,20 @@ export default async function createSignalement(req: Request, res: Response) {
     const files = req.files as any[]; 
     
     if (files && files.length > 0) {
-      await Promise.all(
-        files.map(async (file) => {
-          const fileKey = await uploadToS3(file, signalement.idSignalement);
-          await createPieceJointe(signalement.idSignalement, fileKey, file.size, file.originalname);
-        })
+  await Promise.all(
+    files.map(async (file) => {
+      const fileKey = await uploadToS3(file, signalement.idSignalement);
+      const fileNameBuffer = Buffer.from(file.originalname, 'utf-8');
+
+      await createPieceJointe(
+        signalement.idSignalement, 
+        fileKey, 
+        file.size, 
+        fileNameBuffer 
       );
-    }
+    })
+  );
+}
     await createLog(null, signalement.idSignalement , "creation signalement", chiffrement("creation signalement par une victime"), ip)
 
     res.status(200).json({ 

@@ -40,7 +40,6 @@ export async function uploadToS3Log(fileBuffer: Buffer) {
 
 export async function uploadToS3(file: Express.Multer.File, idSignalement: number) {
   const uniqueSuffix = crypto.randomBytes(4).toString('hex');
-  // Nettoyage sommaire du nom de fichier pour éviter les soucis d'URL S3
   const safeName = file.originalname.replace(/\s+/g, '-');
   const fileKey = `signalements/${idSignalement}/${Date.now()}-${uniqueSuffix}-${safeName}`;
 
