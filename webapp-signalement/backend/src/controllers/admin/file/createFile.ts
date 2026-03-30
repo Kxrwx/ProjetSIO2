@@ -15,14 +15,15 @@ export default async function createFileAdmin(req: AuthRequest, res: Response) {
     if (isNaN(idSigo)) {
       return res.status(400).json({ error: "idSignalement invalide" });
     }
-
     const fileKey = await uploadToS3(file, idSigo);
+
+    const fileNameBuffer = Buffer.from(file.originalname, 'utf-8');
 
     await createPieceJointe(
       idSigo, 
       fileKey,
       file.size,
-      file.originalname
+      fileNameBuffer
     );
 
     return res.status(200).json({ message: "Fichier ajouté avec succès", fileKey });

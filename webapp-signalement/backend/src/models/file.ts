@@ -13,17 +13,15 @@ export async function getFile(idSignalement:number) {
     return req
 }
 
-export async function setUrlViewFile(fileKey : string, contentType?: string){
+export async function setUrlViewFile(fileKey: string) {
     const command = new GetObjectCommand({
-    Bucket: process.env.R2_BUCKET_NAME || "nom-de-ton-bucket",
-    Key: fileKey,
-    ResponseContentType: contentType, 
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: fileKey,
     });
+
     const url = await getSignedUrl(s3, command, { expiresIn: 900 });
-
-    return url
+    return url;
 }
-
 
 
 export async function uploadToS3Log(fileBuffer: Buffer) {
@@ -61,14 +59,16 @@ export async function createPieceJointe(
   idSignalement: number,
   fileKey: string,
   fileSize: number,
-  fileName: string
+  fileName: string | Buffer 
 ) {
   return prisma.pieceJointe.create({
     data: {
       idSignalement: idSignalement,
       encryptedPath: fileKey,
       fileSize: BigInt(fileSize),
-      originalFilenameEncrypted: chiffrement(fileName),
+      originalFilenameEncrypted: Buffer.isBuffer(fileName) 
+        ? fileName 
+        : Buffer.from(fileName, 'utf-8'),
     },
   });
 }

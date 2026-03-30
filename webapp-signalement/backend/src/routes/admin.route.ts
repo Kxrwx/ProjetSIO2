@@ -11,8 +11,10 @@ import getFileAdmin from "../controllers/admin/file/getFile";
 import getLogController from "../controllers/admin/log/getLog";
 import createLogFile from "../controllers/admin/log/createLogFile";
 import createFileAdmin from "../controllers/admin/file/createFile";
+import multer from "multer";
 
 const route = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 route.get("/user", authenticate, getUser);
 
@@ -28,7 +30,7 @@ route.post("/signalement/getMessage", authenticate, getMessageAdmin)
 
 //s3
 route.post("/signalement/file", authenticate, getFileAdmin)
-route.post("/signalement/createFile", authenticate, createFileAdmin)
+route.post("/signalement/createFile", authenticate, upload.single('file'), createFileAdmin)
 
 //log
 route.get("/log", authenticate, getLogController)
