@@ -10,10 +10,9 @@ export default async function getFileAdmin(req: AuthRequest, res: Response) {
     const files = await getFile(Number(idSignalement));
 
     const filesWithUrls = await Promise.all(
-      files.map(async (file) => {
+      files.map(async (file : any) => {
         const url = await setUrlViewFile(file.encryptedPath);
         
-        // CONVERSION DU BUFFER EN STRING ICI
         const fileName = file.originalFilenameEncrypted 
           ? Buffer.from(file.originalFilenameEncrypted).toString('utf-8')
           : `Fichier-${file.id}`;
@@ -21,7 +20,7 @@ export default async function getFileAdmin(req: AuthRequest, res: Response) {
         return {
           id: file.id,
           url: url,
-          name: fileName, // On ajoute le nom converti
+          name: fileName, 
           createdAt: file.createdAt,
           fileSize: file.fileSize?.toString(), 
         };
