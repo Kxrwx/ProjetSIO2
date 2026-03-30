@@ -11,7 +11,7 @@ export default async function updateSignalement(req:AuthRequest, res: Response) 
         const userId = req.user?.id
         const perm = req.permissions?.map(p => p.nameRole)
         if(!perm || !userId) return res.status(401).json({error : "Non autorisé"})
-        const hasWriteAccess = perm.includes("ecriture");
+        const hasWriteAccess = perm.includes("Ecriture");
         if(!hasWriteAccess) return res.status(401).json({error : "Non autorisé"})
         const {signalementId, idStatut} = req.body
         const response = await updateSignalementAdmin(signalementId, idStatut)
