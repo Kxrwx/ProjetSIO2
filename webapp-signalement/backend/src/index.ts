@@ -25,6 +25,7 @@ app.use(cors({
   origin: process.env.FRONT_URL || "http://localhost:5173",
   credentials: true
 }));
+console.log("CORS configuré pour :", process.env.FRONT_URL || "http://localhost:5173");
 app.use(cookieParser());
 
 app.use(express.json());
