@@ -1,6 +1,6 @@
 import {prisma} from "../db/prisma"
 import { s3 } from "../db/s3"
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from "crypto";
 import { chiffrement } from "../lib/bib";
@@ -68,6 +68,24 @@ export async function createPieceJointe(
       originalFilenameEncrypted: Buffer.isBuffer(fileName) 
         ? fileName 
         : Buffer.from(fileName, 'utf-8'),
+    },
+  });
+}
+
+export async function deleteFromS3(fileKey: string) {
+  const command = new DeleteObjectCommand({
+    Bucket: process.env.R2_BUCKET_NAME!,
+    Key: fileKey,
+  });
+
+  await s3.send(command);
+  return true;
+}
+
+export async function deletePieceJointeDB(id: number) {
+  return await prisma.pieceJointe.delete({
+    where: {
+      id: id,
     },
   });
 }
