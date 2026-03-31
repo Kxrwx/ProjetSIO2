@@ -29,6 +29,8 @@ const envOrigins = (process.env.FRONT_URLS || process.env.FRONT_URL || "http://l
   .map(normalizeOrigin)
   .filter(Boolean);
 
+console.log("Allowed CORS origins:", envOrigins);
+
 const allowedOrigins = new Set<string>([
   ...envOrigins,
   "http://localhost:5173",
@@ -38,7 +40,6 @@ const allowedOrigins = new Set<string>([
 const corsOptions: CorsOptions = {
   credentials: true,
   origin: (origin, callback) => {
-    // Autorise les requetes sans origin (curl, serveur a serveur, etc.)
     if (!origin) return callback(null, true);
 
     const cleanOrigin = normalizeOrigin(origin);
