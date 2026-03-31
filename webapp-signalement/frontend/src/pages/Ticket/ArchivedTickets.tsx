@@ -70,7 +70,7 @@ export default function ArchivedTickets() {
         {/* SECTION GAUCHE : LISTE DES Ferme SIGNALEMENTS */}
         <div className="w-2/3">
           <h3 className="text-2xl font-bold mb-6 text-gray-800">
-            Signalements Fermés ({seulementFerme.length}) :
+            Signalements Archivés ({seulementFerme.length}) :
           </h3>
 
           <ul className="space-y-4">
