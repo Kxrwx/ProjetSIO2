@@ -8,6 +8,7 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,13 +40,13 @@ export default function Auth() {
 
   return (
     <div className="container-auth">
-      <div className="container-btn-back">
-        <Link to="/">
-          <button className="btn-back">
-            <FontAwesomeIcon icon={faArrowLeft} /> Retour
-          </button>
-        </Link>
-      </div>
+      <div className="absolute px-4 py-2 top-4 left-4">
+          <Link to="/">
+              <button className="bg-white text-black px-4 py-2 rounded hover:bg-black hover:text-white border-2 border-black border-solid transition-colors">
+                  <FontAwesomeIcon icon={faArrowLeft} /> Retour      
+              </button>
+          </Link>
+      </div>   
 
       <div className="container">
         <div className="heading">Connexion à votre environnement</div>

@@ -1,15 +1,43 @@
-import express, { Response } from "express";
+import express from "express";
 import { authenticate } from "../middleware/auth.middleware";
 import getUser from "../controllers/admin/user";
 import allSignalement  from "../controllers/admin/allSignalement"
 import detailSignalement from "../controllers/admin/detailSignalement";
 import isAuth from "../controllers/admin/isAuth";
+import updateSignalement from "../controllers/admin/updateSignalement";
+import createMessageAdmin from "../controllers/admin/createMessage";
+import getMessageAdmin from "../controllers/admin/getMessage";
+import getFileAdmin from "../controllers/admin/file/getFile";
+import deleteFileAdmin from "../controllers/admin/file/deleteFile"; // Ajout de l'import
+import getLogController from "../controllers/admin/log/getLog";
+import createLogFile from "../controllers/admin/log/createLogFile";
+import createFileAdmin from "../controllers/admin/file/createFile";
+import multer from "multer";
 
 const route = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 route.get("/user", authenticate, getUser);
+
+//signalement
 route.get("/signalement", authenticate, allSignalement)
 route.post("/signalement/detail", authenticate, detailSignalement)
+route.post("/signalement/update", authenticate, updateSignalement)
+
+
+//Message
+route.post("/signalement/createMessage", authenticate, createMessageAdmin)
+route.post("/signalement/getMessage", authenticate, getMessageAdmin)
+
+//s3 / Pièces Jointes
+route.post("/signalement/file", authenticate, getFileAdmin)
+route.post("/signalement/createFile", authenticate, upload.single('file'), createFileAdmin)
+route.delete("/signalement/deleteFile", authenticate, deleteFileAdmin)
+
+//log
+route.get("/log", authenticate, getLogController)
+route.get("/createLog", authenticate, createLogFile)
+
 route.get("", authenticate, isAuth)
 
 export default route;

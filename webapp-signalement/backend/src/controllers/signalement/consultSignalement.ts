@@ -1,9 +1,13 @@
 import type { Request, Response } from "express";
-import { hashPassword } from "../../lib/bib";
+import { hashPassword, dechiffrement, chiffrement } from "../../lib/bib";
 import {selectSignalementDB} from "../../models/signalement"
+import { createLog } from "../../models/autid";
+
 
 export default async function getSignalement(req:Request, res: Response) {
     try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
     const { trackingCode, password } = req.body;
     if (!trackingCode || !password) {
       return res.status(400).json({ error: 'Numéro de suivi et mot de passe requis' });
@@ -12,12 +16,40 @@ export default async function getSignalement(req:Request, res: Response) {
     const passwordHash = hashPassword(password); 
 
     const signalement = await selectSignalementDB(trackingCode.trim(), passwordHash)
-    if (!signalement) {
-      return res.status(404).json({ error: 'Aucun signalement trouvé pour ce numéro et ce mot de passe' });
-    }
+    if (!signalement) return res.status(404).json({ error: 'Aucun signalement trouvé pour ce numéro et ce mot de passe' });
 
-    const { trackingPasswordHash, ...safe } = signalement;
-    res.json(safe);
+        const { 
+        victimContactEncrypted, 
+        victimNameEncrypted, 
+        descriptionEncrypted, 
+        lieuEncrypted,
+        trackingPasswordHash, 
+        messages,
+        ...rest               
+    } = signalement;
+
+    const messagesDechiffres = messages.map(msg => {
+                  const { contenuEncrypted, ...reste } = msg;
+                  return {
+                      ...reste,
+                      contenu: dechiffrement(contenuEncrypted)
+                  };
+        });
+    
+    const detailDechiffre = {
+        ...rest, 
+        messagesDechiffres,
+        victimContact: victimContactEncrypted ? dechiffrement(victimContactEncrypted) : null,
+        victimName: victimNameEncrypted ? dechiffrement(victimNameEncrypted) : null,
+        description: descriptionEncrypted ? dechiffrement(descriptionEncrypted) : null,
+        lieu: lieuEncrypted ? dechiffrement(lieuEncrypted) : null
+    };
+
+    
+
+    await createLog(null, detailDechiffre.idSignalement , "consultation signalement", chiffrement("consult signalement par une victime"), ip)
+
+    return res.status(200).json(detailDechiffre);
   } catch (error : any) {
     res.status(500).json({ error: error.message });
   }

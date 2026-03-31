@@ -1,54 +1,70 @@
 import type { Request, Response } from "express";
-import {getRelationIds} from "../../models/relation"
-import {hashPassword} from "../../lib/bib"
-import {createSignalementDB} from "../../models/signalement"
+import { getRelationIds } from "../../models/relation";
+import { hashPassword, chiffrement } from "../../lib/bib";
+import { createSignalementDB } from "../../models/signalement";
+import { uploadToS3, createPieceJointe } from "../../models/file";
+import { createLog } from "../../models/autid";
 
-export default async function createSignalement(req:Request, res : Response) {
-    console.log("REQUÊTE COMPLETE :", JSON.stringify(req.body, null, 2));
-  
+export default async function createSignalement(req: Request, res: Response) {
   try {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
     const { titre, nom, contact, lieu, date, categorie, priorite, description, password, trackingCode } = req.body;
 
-    // VALIDATION
     if (!titre || !categorie || !priorite || !description || !password || !trackingCode) {
-      console.log("Champs manquants:", { titre, categorie, priorite, description, password, trackingCode });
       return res.status(400).json({ error: 'Champs obligatoires manquants' });
     }
 
     const { cat, pri, stat } = await getRelationIds(categorie, priorite);
-    
     if (!cat || !pri || !stat) {
-      console.log("Relations non trouvées:", { cat, pri, stat });
       return res.status(400).json({ error: 'Catégorie, priorité ou statut invalide' });
     }
 
-    // MAPPING vers le schéma Prisma
     const signalementData = {
       title: titre,
       trackingCode: trackingCode,
       trackingPasswordHash: hashPassword(password),
-      victimNameEncrypted: nom || null,
-      victimContactEncrypted: contact || null,
-      descriptionEncrypted: description,
-      lieuEncrypted: lieu || null,
-      dateEncrypted: (date && date !== "") ? new Date(date) : null,
+      descriptionEncrypted: chiffrement(description),
+      victimNameEncrypted: nom ? chiffrement(nom) : null,
+      victimContactEncrypted: contact ? chiffrement(contact) : null,
+      lieuEncrypted: lieu ? chiffrement(lieu) : null,
+      dateEncrypted: date ? new Date(date) : null,
       idCategorie: cat.idCategorie,
       idPriorite: pri.idPriorite,
       idStatut: stat.idStatut,
     };
 
-    console.log("📊 DONNÉES PRÊTES POUR PRISMA:", signalementData);
+    const signalement = await createSignalementDB(signalementData);
 
-    const signalement = await createSignalementDB(signalementData)
+    if(!signalement) return res.status(400).json({error : "Erreur creation signalement"})
 
-    console.log("SIGNALEMENT CRÉÉ:", signalement);
-    res.status(201).json({ 
+    const files = req.files as any[]; 
+    
+    if (files && files.length > 0) {
+  await Promise.all(
+    files.map(async (file) => {
+      const fileKey = await uploadToS3(file, signalement.idSignalement);
+      const fileNameBuffer = Buffer.from(file.originalname, 'utf-8');
+
+      await createPieceJointe(
+        signalement.idSignalement, 
+        fileKey, 
+        file.size, 
+        fileNameBuffer 
+      );
+    })
+  );
+}
+    await createLog(null, signalement.idSignalement , "creation signalement", chiffrement("creation signalement par une victime"), ip)
+
+    res.status(200).json({ 
       trackingCode: signalement.trackingCode,
-      id: signalement.idSignalement
+      id: signalement.idSignalement,
+      message: files ? `${files.length} fichiers uploadés.` : "Aucun fichier joint."
     });
     
-  } catch (error : any) {
-
-    res.status(500).json({ error: error.message || "Erreur"});
+  } catch (error: any) {
+    console.error("ERREUR CREATE:", error);
+    res.status(500).json({ error: error.message || "Erreur" });
   }
 }

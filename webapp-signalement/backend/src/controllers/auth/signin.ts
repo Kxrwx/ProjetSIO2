@@ -3,12 +3,16 @@ import bcrypt from "bcrypt"
 import { getUser } from "../../models/user";
 import crypto from "crypto"
 import {createSession, deleteSession} from "../../models/session"
+import { createLog } from "../../models/autid";
+import { chiffrement } from "../../lib/bib";
 
 
 
 
 export default async function signin(req:Request, res : Response) {
     try {
+        const forwarded = req.headers['x-forwarded-for'];
+        const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : req.socket.remoteAddress || null;
         const {email, password} = req.body
         const user = await getUser(email)
         if(!user) return res.status(401).json({error : "Erreur login"})
@@ -26,6 +30,7 @@ export default async function signin(req:Request, res : Response) {
             domain : process.env.NODE_ENV === "production" ? process.env.FRONT : undefined
         })
         const {passwordHash, ...safeUser} = user 
+        await createLog(user.id, null , "signin user", chiffrement(`signin de ${user.id}`), ip)
         res.status(200).json(safeUser)
     }
     catch (error){
