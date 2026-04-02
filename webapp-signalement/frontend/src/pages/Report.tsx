@@ -3,6 +3,7 @@ import "../styles/Report.css";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faPaperclip, faTimes, faFileAlt } from "@fortawesome/free-solid-svg-icons";
+import Checkbox from "../components/CheckBox";
 
 export default function Report() {
   const [step, setStep] = useState(1);
@@ -494,7 +495,7 @@ export default function Report() {
                   ))}
                 </div>
 
-                <div>
+                <div className="space-y-3">
                   <label className="block text-sm font-medium mb-2">Mot de passe de suivi *</label>
                   <input
                     id="password"
@@ -511,10 +512,15 @@ export default function Report() {
                       }`} />
                     ))}
                   </div>
+                  <div className="flex items-center text-xs">
+                    <Checkbox/>
+                    <p className="text-gray-400 mt-2">
+                    En soumettant ce message, vous confirmez qu'aucune donnée n'est envoyée et acceptez que les données (votre email et votre message) sont stockées à but d'y pouvoir recevoir et y répondre.</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="px-8 pb-8">
+              <div className="px-8 pb-8 ">
                 <button
                   type="submit"
                   disabled={!canProceedStep4 || isLoading}
