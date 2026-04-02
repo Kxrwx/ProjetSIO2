@@ -39,8 +39,7 @@ export async function askOpenAI(prompt: string): Promise<Classification | null> 
                     - Ne pose jamais de questions ; procède toujours à la classification
                     - N'ajoute aucun contexte, justification, explication, nuance ou incertitude
                     - Ne fournisse que les deux valeurs demandées
-                    **Format de réponse :**
-                    json
+                    **Format de réponse STRICTEMENT en JSON:**
                     {
                       "priorité": 1,
                       "catégorie": 2
