@@ -515,7 +515,8 @@ export default function Report() {
                   <div className="flex items-center text-xs">
                     <Checkbox/>
                     <p className="text-gray-400 mt-2">
-                    En soumettant ce message, vous confirmez qu'aucune donnée n'est envoyée et acceptez que les données (votre email et votre message) sont stockées à but d'y pouvoir recevoir et y répondre.</p>
+                      En soumettant ce message, vous acceptez que les informations fournies soient utilisées pour traiter votre signalement conformément à notre politique de confidentialité.
+                    </p>
                   </div>
                 </div>
               </div>
