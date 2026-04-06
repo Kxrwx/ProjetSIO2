@@ -268,47 +268,7 @@ export default function Report() {
                 />
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">
-                  Catégorie <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {CATEGORY_OPTIONS.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => setFormData((p) => ({ ...p, categorie: cat.value }))}
-                      className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
-                        formData.categorie === cat.value ? "border-green-300 text-black bg-green-100" : "bg-white"
-                      }`}
-                    >
-                      <span className="text-xl">{cat.icon}</span>
-                      {cat.value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Niveau de priorité <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {PRIORITY_OPTIONS.map((p) => (
-                    <button
-                      key={p.value}
-                      type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, priorite: p.value }))}
-                      className={`flex items-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
-                        formData.priorite === p.value ? p.color + " border-current" : " bg-white "
-                      }`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${formData.priorite === p.value ? p.dot : "bg-gray-300"}`} />
-                      {p.value}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              
             </div>
           )}
 
