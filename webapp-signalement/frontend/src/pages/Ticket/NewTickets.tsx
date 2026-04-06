@@ -6,6 +6,7 @@ import "../../styles/Admin.css";
 import NaviAdmin from "../../components/NaviAdmin";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { apiUrl } from "../../config/api";
 
 
 export default function NewTickets() {
@@ -21,7 +22,7 @@ export default function NewTickets() {
   useEffect(() => {
     const fetchSignalements = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/signalement', {
+        const response = await fetch(apiUrl("/api/admin/signalement"), {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: "include",

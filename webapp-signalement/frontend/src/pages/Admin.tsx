@@ -5,6 +5,7 @@ import GraphStatut from "../components/GraphStatut";
 import NaviAdmin from "../components/NaviAdmin";
 import TinyBarChart from "../components/TinyBarChart";
 import "../styles/Admin.css";
+import { apiUrl } from "../config/api";
 
 export default function Admin() {
   const [user, setUser] = useState<any>(null);
@@ -19,7 +20,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchSignalements = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/signalement', {
+        const response = await fetch(apiUrl("/api/admin/signalement"), {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: "include",

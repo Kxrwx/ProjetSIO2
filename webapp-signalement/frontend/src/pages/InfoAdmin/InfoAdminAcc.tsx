@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Navigation from "../Navigation";
+import { apiUrl } from "../../config/api";
 
 
 export default function InfoAdminAcc() {
@@ -11,7 +12,7 @@ export default function InfoAdminAcc() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/admin/user', {
+                const response = await fetch(apiUrl("/api/admin/user"), {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: "include",
