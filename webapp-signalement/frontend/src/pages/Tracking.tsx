@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFileLines, faSearch, faLock } from "@fortawesome/free-solid-svg-icons";
 import ChatBox from "../components/ChatBoxNoAdmin";
+import { apiUrl } from "../config/api";
 
 export default function Tracking() {
   const [trackingCode, setTrackingCode] = useState("");
@@ -16,7 +17,7 @@ export default function Tracking() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/signalements/consult", {
+      const response = await fetch(apiUrl("/api/signalements/consult"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trackingCode: trackingCode.trim(), password }),

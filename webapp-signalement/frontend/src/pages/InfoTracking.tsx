@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiUrl } from "../config/api";
 
 interface SignalementDetail {
   idSignalement: number;
@@ -29,7 +30,7 @@ export default function InfoTracking({ idSignalement, trackingCode, password }: 
       setLoading(true);
       setError(false);
       try {
-        const response = await fetch("http://localhost:5000/api/signalements/consult", {
+        const response = await fetch(apiUrl("/api/signalements/consult"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 

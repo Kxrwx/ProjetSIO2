@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faArrowLeft, faPaperclip, faFileLines, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import InfoTracking from "../pages/InfoTracking";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { apiUrl } from "../config/api";
 
 // --- INTERFACES ---
 interface Message {
@@ -53,7 +54,7 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
 
   const fetchFiles = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/signalements/file", {
+      const response = await fetch(apiUrl("/api/signalements/file"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idSignalement }),
@@ -87,7 +88,7 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
     if (!newMessage.trim() || sending) return;
     setSending(true);
     try {
-      const response = await fetch("http://localhost:5000/api/signalements/createMessage", {
+      const response = await fetch(apiUrl("/api/signalements/createMessage"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idSignalement, bodymessage: newMessage }),
@@ -119,7 +120,7 @@ export default function ChatBox({ messages, idSignalement, onRefresh, trackingCo
 
         // ATTENTION : Vérifie bien que l'URL est /api/signalements/createFile (Public)
         // et non /api/admin/... (Réservé aux admins)
-        const response = await fetch("http://localhost:5000/api/signalements/createFile", {
+        const response = await fetch(apiUrl("/api/signalements/createFile"), {
           method: "POST",
           // Pas de headers Content-Type, le navigateur s'en charge avec FormData
           body: formData,

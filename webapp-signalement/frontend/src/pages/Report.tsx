@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faPaperclip, faTimes, faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "../components/CheckBox";
+import { apiUrl } from "../config/api";
 
 export default function Report() {
   const [step, setStep] = useState(1);
@@ -91,7 +92,7 @@ export default function Report() {
     });
 
     try {
-      const response = await fetch("http://localhost:5000/api/signalements", {
+      const response = await fetch(apiUrl("/api/signalements"), {
         method: "POST",
         // Note: Ne pas mettre de Content-Type header ici, le navigateur le gère seul
         body: data,

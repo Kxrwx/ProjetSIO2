@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import Loader from "../components/Loader";
+import { apiUrl } from "../config/api";
 
 export default function ProtectedRoute() {
     const [status, setStatus] = useState<"loading" | "auth" | "no-auth">("loading");
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/admin", { credentials: "include" })
+        fetch(apiUrl("/api/admin"), { credentials: "include" })
             .then((res) => {
                 if (res.ok) setStatus("auth");
                 else setStatus("no-auth");

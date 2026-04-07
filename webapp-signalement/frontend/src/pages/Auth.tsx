@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom"; // Imports regroupés
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Auth.css";
+import { apiUrl } from "../config/api";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Auth() {
     
     try {
       const data = { email, password };
-      const response = await fetch('http://localhost:5000/api/auth/signin', {
+      const response = await fetch(apiUrl("/api/auth/signin"), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faEnvelope, faUser, faMapMarkerAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import Navigation from "../Navigation";
 import Loader from "../../components/Loader";
+import { apiUrl } from "../../config/api";
 
 // 1. Configuration des statuts (Noms et Couleurs)
 const STATUTS_CONFIG: Record<number, { label: string; color: string }> = {
@@ -38,7 +39,7 @@ export default function DetailsSigna() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/signalement/detail', {
+        const response = await fetch(apiUrl("/api/admin/signalement/detail"), {
           method: 'POST', 
           headers: { 'Content-Type': 'application/json' },
           credentials: "include",
@@ -54,7 +55,7 @@ export default function DetailsSigna() {
           // Si idStatut est 1 (Nouveau), on le passe à 2 (En cours)
           if (result.idStatut === 1) {
             try {
-              const updateRes = await fetch('http://localhost:5000/api/admin/signalement/update', {
+              const updateRes = await fetch(apiUrl("/api/admin/signalement/update"), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: "include",

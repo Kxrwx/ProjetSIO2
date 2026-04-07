@@ -5,6 +5,7 @@ import {
   faArrowLeft, faPaperPlane, faPaperclip, faFileLines, 
   faSyncAlt, faSpinner 
 } from "@fortawesome/free-solid-svg-icons";
+import { apiUrl } from "../../config/api";
 
 // --- INTERFACES ---
 interface Message {
@@ -46,7 +47,7 @@ export default function MessagesAdmin() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/user', {
+      const response = await fetch(apiUrl("/api/admin/user"), {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: "include",
@@ -62,7 +63,7 @@ export default function MessagesAdmin() {
   const fetchFiles = useCallback(async () => {
     if (!id) return;
     try {
-      const response = await fetch("http://localhost:5000/api/admin/signalement/file", {
+      const response = await fetch(apiUrl("/api/admin/signalement/file"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -76,7 +77,7 @@ export default function MessagesAdmin() {
   const fetchMessages = useCallback(async () => {
     if (!id) return;
     try {
-      const response = await fetch("http://localhost:5000/api/admin/signalement/getMessage", {
+      const response = await fetch(apiUrl("/api/admin/signalement/getMessage"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -109,7 +110,7 @@ export default function MessagesAdmin() {
       formData.append("idSignalement", id);
       formData.append("file", selectedFile); 
 
-      const response = await fetch("http://localhost:5000/api/admin/signalement/createFile", {
+      const response = await fetch(apiUrl("/api/admin/signalement/createFile"), {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -128,7 +129,7 @@ export default function MessagesAdmin() {
     if (!newMessage.trim() || sending) return;
     setSending(true);
     try {
-      const response = await fetch("http://localhost:5000/api/admin/signalement/createMessage", {
+      const response = await fetch(apiUrl("/api/admin/signalement/createMessage"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

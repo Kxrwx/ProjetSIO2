@@ -1,7 +1,9 @@
+import { apiUrl } from "../config/api";
+
 export default function ButtonLogout() {
     const handleLogout = async () => {
   try {
-    await fetch("http://localhost:5000/api/auth/logout", {
+    await fetch(apiUrl("/api/auth/logout"), {
       method: "POST",
       credentials: "include", 
     });
